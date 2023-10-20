@@ -10,9 +10,6 @@ function ProductImage({ image1, image2, image3, image4 }) {
     image4,
     // Add more URLs as needed
   ];
-  const maxImageStyle = {
-    maxWidth: "100%",
-  };
   const options = {
     loop: true,
     margin: 10,
@@ -43,8 +40,8 @@ function ProductImage({ image1, image2, image3, image4 }) {
 
   return (
     <div className="col-lg-6">
-      <div className="product-pic-zoom">
-        {checkZoom ? (
+      {checkZoom ? (
+        <div className="product-pic-zoom">
           <GlassMagnifier
             className="product-big-img"
             imageSrc={activeImage}
@@ -59,13 +56,18 @@ function ProductImage({ image1, image2, image3, image4 }) {
               boxShadow: "0 0 10px rgba(0, 0, 0, 0.3)",
             }}
           />
-        ) : (
-          <img className="product-big-img-1" src={activeImage} alt="" />
-        )}
-        <div className="zoom-icon" onClick={TurmOnZoom}>
-          <i className="fa fa-search-plus" />
+          <div className="zoom-icon" onClick={TurmOnZoom}>
+            <i className="fa fa-search-minus" />
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="product-pic-zoom">
+          <img className="product-big-img-1" src={activeImage} alt="" />
+          <div className="zoom-icon" onClick={TurmOnZoom}>
+            <i className="fa fa-search-plus" />
+          </div>
+        </div>
+      )}
       <div className="product-thumbs">
         <OwlCarousel
           className="product-thumbs-track ps-slider owl-carousel"

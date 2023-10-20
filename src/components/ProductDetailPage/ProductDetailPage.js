@@ -6,22 +6,8 @@ import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 import ProductImage from "./ProductImage";
 function ProductDetailPage() {
-  const options = {
-    loop: true,
-    margin: 10,
-    nav: true,
-    items: 3,
-    dots: false,
-    navText: [
-      '<i class="fa fa-angle-left"></i>',
-      '<i class="fa fa-angle-right"></i>',
-    ],
-    smartSpeed: 1200,
-    autoheight: "false",
-    autoplay: true,
-  };
+  const [value, setValue] = useState(1);
   const [data, setData] = useState([]);
-  const [diffdata, setDiffData] = useState([]);
   const params = useParams();
 
   console.log(params.product_id);
@@ -65,9 +51,26 @@ function ProductDetailPage() {
         }
       });
     });
-    console.log("test", typeof resultObject.color);
+
+    var sum = resultObject.availableQuantity.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      0
+    );
+    console.log("test1", sum);
     console.log("test", resultObject.color[1]);
   }
+  const increment = () => {
+    if (value < sum) {
+      setValue(value + 1);
+    }
+  };
+
+  const decrement = () => {
+    if (value > 0) {
+      setValue(value - 1);
+    }
+  };
+  console.log("test1", typeof sum);
   const StarRating = ({ rating }) => {
     const maxStars = 5;
     const filledStars = Math.floor(rating);
@@ -146,6 +149,7 @@ function ProductDetailPage() {
                             </div> */}
                             {resultObject.color.map((color, index) => (
                               <div key={index} className="cc-item">
+                                {console.log(color)}
                                 <input
                                   type="radio"
                                   id={`cc-${color}`}
@@ -160,26 +164,41 @@ function ProductDetailPage() {
                           </div>
                         </div>
                         <div className="pd-size-choose">
-                          <div className="sc-item">
+                          {/* <div className="sc-item">
                             <input type="radio" id="sm-size" />
                             <label htmlFor="sm-size">s</label>
-                          </div>
-                          <div className="sc-item">
-                            <input type="radio" id="md-size" />
-                            <label htmlFor="md-size">m</label>
-                          </div>
-                          <div className="sc-item">
-                            <input type="radio" id="lg-size" />
-                            <label htmlFor="lg-size">l</label>
-                          </div>
-                          <div className="sc-item">
-                            <input type="radio" id="xl-size" />
-                            <label htmlFor="xl-size">xs</label>
-                          </div>
+                          </div> */}
+                          {resultObject.size.map((size, index) =>
+                            size === "none" ? null : (
+                              <div key={index} className="sc-item">
+                                <input
+                                  type="radio"
+                                  id={`sm-${size}`}
+                                  name="size"
+                                />
+                                <label
+                                  htmlFor={`sm-${size}`}
+                                  className={`sm-${size}`}
+                                ></label>
+                              </div>
+                            )
+                          )}
                         </div>
                         <div className="quantity">
                           <div className="pro-qty">
-                            <input type="text" defaultValue={1} />
+                            <span className="dec qtybtn" onClick={decrement}>
+                              -
+                            </span>
+                            {console.log(sum)}
+                            <input
+                              type="text"
+                              value={value}
+                              max={10}
+                              readOnly
+                            />
+                            <span className="inc qtybtn" onClick={increment}>
+                              +
+                            </span>
                           </div>
                           <a href={{}} className="primary-btn pd-cart">
                             Add To Cart
