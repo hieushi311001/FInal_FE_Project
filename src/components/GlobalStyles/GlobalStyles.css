@@ -2122,6 +2122,10 @@ ol {
 .product-shop.page-details {
   padding-bottom: 60px;
 }
+.product-shop.page-details-1 {
+  padding-left: 272px;
+  padding-bottom: 60px;
+}
 
 .product-pic-zoom {
   margin-bottom: 10px;
@@ -2507,7 +2511,7 @@ ol {
 }
 
 .specification-table table {
-  width: 100%;
+  width: 96.33%;
 }
 
 .specification-table table tr td {
@@ -2570,12 +2574,58 @@ ol {
   text-transform: uppercase;
 }
 
-.specification-table table tr td .cs-color {
+.specification-table table tr td .cs-black {
   display: inline-block;
   height: 20px;
   width: 20px;
   background: #252525;
   border-radius: 50%;
+  margin-left: 5px;
+}
+.specification-table table tr td .cs-white {
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  background: #ffffff;
+  border: 1px solid #252525;
+  border-radius: 50%;
+  margin-left: 5px;
+}
+.specification-table table tr td .cs-green {
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  background: #008000;
+  border: 1px solid #252525;
+  border-radius: 50%;
+  margin-left: 5px;
+}
+.specification-table table tr td .cs-red {
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  background: #ff0000;
+  border-radius: 50%;
+  margin-left: 5px;
+  border: 1px solid #252525;
+}
+.specification-table table tr td .cs-yellow {
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  background: #ffff00;
+  border-radius: 50%;
+  border: 1px solid #252525;
+  margin-left: 5px;
+}
+.specification-table table tr td .cs-pink {
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  background: #ffc0cb;
+  border-radius: 50%;
+  border: 1px solid #252525;
+  margin-left: 5px;
 }
 
 .customer-review-option {

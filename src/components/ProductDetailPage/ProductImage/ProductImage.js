@@ -2,7 +2,7 @@ import OwlCarousel from "react-owl-carousel";
 import React, { useState, useEffect } from "react";
 import { GlassMagnifier } from "react-image-magnifiers";
 function ProductImage({ image1, image2, image3, image4 }) {
-  const [activeImage, setActiveImage] = useState(image1);
+  const [activeImage, setActiveImage] = useState();
   const imageUrls = [
     image1,
     image2,
@@ -10,6 +10,20 @@ function ProductImage({ image1, image2, image3, image4 }) {
     image4,
     // Add more URLs as needed
   ];
+  // useEffect(() => {
+  //   // Thực hiện hành động sau mỗi lần activeImage thay đổi
+  //   console.log("Hình ảnh đã thay đổi:", activeImage);
+  //   console.log("thay đổi:", image1);
+  //   setActiveImage(image1);
+  //   // Thực hiện hành động của bạn ở đây
+  // }, [activeImage, image1]);
+  useEffect(() => {
+    // Thực hiện hành động sau mỗi lần activeImage thay đổi
+    // console.log("Hình ảnh đã thay đổi:", activeImage);
+    // console.log("thay đổi:", image1);
+    setActiveImage(image1);
+    // Thực hiện hành động của bạn ở đây
+  }, [image1]);
   const options = {
     loop: true,
     margin: 10,
@@ -27,11 +41,7 @@ function ProductImage({ image1, image2, image3, image4 }) {
   const handleImageClick = (imageUrl) => {
     setActiveImage(imageUrl);
   };
-  useEffect(() => {
-    // Thực hiện hành động sau mỗi lần activeImage thay đổi
-    console.log("Hình ảnh đã thay đổi:", activeImage);
-    // Thực hiện hành động của bạn ở đây
-  }, [activeImage]);
+
   const [checkZoom, setcheckZoom] = useState(false);
   const TurmOnZoom = () => {
     // Chuyển đổi trạng thái zoom
