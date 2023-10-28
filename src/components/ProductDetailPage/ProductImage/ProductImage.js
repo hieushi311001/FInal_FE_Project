@@ -34,9 +34,9 @@ function ProductImage({ image1, image2, image3, image4 }) {
       '<i class="fa fa-angle-left"></i>',
       '<i class="fa fa-angle-right"></i>',
     ],
-    smartSpeed: 1200,
+    smartSpeed: 1000,
     autoheight: "false",
-    autoplay: false,
+    autoplay: true,
   };
   const handleImageClick = (imageUrl) => {
     setActiveImage(imageUrl);

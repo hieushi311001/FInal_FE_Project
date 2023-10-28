@@ -2,6 +2,7 @@ import config from "~/config";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { makeRequest } from "~/services";
+import { Link } from "react-router-dom";
 function RegisterPage() {
   const [userName, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -41,9 +42,9 @@ function RegisterPage() {
           <div className="row">
             <div className="col-lg-12">
               <div className="breadcrumb-text">
-                <a href={{}}>
+                <Link to={`/`}>
                   <i className="fa fa-home" /> Home
-                </a>
+                </Link>
                 <span>Register</span>
               </div>
             </div>
@@ -107,9 +108,9 @@ function RegisterPage() {
                   </button>
                 </form>
                 <div className="switch-login">
-                  <a href={{}} className="or-login">
+                  <Link to={`/login`} className="or-login">
                     Or Login
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

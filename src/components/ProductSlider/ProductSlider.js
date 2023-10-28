@@ -1,11 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
-const ProductSlider = ({ productid, image, brand, name, price, discount }) => {
+const ProductSlider = ({
+  key,
+  productid,
+  image,
+  brand,
+  name,
+  price,
+  discount,
+}) => {
   const moneyDiscount = discount / 100;
   const newPrice = price - moneyDiscount * price;
   return (
     <div className="product-item">
-      <div className="pi-pic">
+      <div className="pi-pic-1">
         <img src={image} alt="" />
         {discount !== 0 && <div className="sale">{discount}%</div>}
         <div className="icon">

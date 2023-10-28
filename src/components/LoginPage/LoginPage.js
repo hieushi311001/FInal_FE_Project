@@ -2,6 +2,8 @@ import config from "~/config";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { makeRequest } from "~/services";
+import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
 function LoginPage() {
   const [userName, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -15,10 +17,17 @@ function LoginPage() {
       const result = await makeRequest(method, path, params);
       console.log(result);
       if (result.result === "success") {
-        console.log("Login successful!");
+        const expirationDate = new Date(new Date().getTime() + 60 * 60 * 1000);
 
-        // Chuyển hướng đến trang home page
-
+        Cookies.set("jwtToken", result.message, { expires: expirationDate }); // Set an expiration date
+        Cookies.set("userData", JSON.stringify(result.content), {
+          expires: expirationDate,
+        });
+        // To read the token
+        const jwtToken = Cookies.get("jwtToken");
+        const userDataCookie = Cookies.get("userData");
+        const storedUserData = JSON.parse(userDataCookie);
+        console.log("User nè: ", storedUserData);
         navigate(config.routes.home);
       }
     } catch (error) {
@@ -34,9 +43,9 @@ function LoginPage() {
           <div className="row">
             <div className="col-lg-12">
               <div className="breadcrumb-text">
-                <a href={{}}>
+                <Link to={`/`}>
                   <i className="fa fa-home" /> Home
-                </a>
+                </Link>
                 <span>Login</span>
               </div>
             </div>
@@ -87,9 +96,9 @@ function LoginPage() {
                   </button>
                 </form>
                 <div className="switch-login">
-                  <a href="./register.html" className="or-login">
+                  <Link to={`/register`} className="or-login">
                     Or Create An Account
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

@@ -16,7 +16,7 @@ function WomanSection() {
       '<i class="ti-angle-left"></i>',
       '<i class="ti-angle-right"></i>',
     ],
-    smartSpeed: 1200,
+    smartSpeed: 1000,
     autoheight: "false",
     autoplay: true,
     responsive: {

@@ -1,0 +1,51 @@
+.user-image-container {
+  position: relative;
+  display: inline-block;
+}
+
+.nav-link {
+  padding-left: 0rem;
+  padding-right: 0rem;
+  display: flex;
+  align-items: center;
+  position: relative; /* Đặt phần tử liên quan để định vị dropdown */
+}
+
+.rounded-circle {
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.username {
+  margin-left: 10px;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: none;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  padding: 5px;
+  z-index: 1;
+  width: 100%;
+}
+
+.dropdown a {
+  display: block;
+  padding: 5px;
+  text-decoration: none;
+  color: #000;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: #e5e5e5;
+}
+
+.user-image-container:hover .dropdown {
+  display: block;
+}

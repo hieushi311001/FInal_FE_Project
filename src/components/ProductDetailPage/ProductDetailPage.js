@@ -12,11 +12,13 @@ function ProductDetailPage() {
   const [imageUrl, setImageUrl] = useState(0);
   const params = useParams();
 
-  console.log(params.product_id);
+  // console.log(params.product_id);
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, []);
+
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
-  useEffect(() => {
     const fetchData = async () => {
       try {
         const path = `unauthen/shop/product_id=${params.product_id}`;
@@ -29,9 +31,9 @@ function ProductDetailPage() {
     };
 
     fetchData();
-  }, [params.product_id, imageUrl]);
+  }, [params.product_id]);
 
-  console.log(data.content);
+  // console.log(data.content);
   if (Object.keys(data).length !== 0) {
     // Tạo một đối tượng mới để chứa kết quả
     var resultObject = {};
@@ -79,11 +81,11 @@ function ProductDetailPage() {
       (accumulator, currentValue) => accumulator + currentValue,
       0
     );
-    console.log("test1", resultObject);
-    console.log("test", resultObject.size);
+    // console.log("test1", resultObject);
+    // console.log("test", resultObject.size);
   }
   const increment = () => {
-    if (value < sum) {
+    if (value < resultObject.availableQuantity[imageUrl]) {
       setValue(value + 1);
     }
   };
@@ -94,7 +96,7 @@ function ProductDetailPage() {
     }
   };
 
-  console.log("test1", typeof sum);
+  // console.log("test1", typeof sum);
   const StarRating = ({ rating }) => {
     const maxStars = 5;
     const filledStars = Math.floor(rating);
@@ -120,10 +122,10 @@ function ProductDetailPage() {
     );
   };
   function setSelectedColor({ index }) {
-    console.log("key nè: ", index);
+    // console.log("key nè: ", index);
     setImageUrl(index);
   }
-  console.log("Ảnh active:", imageUrl);
+  // console.log("Ảnh active:", imageUrl);
   return (
     <div>
       <section className="product-shop spad page-details-1">
@@ -132,7 +134,7 @@ function ProductDetailPage() {
             {Object.keys(data).length !== 0 && (
               <div className="col-lg-9">
                 <div className="row">
-                  {console.log("ảnh set nè: ", resultObject.image1[imageUrl])}
+                  {/* {console.log("ảnh set nè: ", resultObject.image1[imageUrl])} */}
                   <ProductImage
                     image1={resultObject.image1[imageUrl]}
                     image2={resultObject.image2[imageUrl]}
@@ -182,7 +184,7 @@ function ProductDetailPage() {
                             </div> */}
                           {resultObject.color.map((color, index) => (
                             <div key={index} className="cc-item">
-                              {console.log("color nè: ", color)}
+                              {/* {console.log("color nè: ", color)} */}
                               <input
                                 type="radio"
                                 id={`cc-${color}`}
@@ -232,7 +234,7 @@ function ProductDetailPage() {
                           <span className="dec qtybtn" onClick={decrement}>
                             -
                           </span>
-                          {console.log(sum)}
+                          {/* {console.log(sum)} */}
                           <input type="text" value={value} readOnly />
                           <span className="inc qtybtn" onClick={increment}>
                             +
@@ -384,10 +386,8 @@ function ProductDetailPage() {
                                     size !== "none"
                                   ) {
                                     return (
-                                      <td>
-                                        <div className="p-size" key={index}>
-                                          {size}
-                                        </div>
+                                      <td key={index}>
+                                        <div className="p-size">{size}</div>
                                       </td>
                                     );
                                   }
@@ -501,7 +501,13 @@ function ProductDetailPage() {
           </div>
         </div>
       </section>
-      <RelativeProduct />
+      {/* {console.log("tesssst 1:", resultObject.productId[imageUrl])} */}
+      {Object.keys(data).length !== 0 && (
+        <RelativeProduct
+          productId={resultObject.productId[imageUrl]}
+          color={resultObject.color[imageUrl]}
+        />
+      )}
     </div>
   );
 }
