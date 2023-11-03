@@ -26,7 +26,7 @@ const ProductSlider = ({
             </a>
           </li>
           <li className="quick-view">
-            <Link to={`/${productid}`}>+ Quick View</Link>
+            <Link to={`/product/${productid}`}>+ Quick View</Link>
             {/* <a href={{}}>+ Quick View</a> */}
           </li>
           <li className="w-icon">

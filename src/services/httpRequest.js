@@ -16,7 +16,7 @@ export const makeRequest = async (method, path, data = null, options = {}) => {
 
     return response.data;
   } catch (error) {
-    console.error("Error making request:", error);
+    console.error("Error making request:", error.message);
     throw error;
   }
 };

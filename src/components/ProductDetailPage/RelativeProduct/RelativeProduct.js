@@ -26,6 +26,7 @@ function RelativeProduct({ productId, color }) {
         console.error("Lỗi khi gửi yêu cầu POST đến API: " + error);
       });
   }, [color, productId]);
+
   const options = {
     loop: true,
     margin: 25,

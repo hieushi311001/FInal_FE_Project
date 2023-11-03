@@ -53,6 +53,7 @@ function Header() {
               {userDataExists ? (
                 <div className="login-panel-1">
                   <UserImage
+                    accountId={cookieData.accountId}
                     avatar={cookieData.avatar}
                     name={cookieData.name}
                   />

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./UserImage.css";
-function UserImage({ name, avatar }) {
+function UserImage({ accountId, name, avatar }) {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -16,18 +17,21 @@ function UserImage({ name, avatar }) {
           onClick={toggleDropdown}
         >
           <img
-            src="https://media.gucci.com/style/HEXF1E9FB_Center_0_0_800x800/1669920431/724770_XKCWH_8050_002_100_0000_Light-Striped-jacquard-wool-knit-sweater.jpg"
-            alt="Profile"
+            src={`https://drive.google.com/uc?export=view&id=${avatar}`}
+            alt="Avatar"
             className="rounded-circle"
           />
           <span className="username">{name}</span>
         </div>
         {isDropdownOpen && (
           <div className="dropdown-menu show" id="userDropdown">
-            <a className="dropdown-item" href={{}}>
+            <Link className="dropdown-item" to={`/profile/${accountId}`}>
               <i className="fa fa-user"></i>
               Profile
-            </a>
+            </Link>
+            {/* <Link to={`/login`} className="login-panel">
+              <i className="fa fa-user"></i>Login
+            </Link> */}
             <a className="dropdown-item" href={{}}>
               <i className="fa fa-cog"></i>
               Settings

@@ -1,0 +1,59 @@
+.my-custom-margin {
+  margin-left: 10px;
+}
+
+.card {
+  /* background-color: #ffffff; */
+  margin: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+.card h4 {
+  font-size: 24px;
+  margin: 10px 0;
+  color: #333;
+}
+
+.card p {
+  /* font-weight: bold; */
+  font-size: 16px;
+  color: #666;
+}
+
+.card img {
+  border-radius: 50%;
+}
+
+/* .card .fas.fa-reply .small {
+  color: #007bff;
+}
+
+.card .fas.fa-reply .small:hover {
+  color: #0056b3;
+} */
+.card .fas.fa-reply .small.custom {
+  color: #000;
+}
+.card .fas.fa-reply .small.custom:hover {
+  text-decoration: underline; /* Hiển thị gạch chân khi di chuột vào */
+  color: inherit; /* Kế thừa màu chữ hiện tại, không thay đổi màu */
+}
+/* .card .fas .small {
+  color: #007bff;
+}
+
+.card .fas .small:hover {
+  color: #0056b3;
+} */
+
+.custom-margin {
+  margin-top: 1.5rem !important;
+}
+.custom:hover {
+  text-decoration: underline; /* Hiển thị gạch chân khi di chuột vào */
+  color: inherit; /* Kế thừa màu chữ hiện tại, không thay đổi màu */
+}
+.custom {
+  font-style: italic;
+  color: #000;
+}

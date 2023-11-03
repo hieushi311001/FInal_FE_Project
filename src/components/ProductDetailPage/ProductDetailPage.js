@@ -6,6 +6,7 @@ import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 import ProductImage from "./ProductImage";
 import RelativeProduct from "./RelativeProduct";
+import CommentList from "./CommentList";
 function ProductDetailPage() {
   const [value, setValue] = useState(1);
   const [data, setData] = useState([]);
@@ -31,7 +32,8 @@ function ProductDetailPage() {
     };
 
     fetchData();
-  }, [params.product_id]);
+    // }, [params.product_id]);
+  }, []);
 
   // console.log(data.content);
   if (Object.keys(data).length !== 0) {
@@ -412,87 +414,10 @@ function ProductDetailPage() {
                           </table>
                         </div>
                       </div>
-                      <div className="tab-pane fade" id="tab-3" role="tabpanel">
-                        <div className="customer-review-option">
-                          <h4>2 Comments</h4>
-                          <div className="comment-option">
-                            <div className="co-item">
-                              <div className="avatar-pic">
-                                <img
-                                  src="img/product-single/avatar-1.png"
-                                  alt=""
-                                />
-                              </div>
-                              <div className="avatar-text">
-                                <div className="at-rating">
-                                  <i className="fa fa-star" />
-                                  <i className="fa fa-star" />
-                                  <i className="fa fa-star" />
-                                  <i className="fa fa-star" />
-                                  <i className="fa fa-star-o" />
-                                </div>
-                                <h5>
-                                  Brandon Kelley <span>27 Aug 2019</span>
-                                </h5>
-                                <div className="at-reply">Nice !</div>
-                              </div>
-                            </div>
-                            <div className="co-item">
-                              <div className="avatar-pic">
-                                <img
-                                  src="img/product-single/avatar-2.png"
-                                  alt=""
-                                />
-                              </div>
-                              <div className="avatar-text">
-                                <div className="at-rating">
-                                  <i className="fa fa-star" />
-                                  <i className="fa fa-star" />
-                                  <i className="fa fa-star" />
-                                  <i className="fa fa-star" />
-                                  <i className="fa fa-star-o" />
-                                </div>
-                                <h5>
-                                  Roy Banks <span>27 Aug 2019</span>
-                                </h5>
-                                <div className="at-reply">Nice !</div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="personal-rating">
-                            <h6>Your Ratind</h6>
-                            <div className="rating">
-                              <i className="fa fa-star" />
-                              <i className="fa fa-star" />
-                              <i className="fa fa-star" />
-                              <i className="fa fa-star" />
-                              <i className="fa fa-star-o" />
-                            </div>
-                          </div>
-                          <div className="leave-comment">
-                            <h4>Leave A Comment</h4>
-                            <form action="#" className="comment-form">
-                              <div className="row">
-                                <div className="col-lg-6">
-                                  <input type="text" placeholder="Name" />
-                                </div>
-                                <div className="col-lg-6">
-                                  <input type="text" placeholder="Email" />
-                                </div>
-                                <div className="col-lg-12">
-                                  <textarea
-                                    placeholder="Messages"
-                                    defaultValue={""}
-                                  />
-                                  <button type="submit" className="site-btn">
-                                    Send message
-                                  </button>
-                                </div>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
+                      <CommentList
+                        productId={resultObject.productId[imageUrl]}
+                        color={resultObject.color[imageUrl]}
+                      />
                     </div>
                   </div>
                 </div>
