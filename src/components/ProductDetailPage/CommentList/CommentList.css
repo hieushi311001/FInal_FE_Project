@@ -4,6 +4,7 @@
 
 .card {
   /* background-color: #ffffff; */
+  min-width: 776px;
   margin: 20px;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
@@ -47,7 +48,7 @@
 } */
 
 .custom-margin {
-  margin-top: 1.5rem !important;
+  margin-top: 1rem !important;
 }
 .custom:hover {
   text-decoration: underline; /* Hiển thị gạch chân khi di chuột vào */
@@ -56,4 +57,34 @@
 .custom {
   font-style: italic;
   color: #000;
+}
+.bg-white {
+  font-size: 12px;
+}
+.rounded-box {
+  border: 2px solid rgb(238, 230, 230);
+  border-radius: 10px;
+  padding: 10px;
+  margin: 0;
+  display: inline-block;
+  min-width: 100%;
+}
+.small-1 {
+  font-size: 80%;
+  font-weight: 400;
+  margin-left: 5px;
+}
+.read-more {
+  font-size: 85%;
+  cursor: pointer;
+  text-decoration: none; /* Loại bỏ gạch chân mặc định */
+  transition: text-decoration 0.2s; /* Thêm hiệu ứng gạch chân */
+}
+
+.read-more:hover {
+  text-decoration: underline; /* Áp dụng gạch chân khi di chuột qua */
+}
+.read-more i {
+  margin-right: 5px;
+  /* Điều chỉnh khoảng cách giữa biểu tượng và văn bản */
 }
