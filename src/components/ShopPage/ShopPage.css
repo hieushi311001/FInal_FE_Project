@@ -1,0 +1,19 @@
+/* .my-custom {
+  color: black;
+  background-color: lightgray;
+  border: 1px solid #333;
+  padding: 5px 10px;
+  font-size: 16px;
+} */
+.page-item.active .page-link {
+  z-index: 3;
+  color: #ffffff;
+  background-color: #e7ab3c;
+  border-color: #e7ab3c;
+}
+.page-item .page-link {
+  font-weight: bold;
+  color: #252525;
+  /* background-color: #252525;
+  border-color: #252525; */
+}

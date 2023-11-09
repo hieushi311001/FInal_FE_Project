@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-// import SideBar from "./SideBar";
 import { makeRequest } from "~/services";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
@@ -33,7 +32,7 @@ function ProductDetailPage() {
 
     fetchData();
     // }, [params.product_id]);
-  }, []);
+  }, [params.product_id]);
 
   // console.log(data.content);
   if (Object.keys(data).length !== 0) {

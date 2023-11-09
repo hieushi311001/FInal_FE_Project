@@ -1,6 +1,7 @@
 .user-image-container {
   position: relative;
   display: inline-block;
+  padding-top: 7.5px;
 }
 
 .nav-link {

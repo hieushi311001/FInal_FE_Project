@@ -120,8 +120,8 @@ function CommentList({ productId, color }) {
       <div className="customer-review-option">
         <h4>5 Comments</h4>
         <div className="comment-option ">
-          <div className="row justify-content-center h-100 w-100">
-            <div className="card">
+          <div className="row justify-content-center h-100 w-100 ">
+            <div className="card custom-1">
               <div className="card-body p-4">
                 <h4 className="text-center mb-4 pb-2">
                   Nested comments section

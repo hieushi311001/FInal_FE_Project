@@ -87,7 +87,9 @@ p {
 img {
   max-width: 100%;
 }
-
+a {
+  text-decoration: none;
+}
 input:focus,
 select:focus,
 button:focus,
@@ -97,7 +99,7 @@ textarea:focus {
 
 a:hover,
 a:focus {
-  text-decoration: none;
+  text-decoration: none !important;
   outline: none;
   color: #fff;
 }
@@ -403,6 +405,8 @@ ol {
 }
 .header-top .ht-right .login-panel-1 {
   float: right;
+  display: flex !important;
+  align-items: center !important;
   font-size: 14px;
   color: #252525;
   display: inline-block;

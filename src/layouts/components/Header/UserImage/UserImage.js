@@ -17,7 +17,7 @@ function UserImage({ accountId, name, avatar }) {
           onClick={toggleDropdown}
         >
           <img
-            src={`https://drive.google.com/uc?export=view&id=${avatar}`}
+            src={`https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg`}
             alt="Avatar"
             className="rounded-circle"
           />

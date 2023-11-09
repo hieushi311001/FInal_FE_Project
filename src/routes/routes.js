@@ -11,10 +11,12 @@ import Search from "~/pages/Search";
 import Login from "~/pages/Login";
 import Register from "~/pages/Register";
 import Productdetail from "~/pages/Productdetail";
+import Shop from "~/pages/Shop";
 
 // Public routes
 const publicRoutes = [
   { path: config.routes.home, component: Home },
+  { path: config.routes.shop, component: Shop },
   { path: config.routes.following, component: Following },
   { path: config.routes.profile, component: Profile, layout: HeaderOnly },
   { path: config.routes.upload, component: Upload, layout: HeaderOnly },
