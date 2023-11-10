@@ -29,6 +29,7 @@ function EditProfile() {
     address: "",
     city: "",
     country: "",
+    name: "Minh Hieu",
   });
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -74,7 +75,7 @@ function EditProfile() {
     };
     const fetchData = async () => {
       try {
-        const path = "authen/googleDrive/upLoadCustomerAvatar";
+        const path = "/authen/googleDrive/upLoadCustomerAvatar";
         const method = "POST";
         const result = await makeRequest(method, path, yourData, axiosInstance);
         console.log(result);
@@ -84,44 +85,23 @@ function EditProfile() {
     };
 
     fetchData();
-    const formData = new FormData();
-    formData.append("fileUpload", fileName); // yourFile là đối tượng tệp đã chọn
-    formData.append("filePath", "CustomerAvatar");
-    formData.append("shared", "true");
-
-    fetch("https://localhost:8080/authen/googleDrive/upLoadCustomerAvatar", {
-      method: "POST",
-      mode: "no-cors", // Chỉnh lại mode thành "cors"
-      headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiaWF0IjoxNjk4OTQwMzIwLCJleHAiOjE2OTkwMjY3MjB9.Qh6x8GtWYqKOcuMECVmA_KHGIiSfMpYe6_3ka8rh9eA",
-      },
-      credentials: "include", // Tùy thuộc vào cấu hình máy chủ
-      body: formData, // Sử dụng formData thay vì yourData
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error("Lỗi trong quá trình gửi yêu cầu");
-        }
-      })
-      .then((data) => {
-        // Xử lý dữ liệu từ phản hồi
-      })
-      .catch((error) => {
-        console.error(error);
-        // Xử lý lỗi
-      });
+    // const formData = new FormData();
+    // formData.append("fileUpload", fileName); // yourFile là đối tượng tệp đã chọn
+    // formData.append("filePath", "CustomerAvatar");
+    // formData.append("shared", "true");
   };
   const handleSubmit = (e) => {
     e.preventDefault();
     // Gửi dữ liệu formData đến API ở đây (sử dụng fetch hoặc axios).
     // Ví dụ:
     const userToken = Cookies.get("jwtToken");
+    console.log(userToken);
     const options = {
       headers: {
-        // Authorization: `Bearer ${userToken}`,
+        Authorization: `Bearer ${userToken}`,
+        withCredentials: true,
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
         // Các tiêu đề khác nếu cần
       },
     };
@@ -135,7 +115,7 @@ function EditProfile() {
     console.log("tesst: ", Cookies.get("userData"));
     const fetchData = async () => {
       try {
-        const path = "unauthen/systemAuthentication/updateProfile";
+        const path = "/authen/systemAuthentication/updateProfile";
         const method = "POST";
         const result = await makeRequest(method, path, formData, options);
         // window.location.reload();
@@ -304,3 +284,53 @@ function EditProfile() {
 }
 
 export default EditProfile;
+// import React, { useState, useEffect } from "react";
+// import axios from "axios";
+// function DataDisplay() {
+//   const [data, setData] = useState(null);
+
+//   useEffect(() => {
+//     // Axios configuration with the "Host" header
+//     const postData = {
+//       // Your data to be sent in the request body
+//       productId: 1,
+//       color: "red",
+//       overallRating: 5,
+//     };
+
+//     const config = {
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiaWF0IjoxNjk5NjEyOTczLCJleHAiOjE2OTk2OTkzNzN9.NUMAZhlkELKkAoVImdlRysLLOnQ6Wlj_NSxoCIqa6h0`, // Replace with your Bearer token
+//       },
+//     };
+//     const fetchData = async () => {
+//       try {
+//         const path = "/authen/shop/rateProduct";
+//         const method = "POST";
+//         const result = await makeRequest(method, path, postData, config);
+//         // window.location.reload();
+//         console.log(result);
+//       } catch (error) {
+//         console.error("Error fetching data:", error.message);
+//       }
+//     };
+
+//     fetchData();
+//   }, []); // The empty dependency array means this effect runs once after the component mounts
+
+//   return (
+//     <div>
+//       {data ? (
+//         <div>
+//           <h1>Data from API:</h1>
+//           <pre>{JSON.stringify(data, null, 2)}</pre>
+//         </div>
+//       ) : (
+//         <p>Loading data...</p>
+//       )}
+//     </div>
+//   );
+// }
+
+// export default DataDisplay;
