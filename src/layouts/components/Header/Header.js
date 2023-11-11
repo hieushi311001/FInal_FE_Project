@@ -4,26 +4,47 @@ import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import UserImage from "./UserImage";
 import images from "~/assets/images";
-
+import { makeRequest } from "~/services";
 function Header() {
   const [cookieData, setCookieData] = useState({});
   const [userDataExists, setUserDataExists] = useState(false);
   useEffect(() => {
-    // Lấy giá trị từ cookie khi component được mount
-    // const userDataCookie = Cookies.get("userData");
-    // const storedUserData = JSON.parse(userDataCookie);
-    // if (storedUserData) {
-    //   setCookieData(storedUserData);
-    // }
-    const userDataCookie = Cookies.get("userData");
-    if (userDataCookie) {
+    const checkCookie = () => {
+      if (!Cookies.get("userData")) {
+        const userToken = Cookies.get("jwtToken");
+        const axiosInstance = {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+            "Content-Type": "application/json",
+          },
+        };
+        const fetchData = async () => {
+          try {
+            const path = "authen/systemAuthentication/logout";
+            const method = "GET";
+            const result = await makeRequest(method, path, axiosInstance);
+            console.log(result);
+          } catch (error) {
+            console.error("Error fetching data:", error.message);
+          }
+        };
+
+        fetchData();
+        setUserDataExists(false);
+      }
+    };
+    if (Cookies.get("userData")) {
       setUserDataExists(true);
-      const storedUserData = JSON.parse(userDataCookie);
+      const storedUserData = JSON.parse(Cookies.get("userData"));
       setCookieData(storedUserData);
+
+      const intervalId = setInterval(checkCookie, 30 * 1000);
+      // Cleanup khi component bị unmounted
+      return () => clearInterval(intervalId);
     } else {
       setUserDataExists(false);
     }
-  }, []);
+  }, [userDataExists]);
   // $(window).on("load", function () {
   //   $(".loader").fadeOut();
   //   $("#preloder").delay(200).fadeOut("slow");

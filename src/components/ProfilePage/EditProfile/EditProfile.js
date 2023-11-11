@@ -4,11 +4,12 @@ import React, { useEffect, useState, useRef } from "react";
 import ProfilePage from "../ProfilePage";
 import { makeRequest } from "~/services";
 import axios from "axios";
+import "./EditProfile.css";
 function EditProfile() {
-  const params = useParams();
   const [cookieData, setCookieData] = useState({});
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [imgSelectedFile, setImgSelectedFile] = useState(null);
   const [fileName, setFileName] = useState("");
   useEffect(() => {
     // Lấy giá trị từ cookie khi component được mount
@@ -18,9 +19,7 @@ function EditProfile() {
     //   setCookieData(storedUserData);
     // }
     const userDataCookie = Cookies.get("userData");
-
     const storedUserData = JSON.parse(userDataCookie);
-    console.log("2 ", storedUserData);
     setCookieData(storedUserData);
   }, []);
   const [formData, setFormData] = useState({
@@ -49,46 +48,40 @@ function EditProfile() {
       reader.onload = (e) => {
         const fileURL = e.target.result;
         setFileName(fileURL);
-        console.log("URL của tệp đã chọn:", fileURL);
         // Bây giờ bạn có thể sử dụng giá trị fileURL trong ứng dụng của bạn
       };
 
       reader.readAsDataURL(file);
       // Cập nhật tấm ảnh đã chọn để hiển thị
       setSelectedFile(URL.createObjectURL(file));
+      setImgSelectedFile(file);
     }
   };
   const handleChangeImage = (event) => {
     event.preventDefault();
     const userToken = Cookies.get("jwtToken");
-    const axiosInstance = axios.create({
+    const axiosInstance = {
       headers: {
         Authorization: `Bearer ${userToken}`,
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
-    });
-    console.log("Token nè: ", userToken);
-    const yourData = {
-      fileUpload: fileName,
-      filePath: "CustomerAvatar",
-      shared: "true",
     };
+    const formData = new FormData();
+    formData.append("fileUpload", imgSelectedFile); // yourFile là đối tượng tệp đã chọn
+    formData.append("filePath", "CustomerAvatar");
+    formData.append("shared", "true");
     const fetchData = async () => {
       try {
         const path = "/authen/googleDrive/upLoadCustomerAvatar";
         const method = "POST";
-        const result = await makeRequest(method, path, yourData, axiosInstance);
+        const result = await makeRequest(method, path, formData, axiosInstance);
         console.log(result);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching data:", error.message);
       }
     };
 
     fetchData();
-    // const formData = new FormData();
-    // formData.append("fileUpload", fileName); // yourFile là đối tượng tệp đã chọn
-    // formData.append("filePath", "CustomerAvatar");
-    // formData.append("shared", "true");
   };
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -115,7 +108,7 @@ function EditProfile() {
     console.log("tesst: ", Cookies.get("userData"));
     const fetchData = async () => {
       try {
-        const path = "/authen/systemAuthentication/updateProfile";
+        const path = "authen/systemAuthentication/updateProfile";
         const method = "POST";
         const result = await makeRequest(method, path, formData, options);
         // window.location.reload();
@@ -157,13 +150,13 @@ function EditProfile() {
               </div>
               <button
                 onClick={handleFileUpload}
-                className="btn btn-primary"
+                className="btn btn-primary change"
                 type="button"
               >
                 Upload new image
               </button>
               <button
-                className="btn btn-primary"
+                className="btn btn-primary change"
                 style={{ marginLeft: "15px" }}
                 type="submit"
                 onClick={handleChangeImage}
@@ -271,7 +264,7 @@ function EditProfile() {
                     />
                   </div>
                 </div>
-                <button className="btn btn-primary" type="submit">
+                <button className="btn btn-primary change" type="submit">
                   Save
                 </button>
               </form>

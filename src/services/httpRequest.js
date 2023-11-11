@@ -7,7 +7,6 @@ const httpRequest = axios.create({
 // Thêm một phương thức chung để thực hiện mọi loại yêu cầu
 export const makeRequest = async (method, path, data = null, options = {}) => {
   try {
-    console.log("test");
     const response = await httpRequest.request({
       method,
       url: path,

@@ -18,7 +18,6 @@ const publicRoutes = [
   { path: config.routes.home, component: Home },
   { path: config.routes.shop, component: Shop },
   { path: config.routes.following, component: Following },
-  { path: config.routes.profile, component: Profile, layout: HeaderOnly },
   { path: config.routes.upload, component: Upload, layout: HeaderOnly },
   { path: config.routes.search, component: Search, layout: null },
   { path: config.routes.login, component: Login, layout: HeaderOnly },
@@ -26,6 +25,12 @@ const publicRoutes = [
   { path: config.routes.productdetail, component: Productdetail },
 ];
 
-const privateRoutes = [];
+const privateRoutes = [
+  {
+    path: config.routes.profile,
+    component: Profile,
+    layout: HeaderOnly,
+  },
+];
 
 export { publicRoutes, privateRoutes };
