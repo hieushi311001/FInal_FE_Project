@@ -51,11 +51,11 @@ function App() {
                 path={route.path}
                 element={
                   isAuthenticated ? (
+                    <Navigate to="/login" />
+                  ) : (
                     <Layout>
                       <Page />
                     </Layout>
-                  ) : (
-                    <Navigate to="/login" />
                   )
                 }
               />
