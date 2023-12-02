@@ -1,0 +1,20 @@
+/* Add your custom styles for the slider */
+.custom-slider {
+  margin-top: 10px; /* Adjust margin as needed */
+}
+
+/* Style for the slider handles */
+.custom-slider .rc-slider-handle {
+  background-color: #e7ab3c; /* Adjust the handle color */
+  border: 2px solid #ffffff; /* Adjust the handle border color and size */
+}
+
+/* Style for the slider track */
+.custom-slider .rc-slider-track {
+  background-color: #e7ab3c; /* Adjust the track color */
+}
+
+/* Style for the slider rail (unfilled portion of the track) */
+.custom-slider .rc-slider-rail {
+  background-color: #d3d3d3; /* Adjust the rail color */
+}

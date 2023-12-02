@@ -12,6 +12,7 @@ import Login from "~/pages/Login";
 import Register from "~/pages/Register";
 import Productdetail from "~/pages/Productdetail";
 import Shop from "~/pages/Shop";
+import Cart from "~/pages/Cart";
 
 // Public routes
 const publicRoutes = [
@@ -30,6 +31,10 @@ const privateRoutes = [
     path: config.routes.profile,
     component: Profile,
     layout: HeaderOnly,
+  },
+  {
+    path: config.routes.cart,
+    component: Cart,
   },
 ];
 

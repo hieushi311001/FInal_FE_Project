@@ -5,19 +5,20 @@ import Cookies from "js-cookie";
 import UserImage from "./UserImage";
 import images from "~/assets/images";
 import { makeRequest } from "~/services";
+import SmallCart from "./SmallCart";
 function Header() {
   const [cookieData, setCookieData] = useState({});
   const [userDataExists, setUserDataExists] = useState(false);
   useEffect(() => {
+    const userToken = Cookies.get("jwtToken");
+    const axiosInstance = {
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+        "Content-Type": "application/json",
+      },
+    };
     const checkCookie = () => {
       if (!Cookies.get("userData")) {
-        const userToken = Cookies.get("jwtToken");
-        const axiosInstance = {
-          headers: {
-            Authorization: `Bearer ${userToken}`,
-            "Content-Type": "application/json",
-          },
-        };
         const fetchData = async () => {
           try {
             const path = "authen/systemAuthentication/logout";
@@ -137,54 +138,7 @@ function Header() {
                       <i className="icon_bag_alt"></i>
                       <span>3</span>
                     </a>
-                    <div className="cart-hover">
-                      <div className="select-items">
-                        <table>
-                          <tbody>
-                            <tr>
-                              <td className="si-pic">
-                                <img src={images.selectproduct1} alt="" />
-                              </td>
-                              <td className="si-text">
-                                <div className="product-selected">
-                                  <p>$60.00 x 1</p>
-                                  <h6>Kabino Bedside Table</h6>
-                                </div>
-                              </td>
-                              <td className="si-close">
-                                <i className="ti-close"></i>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td className="si-pic">
-                                <img src={images.selectproduct2} alt="" />
-                              </td>
-                              <td className="si-text">
-                                <div className="product-selected">
-                                  <p>$60.00 x 1</p>
-                                  <h6>Kabino Bedside Table</h6>
-                                </div>
-                              </td>
-                              <td className="si-close">
-                                <i className=" ti-close"></i>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div className="select-total">
-                        <span>total:</span>
-                        <h5>$120.00</h5>
-                      </div>
-                      <div className="select-button">
-                        <a href={{}} className="primary-btn view-card">
-                          VIEW CARD
-                        </a>
-                        <a href={{}} className="primary-btn checkout-btn">
-                          CHECK OUT
-                        </a>
-                      </div>
-                    </div>
+                    <SmallCart />
                   </li>
                   <li className="cart-price">$150.00</li>
                 </ul>

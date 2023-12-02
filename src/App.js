@@ -7,9 +7,9 @@ import {
 } from "react-router-dom";
 import { publicRoutes, privateRoutes } from "~/routes";
 import DefaultLayout from "~/layouts";
-import { userAuthen } from "~/services";
+import { getDecodedCookie } from "~/services";
 function App() {
-  const { isAuthenticated } = userAuthen();
+  const decodedValue = getDecodedCookie("isLogin");
   return (
     <Router>
       <div className="App">
@@ -17,12 +17,12 @@ function App() {
           {publicRoutes.map((route, index) => {
             const Page = route.component;
             let Layout = DefaultLayout;
-
             if (route.layout) {
               Layout = route.layout;
             } else if (route.layout === null) {
               Layout = Fragment;
             }
+            console.log("Trên: ", decodedValue);
             return (
               <Route
                 key={index}
@@ -35,27 +35,27 @@ function App() {
               />
             );
           })}
+
           {privateRoutes.map((route, index) => {
             const Page = route.component;
             let Layout = DefaultLayout;
-
             if (route.layout) {
               Layout = route.layout;
             } else if (route.layout === null) {
               Layout = Fragment;
             }
-            console.log("2 test", isAuthenticated);
+            console.log("Dưới: ", decodedValue);
             return (
               <Route
                 key={index}
                 path={route.path}
                 element={
-                  isAuthenticated ? (
-                    <Navigate to="/login" />
-                  ) : (
+                  decodedValue === "LoginTrue" ? (
                     <Layout>
                       <Page />
                     </Layout>
+                  ) : (
+                    <Navigate to="/login" />
                   )
                 }
               />

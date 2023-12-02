@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { makeRequest } from "~/services";
-import { useNavigate } from "react-router-dom";
+import { encodeAndSetCookie } from "~/services";
 import "./UserImage.css";
 function UserImage({ accountId, name, avatar }) {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -13,7 +13,6 @@ function UserImage({ accountId, name, avatar }) {
 
   const handleLogout = async (e) => {
     const userToken = Cookies.get("jwtToken");
-    console.log(userToken);
     const axiosInstance = {
       headers: {
         Authorization: `Bearer ${userToken}`,
@@ -31,6 +30,7 @@ function UserImage({ accountId, name, avatar }) {
       }
     };
     fetchData();
+    encodeAndSetCookie("isLogin", "LoginFalse");
     Cookies.remove("userData", { path: "/" });
     Cookies.remove("jwtToken", { path: "/" });
     window.location.href = "/";
@@ -44,7 +44,7 @@ function UserImage({ accountId, name, avatar }) {
           onClick={toggleDropdown}
         >
           <img
-            src={`https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg`}
+            src={`https://drive.google.com/uc?export=view&id=${avatar}`}
             alt="Avatar"
             className="rounded-circle"
           />

@@ -2021,42 +2021,66 @@ ol {
 }
 
 .filter-widget .fw-color-choose .cs-item {
-  width: 50%;
+  width: 100%;
   float: left;
   margin-bottom: 4px;
 }
 
 .filter-widget .fw-color-choose .cs-item input {
-  position: absolute;
-  visibility: hidden;
+  top: 50%;
 }
 
 .filter-widget .fw-color-choose .cs-item label {
   cursor: pointer;
   position: relative;
-  padding-left: 33px;
+  padding-left: 61px;
   font-size: 16px;
   color: #636363;
 }
 
-.filter-widget .fw-color-choose .cs-item label.cs-violet:before {
+.filter-widget .fw-color-choose .cs-item label.cs-Violet:before {
   background: #8230e3;
+  border: 1px solid #080808;
+  margin-left: 28px;
 }
 
-.filter-widget .fw-color-choose .cs-item label.cs-blue:before {
+.filter-widget .fw-color-choose .cs-item label.cs-Blue:before {
   background: #2773be;
+  border: 1px solid #080808;
+  margin-left: 28px;
 }
 
-.filter-widget .fw-color-choose .cs-item label.cs-yellow:before {
+.filter-widget .fw-color-choose .cs-item label.cs-Yellow:before {
   background: #eeee21;
+  border: 1px solid #080808;
+  margin-left: 28px;
 }
 
-.filter-widget .fw-color-choose .cs-item label.cs-red:before {
+.filter-widget .fw-color-choose .cs-item label.cs-Red:before {
   background: #dc3232;
+  border: 1px solid #080808;
+  margin-left: 28px;
 }
 
-.filter-widget .fw-color-choose .cs-item label.cs-green:before {
+.filter-widget .fw-color-choose .cs-item label.cs-Pink:before {
+  background: #ffc0cb;
+  border: 1px solid #080808;
+  margin-left: 28px;
+}
+.filter-widget .fw-color-choose .cs-item label.cs-White:before {
+  background: #ffffff;
+  border: 1px solid #080808;
+  margin-left: 28px;
+}
+.filter-widget .fw-color-choose .cs-item label.cs-Green:before {
   background: #81d742;
+  border: 1px solid #080808;
+  margin-left: 28px;
+}
+.filter-widget .fw-color-choose .cs-item label.cs-Black:before {
+  background: #000000;
+  border: 1px solid #080808;
+  margin-left: 28px;
 }
 
 .filter-widget .fw-color-choose .cs-item label:before {
