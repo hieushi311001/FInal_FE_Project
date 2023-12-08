@@ -1,0 +1,100 @@
+.popup-content {
+  background-color: transparent;
+  border: none;
+}
+
+.custom-modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.content {
+  display: flex;
+  height: 100%;
+}
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+.left-panel {
+  flex: 6; /* Takes up 3/10 of the width */
+  padding: 20px;
+  background-color: #f0f0f0;
+  text-align: center;
+}
+
+.right-panel {
+  flex: 4; /* Takes up 7/10 of the width */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.right-panel img {
+  width: 10%;
+  margin-right: 10px; /* Adjust the margin as needed */
+}
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+}
+.custom-button {
+  margin-left: 10px; /* Adjust the margin as needed */
+}
+.product-info {
+  display: flex;
+  align-items: center;
+}
+
+.product-info img {
+  margin-right: 10px;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align items to the left */
+  justify-content: center; /* Center items vertically */
+  text-align: left;
+}
+.custom-modal .content .left-panel .pro-qty .pro-qty.dec {
+  font-size: 30px;
+}
+.custom-modal .content .left-panel .pro-qty .qtybtn {
+  font-size: 24px;
+  color: #b2b2b2;
+  float: left;
+  line-height: 38px;
+  cursor: pointer;
+  width: 18px;
+}
+.custom-modal .content .left-panel .pro-qty {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  width: 60%;
+  height: 46px;
+  border: 2px solid #ebebeb;
+  padding: 15px 15px;
+}
+.custom-modal .content .left-panel .pro-qty input {
+  text-align: center;
+  color: black;
+  width: 100%;
+  font-size: 14px;
+  font-weight: 700;
+  border: none;
+  color: #ebebeb;
+  line-height: 40px;
+}
+.cart-product-item.active {
+  /* Styles for active items, e.g., yellow border */
+  border: 2px solid rgb(231, 171, 60);
+}

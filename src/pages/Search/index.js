@@ -1,5 +1,6 @@
+import SearchPage from "~/components/SearchPage";
 function Search() {
-    return <h2>Search page</h2>;
+  return <SearchPage />;
 }
 
 export default Search;

@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import { makeRequest } from "~/services";
 import React, { useEffect, useState } from "react";
-
+import { Link } from "react-router-dom";
 function SmallCart() {
   const [data, setData] = useState({});
   const [price, setPrice] = useState(0);
@@ -32,7 +32,7 @@ function SmallCart() {
           totalPrice: item.totalPrice,
         }));
         const totalPriceSum = filteredData.reduce(
-          (acc, item) => acc + item.totalPrice,
+          (acc, item) => acc + item.totalPrice * item.quantity,
           0
         );
         setData(filteredData);
@@ -50,7 +50,7 @@ function SmallCart() {
           <tbody>
             {Object.keys(data).length !== 0 &&
               data.map((data, index) => (
-                <tr>
+                <tr key={index}>
                   <td className="si-pic">
                     <img
                       src={data.image1}
@@ -82,9 +82,9 @@ function SmallCart() {
         <h5>${price}</h5>
       </div>
       <div className="select-button">
-        <a href={{}} className="primary-btn view-card">
+        <Link to={`/cart`} className="primary-btn view-card">
           VIEW CARD
-        </a>
+        </Link>
         <a href={{}} className="primary-btn checkout-btn">
           CHECK OUT
         </a>

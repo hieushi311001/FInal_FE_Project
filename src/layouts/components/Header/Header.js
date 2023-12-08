@@ -6,9 +6,11 @@ import UserImage from "./UserImage";
 import images from "~/assets/images";
 import { makeRequest } from "~/services";
 import SmallCart from "./SmallCart";
+import { useNavigate } from "react-router-dom";
 function Header() {
   const [cookieData, setCookieData] = useState({});
   const [userDataExists, setUserDataExists] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
     const userToken = Cookies.get("jwtToken");
     const axiosInstance = {
@@ -50,6 +52,23 @@ function Header() {
   //   $(".loader").fadeOut();
   //   $("#preloder").delay(200).fadeOut("slow");
   // });
+  const [searchValue, setSearchValue] = useState("");
+
+  const handleInputChange = (event) => {
+    setSearchValue(event.target.value);
+  };
+
+  const handleSearchClick = () => {
+    const flag = searchValue;
+    setSearchValue("");
+    navigate(`/search?query=${flag}`);
+  };
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSearchClick();
+    }
+  };
   return (
     <div>
       {/* <div id="preloder">
@@ -118,8 +137,14 @@ function Header() {
                     All Categories
                   </button>
                   <div className="input-group">
-                    <input type="text" placeholder="What do you need?" />
-                    <button type="button">
+                    <input
+                      type="text"
+                      placeholder="What do you need?"
+                      value={searchValue}
+                      onChange={handleInputChange}
+                      onKeyDown={handleKeyDown}
+                    />
+                    <button type="button" onClick={handleSearchClick}>
                       <i className="ti-search"></i>
                     </button>
                   </div>
@@ -134,10 +159,10 @@ function Header() {
                     </a>
                   </li>
                   <li className="cart-icon">
-                    <a href={{}}>
+                    <Link to={`/cart`}>
                       <i className="icon_bag_alt"></i>
                       <span>3</span>
-                    </a>
+                    </Link>
                     <SmallCart />
                   </li>
                   <li className="cart-price">$150.00</li>
@@ -183,10 +208,10 @@ function Header() {
             <nav className="nav-menu mobile-menu">
               <ul>
                 <li className="active">
-                  <a href="./index.html">Home</a>
+                  <Link to={`/`}>Home</Link>
                 </li>
                 <li>
-                  <a href="./shop.html">Shop</a>
+                  <Link to={`/shop`}>Shop</Link>
                 </li>
                 <li>
                   <a href={{}}>Collection</a>

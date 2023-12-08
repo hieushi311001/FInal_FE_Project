@@ -10,6 +10,9 @@ const routes = {
   register: "/register",
   productdetail: "/product/:product_id",
   cart: "/cart",
+  test: "/test",
+  check_out: "/check_out",
+  payment: "/payment",
 };
 
 export default routes;

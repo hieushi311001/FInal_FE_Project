@@ -484,8 +484,6 @@ ol {
   position: absolute;
   right: 11px;
   top: 10px;
-  content: "3";
-  font-family: "ElegantIcons";
   font-size: 16px;
   color: #b2b2b2;
 }
@@ -500,8 +498,9 @@ ol {
   height: 100%;
   border: none;
   font-size: 16px;
-  color: #d1d1d1;
+  color: #252525;
   padding-left: 20px;
+  font-weight: 700;
 }
 
 .inner-header .advanced-search .input-group button {
@@ -1891,7 +1890,12 @@ ol {
   font-size: 16px;
   line-height: 39px;
 }
-
+.filter-widget .filter-catagories li span {
+  display: inline-block;
+  color: #636363;
+  font-size: 16px;
+  line-height: 39px;
+}
 .filter-widget .fw-brand-check .bc-item {
   margin-bottom: 3px;
 }
@@ -1957,6 +1961,7 @@ ol {
 }
 
 .filter-widget .filter-range-wrap .range-slider .price-input input {
+  font-weight: 700;
   font-size: 16px;
   color: #252525;
   max-width: 20%;
@@ -2953,9 +2958,10 @@ ol {
   font-size: 16px;
   font-weight: 700;
 }
-
-.cart-table table tr td.qua-col {
-  width: 16%;
+.cart-table table tr td.total-discount {
+  color: #252525;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 .cart-table table tr td.qua-col .quantity {
@@ -2968,11 +2974,14 @@ ol {
 }
 
 .cart-table table tr td.qua-col .pro-qty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 123px;
   height: 46px;
   border: 2px solid #ebebeb;
   padding: 0 15px;
-  float: left;
+  float: right;
 }
 
 .cart-table table tr td.qua-col .pro-qty .qtybtn {
@@ -3000,6 +3009,9 @@ ol {
 }
 
 .cart-table table tr td.total-price {
+  width: 12%;
+}
+.cart-table table tr td.total-discount {
   width: 12%;
 }
 
@@ -3109,6 +3121,7 @@ ol {
 }
 
 .proceed-checkout .proceed-btn {
+  width: 100%;
   font-size: 14px;
   font-weight: 700;
   color: #ffffff;
