@@ -38,6 +38,9 @@ const images = {
   logo5: require("~/assets/images/logo-carousel/logo-5.png"),
   payment: require("~/assets/images/payment-method.png"),
   ftlogo: require("~/assets/images/footer-logo.png"),
+  paypal: require("~/assets/images/paypal.jpg"),
+  cod: require("~/assets/images/cod.png"),
+  momo: require("~/assets/images/momo.png"),
 };
 
 export default images;

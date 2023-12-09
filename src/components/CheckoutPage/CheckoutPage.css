@@ -22,3 +22,16 @@
   font-weight: 700;
   margin-left: auto; /* This will push the price to the right */
 }
+.payment-check {
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* Chính giữa theo chiều dọc */
+}
+
+.pc-item {
+  margin-right: 10px; /* Khoảng cách giữa các mục, có thể điều chỉnh theo ý muốn */
+}
+
+input[type="radio"] {
+  margin-left: 70px;
+}

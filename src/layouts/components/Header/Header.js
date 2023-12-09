@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 function Header() {
   const [cookieData, setCookieData] = useState({});
   const [userDataExists, setUserDataExists] = useState(false);
+
   const navigate = useNavigate();
   useEffect(() => {
     const userToken = Cookies.get("jwtToken");
@@ -19,6 +20,7 @@ function Header() {
         "Content-Type": "application/json",
       },
     };
+
     const checkCookie = () => {
       if (!Cookies.get("userData")) {
         const fetchData = async () => {
@@ -34,6 +36,7 @@ function Header() {
 
         fetchData();
         setUserDataExists(false);
+        navigate(`/`);
       }
     };
     if (Cookies.get("userData")) {
@@ -41,13 +44,13 @@ function Header() {
       const storedUserData = JSON.parse(Cookies.get("userData"));
       setCookieData(storedUserData);
 
-      const intervalId = setInterval(checkCookie, 30 * 1000);
+      const intervalId = setInterval(checkCookie, 1000);
       // Cleanup khi component bị unmounted
       return () => clearInterval(intervalId);
     } else {
       setUserDataExists(false);
     }
-  }, [userDataExists]);
+  }, [userDataExists, navigate]);
   // $(window).on("load", function () {
   //   $(".loader").fadeOut();
   //   $("#preloder").delay(200).fadeOut("slow");
@@ -61,6 +64,7 @@ function Header() {
   const handleSearchClick = () => {
     const flag = searchValue;
     setSearchValue("");
+    localStorage.setItem("search", "flag");
     navigate(`/search?query=${flag}`);
   };
   const handleKeyDown = (e) => {

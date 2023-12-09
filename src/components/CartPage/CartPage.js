@@ -6,6 +6,8 @@ import "reactjs-popup/dist/index.css";
 import "./CartPage.css";
 import PopupPage from "./PopupPage";
 import { useNavigate } from "react-router";
+import { removeFromCart } from "~/services";
+
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -24,7 +26,7 @@ function CartPage() {
     };
     const APIdata = {
       page: 1,
-      limit: 5,
+      limit: 10,
     };
     const fetchData = async () => {
       try {
@@ -140,8 +142,12 @@ function CartPage() {
       quantity: item.quantity,
     }));
     const dataToSend = objectListActive;
+
     navigate("/check_out", { state: { data: dataToSend } });
-    // Chuyển hướng đến trang /check_out và gửi kèm dữ liệu
+  };
+  const handleRemove = (Id) => {
+    removeFromCart(Id);
+    navigate(0);
   };
   return (
     <section className="shopping-cart spad">
@@ -204,7 +210,7 @@ function CartPage() {
                               color: "#ffffff",
                               fontWeight: 700,
                               background: "#e7ab3c",
-                              padding: "7px 20px 5px",
+                              padding: "5px 20px 5px",
                               borderRadius: "2px",
                               display: "inline-block",
                               textTransform: "uppercase",
@@ -232,7 +238,10 @@ function CartPage() {
                           ${(data.totalPrice * data.quantity).toFixed(2)}
                         </td>
                         <td className="close-td first-row">
-                          <i className="ti-close" />
+                          <i
+                            onClick={() => handleRemove(data.id)}
+                            className="ti-close"
+                          />
                         </td>
                       </tr>
                     ))}
@@ -249,15 +258,7 @@ function CartPage() {
                     Update cart
                   </button>
                 </div>
-                <div className="discount-coupon">
-                  <h6>Discount Codes</h6>
-                  <form action="#" className="coupon-form">
-                    <input type="text" placeholder="Enter your codes" />
-                    <button type="submit" className="site-btn coupon-btn">
-                      Apply
-                    </button>
-                  </form>
-                </div>
+                <div className="discount-coupon"></div>
               </div>
               <div className="col-lg-4 offset-lg-4">
                 <div className="proceed-checkout">

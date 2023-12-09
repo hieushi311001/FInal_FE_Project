@@ -1,0 +1,65 @@
+import Cookies from "js-cookie";
+import { makeRequest } from "~/services";
+export const addToCart = (id, color, size, quantity) => {
+  if (Cookies.get("userData")) {
+    const userToken = Cookies.get("jwtToken");
+    const axiosInstance = {
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+        "Content-Type": "application/json",
+      },
+    };
+    const APIdata = {
+      productId: id,
+      color: color,
+      size: size,
+      quantity: quantity,
+    };
+    const fetchData = async () => {
+      try {
+        const path = "authen/cart/add";
+        const method = "POST";
+        const result = await makeRequest(method, path, APIdata, axiosInstance);
+        localStorage.setItem("update", id);
+        console.log(result);
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      }
+    };
+
+    fetchData();
+    return true;
+  } else {
+    return false;
+  }
+};
+export const removeFromCart = (id) => {
+  if (Cookies.get("userData")) {
+    const userToken = Cookies.get("jwtToken");
+    const axiosInstance = {
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+        "Content-Type": "application/json",
+      },
+    };
+    const APIdata = {
+      integerArray: [id],
+    };
+    const fetchData = async () => {
+      try {
+        const path = "authen/cart/remove";
+        const method = "POST";
+        const result = await makeRequest(method, path, APIdata, axiosInstance);
+        localStorage.setItem("update", "true");
+        console.log(result);
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      }
+    };
+
+    fetchData();
+    return true;
+  } else {
+    return false;
+  }
+};

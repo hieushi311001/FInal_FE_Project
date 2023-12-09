@@ -5,6 +5,10 @@ import { Link } from "react-router-dom";
 function SmallCart() {
   const [data, setData] = useState({});
   const [price, setPrice] = useState(0);
+  const [prevLocalStorageState, setPrevLocalStorageState] = useState(
+    localStorage.getItem("update")
+  );
+  const [seed, setSeed] = useState(1);
   useEffect(() => {
     const userToken = Cookies.get("jwtToken");
     const axiosInstance = {
@@ -15,7 +19,7 @@ function SmallCart() {
     };
     const APIdata = {
       page: 1,
-      limit: 5,
+      limit: 10,
     };
     const fetchData = async () => {
       try {
@@ -42,7 +46,20 @@ function SmallCart() {
       }
     };
     fetchData();
-  }, []);
+    const checkLocalStorage = () => {
+      const currentLocalStorageState = localStorage.getItem("update");
+
+      if (currentLocalStorageState !== prevLocalStorageState) {
+        // If there's a change, reload the page
+        setPrevLocalStorageState(currentLocalStorageState);
+      }
+    };
+    const intervalId = setInterval(checkLocalStorage, 1000);
+
+    // Cleanup the interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [prevLocalStorageState]);
+  localStorage.setItem("update", 0);
   return (
     <div className="cart-hover">
       <div className="select-items">

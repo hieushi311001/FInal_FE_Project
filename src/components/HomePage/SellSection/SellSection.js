@@ -5,12 +5,17 @@ import "owl.carousel/dist/assets/owl.theme.default.css";
 import ProductSlider from "~/components/ProductSlider";
 import React, { useState, useEffect } from "react";
 import { makeRequest } from "~/services";
+import { addToCart } from "~/services";
+import { useNavigate } from "react-router-dom";
+import { encodeAndSetCookie, getDecodedCookie } from "~/services";
+import Cookies from "js-cookie";
 function SellSection() {
+  const navigate = useNavigate();
   const options = {
     loop: true,
     margin: 25,
     nav: true,
-    items: 5,
+    items: 3,
     dots: true,
     navText: [
       '<i class="ti-angle-left"></i>',
@@ -50,6 +55,12 @@ function SellSection() {
 
     fetchData();
   }, []);
+  const handleAddToCartForProduct = (productId, color, size, quantity) => {
+    if (addToCart(productId, color, size, quantity)) {
+    } else {
+      navigate("/login");
+    }
+  };
   return (
     <section
       className="women-banner spad"
@@ -83,6 +94,17 @@ function SellSection() {
                     name={product.name}
                     price={product.sellingPrice}
                     discount={product.discount}
+                    color={product.color}
+                    size={product.size}
+                    quantity={1}
+                    onAddToCart={() =>
+                      handleAddToCartForProduct(
+                        product.productId,
+                        product.color,
+                        product.size,
+                        1
+                      )
+                    }
                   />
                 ))}
               </OwlCarousel>

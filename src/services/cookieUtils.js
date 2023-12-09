@@ -3,12 +3,12 @@
 import Cookies from "js-cookie";
 
 // Hàm để mã hóa giá trị và lưu vào cookie
-export const encodeAndSetCookie = (cookieName, value) => {
+export const encodeAndSetCookie = (cookieName, value, expires) => {
   // Mã hóa giá trị thành Base64
   const encodedValue = btoa(value);
   const encodedName = btoa(cookieName);
   // Lưu vào cookie với thời gian sống
-  Cookies.set(encodedName, encodedValue);
+  Cookies.set(encodedName, encodedValue, expires);
 };
 
 // Hàm để đọc giá trị từ cookie và giải mã

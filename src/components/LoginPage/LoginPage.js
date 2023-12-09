@@ -22,17 +22,12 @@ function LoginPage() {
         Cookies.set("userData", JSON.stringify(result.content), {
           expires: expirationDate,
         });
-        // To read the token
-        const userDataCookie = Cookies.get("userData");
-        const storedUserData = JSON.parse(userDataCookie);
-        console.log("User nè: ", storedUserData);
-        encodeAndSetCookie("isLogin", "LoginTrue");
+        encodeAndSetCookie("isLogin", "LoginTrue", expirationDate);
         window.location.href = "/";
       }
     } catch (error) {
       console.log("Login error:", error.response.data);
     }
-    // console.log(data);
   };
 
   return (

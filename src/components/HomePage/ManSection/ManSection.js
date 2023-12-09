@@ -5,12 +5,17 @@ import "owl.carousel/dist/assets/owl.theme.default.css";
 import ProductSlider from "~/components/ProductSlider";
 import React, { useState, useEffect } from "react";
 import { makeRequest } from "~/services";
+import { addToCart } from "~/services";
+import { useNavigate } from "react-router-dom";
+import { encodeAndSetCookie, getDecodedCookie } from "~/services";
+import Cookies from "js-cookie";
 function ManSection() {
+  const navigate = useNavigate();
   const options = {
     loop: true,
     margin: 25,
     nav: true,
-    items: 4,
+    items: 3,
     dots: true,
     navText: [
       '<i class="ti-angle-left"></i>',
@@ -50,6 +55,12 @@ function ManSection() {
 
     fetchData();
   }, []);
+  const handleAddToCartForProduct = (productId, color, size, quantity) => {
+    if (addToCart(productId, color, size, quantity)) {
+    } else {
+      navigate("/login");
+    }
+  };
   return (
     <section className="man-banner spad">
       <div className="container-fluid">
@@ -63,132 +74,6 @@ function ManSection() {
                 <li>Accessories</li>
               </ul>
             </div>
-            {/* <OwlCarousel className="product-slider owl-carousel" {...options}>
-              <div className="product-item">
-                <div className="pi-pic">
-                  <img src={images.man1} alt="" />
-                  <div className="sale">Sale</div>
-                  <div className="icon">
-                    <i className="icon_heart_alt" />
-                  </div>
-                  <ul>
-                    <li className="w-icon active">
-                      <a href={{}}>
-                        <i className="icon_bag_alt" />
-                      </a>
-                    </li>
-                    <li className="quick-view">
-                      <a href={{}}>+ Quick View</a>
-                    </li>
-                    <li className="w-icon">
-                      <a href={{}}>
-                        <i className="fa fa-random" />
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div className="pi-text">
-                  <div className="catagory-name">Coat</div>
-                  <a href={{}}>
-                    <h5>Pure Pineapple</h5>
-                  </a>
-                  <div className="product-price">
-                    $14.00
-                    <span>$35.00</span>
-                  </div>
-                </div>
-              </div>
-              <div className="product-item">
-                <div className="pi-pic">
-                  <img src={images.man2} alt="" />
-                  <div className="icon">
-                    <i className="icon_heart_alt" />
-                  </div>
-                  <ul>
-                    <li className="w-icon active">
-                      <a href={{}}>
-                        <i className="icon_bag_alt" />
-                      </a>
-                    </li>
-                    <li className="quick-view">
-                      <a href={{}}>+ Quick View</a>
-                    </li>
-                    <li className="w-icon">
-                      <a href={{}}>
-                        <i className="fa fa-random" />
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div className="pi-text">
-                  <div className="catagory-name">Shoes</div>
-                  <a href={{}}>
-                    <h5>Guangzhou sweater</h5>
-                  </a>
-                  <div className="product-price">$13.00</div>
-                </div>
-              </div>
-              <div className="product-item">
-                <div className="pi-pic">
-                  <img src={images.man3} alt="" />
-                  <div className="icon">
-                    <i className="icon_heart_alt" />
-                  </div>
-                  <ul>
-                    <li className="w-icon active">
-                      <a href={{}}>
-                        <i className="icon_bag_alt" />
-                      </a>
-                    </li>
-                    <li className="quick-view">
-                      <a href={{}}>+ Quick View</a>
-                    </li>
-                    <li className="w-icon">
-                      <a href={{}}>
-                        <i className="fa fa-random" />
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div className="pi-text">
-                  <div className="catagory-name">Towel</div>
-                  <a href={{}}>
-                    <h5>Pure Pineapple</h5>
-                  </a>
-                  <div className="product-price">$34.00</div>
-                </div>
-              </div>
-              <div className="product-item">
-                <div className="pi-pic">
-                  <img src={images.man4} alt="" />
-                  <div className="icon">
-                    <i className="icon_heart_alt" />
-                  </div>
-                  <ul>
-                    <li className="w-icon active">
-                      <a href={{}}>
-                        <i className="icon_bag_alt" />
-                      </a>
-                    </li>
-                    <li className="quick-view">
-                      <a href={{}}>+ Quick View</a>
-                    </li>
-                    <li className="w-icon">
-                      <a href={{}}>
-                        <i className="fa fa-random" />
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div className="pi-text">
-                  <div className="catagory-name">Towel</div>
-                  <a href={{}}>
-                    <h5>Converse Shoes</h5>
-                  </a>
-                  <div className="product-price">$34.00</div>
-                </div>
-              </div>
-            </OwlCarousel> */}
             {Object.keys(data).length !== 0 && (
               <OwlCarousel className="product-slider owl-carousel" {...options}>
                 {data.content.map((product) => (
@@ -200,6 +85,17 @@ function ManSection() {
                     name={product.name}
                     price={product.sellingPrice}
                     discount={product.discount}
+                    color={product.color}
+                    size={product.size}
+                    quantity={1}
+                    onAddToCart={() =>
+                      handleAddToCartForProduct(
+                        product.productId,
+                        product.color,
+                        product.size,
+                        1
+                      )
+                    }
                   />
                 ))}
               </OwlCarousel>

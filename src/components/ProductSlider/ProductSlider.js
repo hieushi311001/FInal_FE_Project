@@ -8,11 +8,19 @@ const ProductSlider = ({
   name,
   price,
   discount,
+  color,
+  size,
+  quantity,
+  onAddToCart,
 }) => {
   const moneyDiscount = discount / 100;
   const newPrice = price - moneyDiscount * price;
+  const handleAddToCart = (productId, color, size, quantity) => {
+    onAddToCart(productId, color, size, quantity);
+  };
+
   return (
-    <div className="product-item">
+    <div className="product-item" key={key}>
       <div className="pi-pic-1">
         <img src={image} alt="" />
         {discount !== 0 && <div className="sale">{discount}%</div>}
@@ -21,18 +29,12 @@ const ProductSlider = ({
         </div>
         <ul>
           <li className="w-icon active">
-            <a href={{}}>
+            <button onClick={() => handleAddToCart(productid, color, size, 1)}>
               <i className="icon_bag_alt" />
-            </a>
+            </button>
           </li>
           <li className="quick-view">
             <Link to={`/product/${productid}`}>+ Quick View</Link>
-            {/* <a href={{}}>+ Quick View</a> */}
-          </li>
-          <li className="w-icon">
-            <a href={{}}>
-              <i className="fa fa-random" />
-            </a>
           </li>
         </ul>
       </div>
@@ -50,10 +52,6 @@ const ProductSlider = ({
             <span>{price}$</span>
           </div>
         )}
-        {/* <div className="product-price">
-          {discount}
-          <span>{price}$</span>
-        </div> */}
       </div>
     </div>
   );

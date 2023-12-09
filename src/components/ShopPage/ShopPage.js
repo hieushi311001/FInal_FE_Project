@@ -43,6 +43,7 @@ function ShopPage() {
 
   const [selectedOption1, setSelectedOption1] = useState(options1[0]);
   const [selectedOption2, setSelectedOption2] = useState(options2[0]);
+  const [searchValue, setSearchValue] = useState("");
   useEffect(() => {
     const searchQuery = new URLSearchParams(location.search).get("query");
     if (searchQuery !== null) {
@@ -177,7 +178,7 @@ function ShopPage() {
   const handleFilterClick = async () => {
     const APIdata = {
       filter: {
-        name: "",
+        name: searchValue,
         brand: selectedBrand,
         minPrice: range[0],
         maxPrice: range[1],
@@ -199,11 +200,15 @@ function ShopPage() {
           seenIds.add(item.id);
           return !isDuplicate;
         });
+
         const updatedResult3 = {
           ...result3,
           content: filteredData, // Use a colon here instead of an equal sign
         };
+        const count = updatedResult3.content.length;
+        setSearchValue("");
         setData(updatedResult3);
+        setCountProduct(count);
         setIsFilter(true);
       } catch (error) {
         console.error("Error fetching filtered data:", error.message);
@@ -233,14 +238,12 @@ function ShopPage() {
     .filter((category) => selectedCategories.includes(category.id))
     .map((category) => category.name);
   const handleBrandChange = (selectedBrand) => {
-    // If the selectedBrand is already the current selectedBrand, deselect it
-    // Otherwise, select the clicked brand
     setSelectedBrand((prevSelectedBrand) =>
       prevSelectedBrand === selectedBrand ? null : selectedBrand
     );
   };
   const handleReturnDefault = () => {
-    navigate(`/shop`);
+    navigate(0);
   };
   return (
     <section className="product-shop spad">
@@ -248,6 +251,15 @@ function ShopPage() {
         <div className="row">
           <div className="col-lg-3 col-md-6 col-sm-8 order-2 order-lg-1 produts-sidebar-filter">
             <div className="filter-widget">
+              <h4 className="fw-title">Search Product</h4>
+              <div style={{ marginBottom: "15px" }}>
+                <input
+                  type="text"
+                  placeholder="Search product..."
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+                />
+              </div>
               <h4 className="fw-title">Categories</h4>
               <ul className="filter-catagories">
                 {Object.keys(category).length !== 0 &&
@@ -427,7 +439,6 @@ function ShopPage() {
             {data.content && data.content.length > 0 && (
               <ListProduct data={data.content} />
             )}
-            {console.log(Math.ceil(countProduct / selectedOption2.value))}
 
             <PaginationControl
               page={page}

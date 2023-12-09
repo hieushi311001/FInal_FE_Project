@@ -1099,7 +1099,10 @@ ol {
 /*---------------------
   Women Banner Section
 -----------------------*/
-
+.owl-carousel .owl-nav.disabled,
+.owl-carousel .owl-dots.disabled {
+  display: block;
+}
 .women-banner {
   padding-right: 65px;
   padding-left: 65px;
@@ -1185,7 +1188,7 @@ ol {
   left: -62px;
   top: 25%;
   color: #171717;
-  opacity: 0.3;
+  opacity: 1;
 }
 
 .product-slider .owl-nav button[type="button"].owl-next {
@@ -1293,7 +1296,18 @@ ol {
   background: #e7ab3c;
   color: #ffffff;
 }
-
+.product-item .pi-pic ul li.w-icon.active button {
+  background: #e7ab3c;
+  color: #ffffff;
+  border: none;
+}
+.product-item .pi-pic button {
+  font-size: 16px;
+  font-weight: 700;
+  color: #252525;
+  display: block;
+  padding: 16px 18px 12px 19px;
+}
 .product-item .pi-pic ul li a {
   font-size: 16px;
   font-weight: 700;
@@ -1376,6 +1390,19 @@ ol {
   color: #252525;
   display: block;
   padding: 16px 18px 12px 19px;
+}
+.product-item .pi-pic-1 ul li.w-icon.active button {
+  background: #e7ab3c;
+  color: #ffffff;
+}
+
+.product-item .pi-pic-1 ul li button {
+  font-size: 16px;
+  font-weight: 700;
+  color: #252525;
+  display: block;
+  padding: 16px 18px 12px 19px;
+  border: none;
 }
 
 .product-item .pi-text {
@@ -2531,7 +2558,8 @@ ol {
 }
 
 .product-details .quantity .primary-btn.pd-cart {
-  padding: 14px 70px 10px;
+  padding: 10px 70px 10px;
+  border: none;
 }
 
 .product-details .pd-tags {
@@ -3177,10 +3205,7 @@ ol {
 }
 
 .checkout-form input {
-  width: 100%;
-  height: 46px;
   border: 2px solid #ebebeb;
-  margin-bottom: 25px;
   padding-left: 15px;
 }
 

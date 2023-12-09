@@ -6,84 +6,56 @@ import "owl.carousel/dist/assets/owl.theme.default.css";
 import ProductImage from "./ProductImage";
 import RelativeProduct from "./RelativeProduct";
 import CommentList from "./CommentList";
+import { addToCart } from "~/services";
+import { useNavigate } from "react-router-dom";
 function ProductDetailPage() {
+  const navigate = useNavigate();
   const [value, setValue] = useState(1);
   const [data, setData] = useState([]);
   const [imageUrl, setImageUrl] = useState(0);
   const params = useParams();
-
-  // console.log(params.product_id);
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  // }, []);
+  const [color, setColor] = useState("none");
+  const [selectedSize, setSelectedSize] = useState("none");
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     const fetchData = async () => {
       try {
         const path = `unauthen/shop/product_id=${params.product_id}`;
         const method = "GET";
         const result = await makeRequest(method, path);
         setData(result);
+        setColor(result.content[0].color);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-    // }, [params.product_id]);
-  }, [params.product_id]);
+  }, [params.product_id, selectedSize]);
 
-  // console.log(data.content);
   if (Object.keys(data).length !== 0) {
-    // Tạo một đối tượng mới để chứa kết quả
     var resultObject = {};
 
-    // Lấy tất cả các key duy nhất từ tất cả các đối tượng
     let allKeys = Array.from(
       new Set(data.content.flatMap((obj) => Object.keys(obj)))
     );
 
-    // So sánh key-value của tất cả thuộc tính giữa các đối tượng
     data.content.forEach((obj, index) => {
       allKeys.forEach((key) => {
         let value = obj[key];
 
-        // Kiểm tra xem key đã tồn tại trong đối tượng kết quả chưa
         if (!resultObject.hasOwnProperty(key)) {
-          // Nếu chưa tồn tại, thêm key-value vào đối tượng kết quả
           resultObject[key] = [value];
         } else {
-          // Nếu đã tồn tại, thêm giá trị vào mảng tương ứng với key
           resultObject[key].push(value);
         }
       });
     });
-    // const uniqueValues = {};
-    // for (const key in resultObject) {
-    //   if (resultObject.hasOwnProperty(key)) {
-    //     const array = resultObject[key];
-    //     const uniqueArray = [];
-
-    //     // Duyệt qua từng giá trị trong mảng và lưu giá trị duy nhất
-    //     for (const value of array) {
-    //       if (!uniqueValues.hasOwnProperty(value)) {
-    //         uniqueArray.push(value);
-    //         uniqueValues[value] = true;
-    //       }
-    //     }
-
-    //     // Gán mảng mới (chứa giá trị duy nhất) lại vào đối tượng
-    //     resultObject[key] = uniqueArray;
-    //   }
-    // }
 
     var sum = resultObject.availableQuantity.reduce(
       (accumulator, currentValue) => accumulator + currentValue,
       0
     );
-    // console.log("test1", resultObject);
-    // console.log("test", resultObject.size);
   }
   const increment = () => {
     if (value < resultObject.availableQuantity[imageUrl]) {
@@ -97,7 +69,6 @@ function ProductDetailPage() {
     }
   };
 
-  // console.log("test1", typeof sum);
   const StarRating = ({ rating }) => {
     const maxStars = 5;
     const filledStars = Math.floor(rating);
@@ -122,11 +93,19 @@ function ProductDetailPage() {
       </div>
     );
   };
-  function setSelectedColor({ index }) {
-    // console.log("key nè: ", index);
+  function setSelectedColor({ index, color }) {
+    setColor(color);
     setImageUrl(index);
   }
   // console.log("Ảnh active:", imageUrl);
+  const handleAddToCartForProduct = () => {
+    console.log(params.product_id, color, selectedSize, value);
+    if (addToCart(params.product_id, color, selectedSize, value)) {
+    } else {
+      navigate("/login");
+    }
+  };
+
   return (
     <div>
       <section className="product-shop spad page-details-1">
@@ -135,7 +114,6 @@ function ProductDetailPage() {
             {Object.keys(data).length !== 0 && (
               <div className="col-lg-9">
                 <div className="row">
-                  {/* {console.log("ảnh set nè: ", resultObject.image1[imageUrl])} */}
                   <ProductImage
                     image1={resultObject.image1[imageUrl]}
                     image2={resultObject.image2[imageUrl]}
@@ -151,7 +129,7 @@ function ProductDetailPage() {
                           <i className="icon_heart_alt" />
                         </a>
                       </div>
-                      {/* {console.log(typeof product.color)} */}
+
                       <div className="pd-rating">
                         <StarRating
                           rating={resultObject.overallRating[imageUrl]}
@@ -185,12 +163,13 @@ function ProductDetailPage() {
                             </div> */}
                           {resultObject.color.map((color, index) => (
                             <div key={index} className="cc-item">
-                              {/* {console.log("color nè: ", color)} */}
                               <input
                                 type="radio"
                                 id={`cc-${color}`}
                                 name="color"
-                                onClick={() => setSelectedColor({ index })}
+                                onClick={() =>
+                                  setSelectedColor({ index, color })
+                                }
                               />
                               <label
                                 htmlFor={`cc-${color}`}
@@ -217,10 +196,17 @@ function ProductDetailPage() {
                                   type="radio"
                                   id={`sm-${size}`}
                                   name="size"
+                                  checked={selectedSize === size}
+                                  onChange={(e) => {
+                                    e.preventDefault(); // This line is not typically needed for radio buttons
+                                    setSelectedSize(size);
+                                  }}
                                 />
                                 <label
                                   htmlFor={`sm-${size}`}
-                                  className={`sm-${size}`}
+                                  className={`sm-${size} ${
+                                    selectedSize === size ? "active" : ""
+                                  }`}
                                 >
                                   {size}
                                 </label>
@@ -235,15 +221,18 @@ function ProductDetailPage() {
                           <span className="dec qtybtn" onClick={decrement}>
                             -
                           </span>
-                          {/* {console.log(sum)} */}
+
                           <input type="text" value={value} readOnly />
                           <span className="inc qtybtn" onClick={increment}>
                             +
                           </span>
                         </div>
-                        <a href={{}} className="primary-btn pd-cart">
+                        <button
+                          onClick={handleAddToCartForProduct}
+                          className="primary-btn pd-cart"
+                        >
                           Add To Cart
-                        </a>
+                        </button>
                       </div>
                       <ul className="pd-tags">
                         <li>

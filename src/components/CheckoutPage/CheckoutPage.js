@@ -2,16 +2,31 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { makeRequest } from "~/services";
 import Cookies from "js-cookie";
+import images from "~/assets/images";
 import "./CheckoutPage.css";
 
 function CheckoutPage() {
   const location = useLocation();
   const initialData = location.state && location.state.data;
 
-  // State để lưu giá trị của data và tổng giá tiền
-  const [data, setData] = useState({});
-  const [paymentMethod, setPaymentMethod] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("COD");
+  const [price, setPrice] = useState(0);
   useEffect(() => {
+    const total = initialData.reduce((acc, product) => {
+      return acc + (product.price * product.quantity || 0); // Đảm bảo price có giá trị và chuyển đổi về số
+    }, 0);
+    setPrice(total);
+  }, [initialData]);
+
+  // Xử lý khi có thay đổi trong radio button
+  const handlePaymentMethodChange = (event) => {
+    setPaymentMethod(event.target.value);
+  };
+  const handlePayment = (e) => {
+    e.preventDefault();
+    const APIdata = {
+      paymentMethod: paymentMethod,
+    };
     const userToken = Cookies.get("jwtToken");
     const axiosInstance = {
       headers: {
@@ -19,28 +34,25 @@ function CheckoutPage() {
         "Content-Type": "application/json",
       },
     };
-    const fetchData = async () => {
-      try {
-        const path = `authen/cart/checkout`;
-        const method = "GET";
-        const result = await makeRequest(method, path, null, axiosInstance);
-        setData(result.content);
-      } catch (error) {
-        console.error("Error fetching data:", error.message);
-      }
-    };
+    console.log(APIdata);
+    const message =
+      "New order with ID 110 has been created successfully, please wait for Admin accept your order!";
+    const orderIdMatch = message.match(/\d+/);
+    const orderId = orderIdMatch ? parseInt(orderIdMatch[0], 10) : null;
+    console.log("Order ID:", orderId);
+    // const fetchData = async () => {
+    //   try {
+    //     const path = `authen/invoice/addNewOrder`;
+    //     const method = "POST";
+    //     const result = await makeRequest(method, path, APIdata, axiosInstance);
+    //     console.log(result);
+    //   } catch (error) {
+    //     console.error("Error fetching data:", error.message);
+    //   }
+    // };
 
-    fetchData();
-    // Tính tổng giá tiền của tất cả sản phẩm
-
-    // Cập nhật giá trị tổng giá tiền
-  }, []);
-
-  // Xử lý khi có thay đổi trong radio button
-  const handlePaymentMethodChange = (event) => {
-    setPaymentMethod(event.target.value);
+    // fetchData();
   };
-  const handlePayment = () => {};
 
   return (
     <section className="checkout-section spad">
@@ -71,61 +83,65 @@ function CheckoutPage() {
                     ))}
 
                   <>
-                    <li className="fw-normal">
-                      Subtotal <span>{data.subtotal}</span>
-                    </li>
-                    <li className="fw-normal">
-                      Shipping Fee <span>{data.shippingFee}</span>
-                    </li>
                     <li className="total-price">
-                      Total <span>{data.total}</span>
+                      Total <span>${price.toFixed(2)}</span>
                     </li>
                   </>
                 </ul>
                 <div className="payment-check">
                   <div className="pc-item">
+                    <input
+                      type="radio"
+                      id="pc-check"
+                      name="paymentMethod"
+                      value="COD"
+                      checked={paymentMethod === "COD"}
+                      onChange={handlePaymentMethodChange}
+                    />
                     <label htmlFor="pc-check">
-                      Cheque Payment
-                      <input
-                        type="radio"
-                        id="pc-check"
-                        name="paymentMethod"
-                        value="cheque"
-                        checked={paymentMethod === "cheque"}
-                        onChange={handlePaymentMethodChange}
+                      <img
+                        src={images.cod}
+                        style={{ maxHeight: "100px", maxWidth: "100px" }}
+                        alt="COD"
                       />
-                      <span className="checkmark" />
                     </label>
                   </div>
                   <div className="pc-item">
+                    <input
+                      type="radio"
+                      id="pc-paypal"
+                      name="paymentMethod"
+                      value="PAYPAL"
+                      checked={paymentMethod === "PAYPAL"}
+                      onChange={handlePaymentMethodChange}
+                    />
                     <label htmlFor="pc-paypal">
-                      Paypal
-                      <input
-                        type="radio"
-                        id="pc-paypal"
-                        name="paymentMethod"
-                        value="paypal"
-                        checked={paymentMethod === "paypal"}
-                        onChange={handlePaymentMethodChange}
+                      <img
+                        src={images.paypal}
+                        style={{ maxHeight: "100px", maxWidth: "100px" }}
+                        alt="Paypal"
                       />
-                      <span className="checkmark" />
                     </label>
                   </div>
                   <div className="pc-item">
+                    <input
+                      type="radio"
+                      id="pc-momo"
+                      name="paymentMethod"
+                      value="MOMO"
+                      checked={paymentMethod === "MOMO"}
+                      onChange={handlePaymentMethodChange}
+                    />
                     <label htmlFor="pc-momo">
-                      MoMo
-                      <input
-                        type="radio"
-                        id="pc-momo"
-                        name="paymentMethod"
-                        value="momo"
-                        checked={paymentMethod === "momo"}
-                        onChange={handlePaymentMethodChange}
+                      <img
+                        src={images.momo}
+                        style={{ maxHeight: "100px", maxWidth: "100px" }}
+                        alt="Momo"
                       />
-                      <span className="checkmark" />
                     </label>
                   </div>
                 </div>
+
                 <div className="order-btn">
                   <button
                     onClick={handlePayment}
