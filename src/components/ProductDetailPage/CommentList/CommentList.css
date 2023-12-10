@@ -91,3 +91,7 @@
   margin-right: 5px;
   /* Điều chỉnh khoảng cách giữa biểu tượng và văn bản */
 }
+.liked {
+  font-weight: bold;
+  /* Thêm bất kỳ hiệu ứng đậm mà bạn muốn ở đây */
+}

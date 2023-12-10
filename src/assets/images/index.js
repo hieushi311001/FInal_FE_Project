@@ -41,6 +41,8 @@ const images = {
   paypal: require("~/assets/images/paypal.jpg"),
   cod: require("~/assets/images/cod.png"),
   momo: require("~/assets/images/momo.png"),
+  bank: require("~/assets/images/bank.jpg"),
+  tpbank: require("~/assets/images/tpbank.png"),
 };
 
 export default images;

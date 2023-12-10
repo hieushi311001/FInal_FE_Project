@@ -16,7 +16,33 @@ function CommentChild({ id, productId, color }) {
         limit: 5,
       },
     };
-    console.log("test nè: ", productId, "và: ", color, "và: ", id);
+    const fetchData = async () => {
+      try {
+        const method = "POST";
+        const path = "unauthen/comment/commentList";
+
+        const result = await makeRequest(method, path, APIdata);
+        console.log(result);
+        const formattedComments = result.content.map((comment) => {
+          const formattedDate = format(
+            new Date(comment.commentDate),
+            "HH:mm - dd/MMM/YYY"
+          );
+
+          return {
+            ...comment,
+            commentDate: formattedDate,
+          };
+        });
+
+        setComments(formattedComments);
+        // setData(result.content);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
   }, [id, color, productId]);
   return (
     <div>
@@ -50,10 +76,6 @@ function CommentChild({ id, productId, color }) {
                 <div className="like p-2 cursor">
                   <i className="fa fa-commenting-o" />
                   <span className="ml-1">Comment</span>
-                </div>
-                <div className="like p-2 cursor">
-                  <i className="fa fa-share" />
-                  <span className="ml-1">Share</span>
                 </div>
               </div>
             </div>

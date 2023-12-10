@@ -63,3 +63,19 @@ export const removeFromCart = (id) => {
     return false;
   }
 };
+export const updateCart = () => {
+  const fetchData = async () => {
+    try {
+      const path = "unauthen/shop/totalProductsQuantity";
+      const method = "GET";
+      const flag = Math.random();
+      const result = await makeRequest(method, path);
+      localStorage.setItem("update", flag);
+      console.log(result);
+    } catch (error) {
+      console.error("Error fetching data:", error.message);
+    }
+  };
+
+  fetchData();
+};

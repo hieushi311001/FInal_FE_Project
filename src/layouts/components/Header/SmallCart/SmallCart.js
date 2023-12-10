@@ -2,13 +2,12 @@ import Cookies from "js-cookie";
 import { makeRequest } from "~/services";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-function SmallCart() {
+function SmallCart({ updateCartValue }) {
   const [data, setData] = useState({});
   const [price, setPrice] = useState(0);
   const [prevLocalStorageState, setPrevLocalStorageState] = useState(
     localStorage.getItem("update")
   );
-  const [seed, setSeed] = useState(1);
   useEffect(() => {
     const userToken = Cookies.get("jwtToken");
     const axiosInstance = {
@@ -26,7 +25,7 @@ function SmallCart() {
         const path = "authen/cart/showFullCart";
         const method = "POST";
         const result = await makeRequest(method, path, APIdata, axiosInstance);
-
+        const itemCount = result.content.length;
         const filteredData = result.content.map((item) => ({
           name: item.name,
           sellingPrice: item.sellingPrice,
@@ -35,10 +34,12 @@ function SmallCart() {
           quantity: item.quantity,
           totalPrice: item.totalPrice,
         }));
+
         const totalPriceSum = filteredData.reduce(
           (acc, item) => acc + item.totalPrice * item.quantity,
           0
         );
+        updateCartValue(itemCount);
         setData(filteredData);
         setPrice(totalPriceSum);
       } catch (error) {

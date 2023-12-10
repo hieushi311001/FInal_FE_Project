@@ -4,9 +4,13 @@ import { format } from "date-fns";
 import PostComment from "./PostComment";
 import CommentChild from "./CommentChild";
 import "./CommentList.css";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 function CommentList({ productId, color }) {
+  const navigate = useNavigate();
   const [comments, setComments] = useState([]);
-
+  const [likedComments, setLikedComments] = useState([]);
+  const userToken = Cookies.get("jwtToken");
   useEffect(() => {
     // Define the API endpoint you want to call
     const APIdata = {
@@ -20,16 +24,45 @@ function CommentList({ productId, color }) {
         limit: 5,
       },
     };
-    // console.log("test nè: ", productId, "và: ", color);
     const fetchData = async () => {
       try {
-        const path = "unauthen/comment/commentList";
         const method = "POST";
+        if (userToken) {
+          const likeRequest = {
+            productColor: color,
+            productId: productId,
+          };
+          const axiosInstance = {
+            headers: {
+              Authorization: `Bearer ${userToken}`,
+              "Content-Type": "application/json",
+            },
+          };
+          const likeRequestPath = "authen/comment/commentsYouLiked";
+          const likeRequestResult = await makeRequest(
+            method,
+            likeRequestPath,
+            likeRequest,
+            axiosInstance
+          );
+          setLikedComments(likeRequestResult.content);
+        }
+        const path = "unauthen/comment/commentList";
+
         const result = await makeRequest(method, path, APIdata);
-        const formattedComments = result.content.map((comment) => ({
-          ...comment,
-          commentDate: format(new Date(comment.commentDate), "dd MMM yyyy"),
-        }));
+        console.log(result);
+        const formattedComments = result.content.map((comment) => {
+          const formattedDate = format(
+            new Date(comment.commentDate),
+            "HH:mm - dd/MMM/YYY"
+          );
+
+          return {
+            ...comment,
+            commentDate: formattedDate,
+          };
+        });
+
         setComments(formattedComments);
         // setData(result.content);
       } catch (error) {
@@ -38,7 +71,7 @@ function CommentList({ productId, color }) {
     };
 
     fetchData();
-  }, [color, productId]);
+  }, [color, productId, navigate, userToken]);
   const [showReplies, setShowReplies] = useState(false);
 
   const handleShowReplies = (commentId) => {
@@ -54,7 +87,69 @@ function CommentList({ productId, color }) {
       [commentId]: false,
     }));
   };
+  const handleLikeClick = (commentId) => {
+    if (!userToken) {
+      navigate("/login?redirect=true");
+    }
+    // Kiểm tra xem comment đã được like chưa
+    const isLiked = likedComments.includes(commentId);
 
+    // Nếu đã like, loại bỏ khỏi danh sách likedComments; ngược lại, thêm vào
+    if (isLiked) {
+      const fetchData = async () => {
+        try {
+          const method = "GET";
+          const path = `authen/comment/react_comment_id=${commentId}`;
+          const axiosInstance = {
+            headers: {
+              Authorization: `Bearer ${userToken}`,
+              "Content-Type": "application/json",
+            },
+          };
+          const result = await makeRequest(method, path, null, axiosInstance);
+          setLikedComments((prevLikedComments) =>
+            prevLikedComments.filter((id) => id !== commentId)
+          );
+          const updatedComments = comments.map((comment) =>
+            comment.id === commentId
+              ? { ...comment, likeQuantity: comment.likeQuantity - 1 }
+              : comment
+          );
+          console.log(result);
+          setComments(updatedComments);
+        } catch (error) {}
+      };
+
+      fetchData();
+    } else {
+      const fetchData = async () => {
+        try {
+          const method = "GET";
+          const path = `authen/comment/react_comment_id=${commentId}`;
+          const axiosInstance = {
+            headers: {
+              Authorization: `Bearer ${userToken}`,
+              "Content-Type": "application/json",
+            },
+          };
+          const result = await makeRequest(method, path, null, axiosInstance);
+          setLikedComments((prevLikedComments) => [
+            ...prevLikedComments,
+            commentId,
+          ]);
+          const updatedComments = comments.map((comment) =>
+            comment.id === commentId
+              ? { ...comment, likeQuantity: comment.likeQuantity + 1 }
+              : comment
+          );
+          console.log(result);
+          setComments(updatedComments);
+        } catch (error) {}
+      };
+
+      fetchData();
+    }
+  };
   return (
     // <div className="tab-pane fade" id="tab-3" role="tabpanel">
     //   <div className="customer-review-option">
@@ -128,7 +223,6 @@ function CommentList({ productId, color }) {
                 </h4>
                 <div className="row">
                   <div className="col">
-                    {console.log(comments)}
                     {comments.map((comment) => (
                       <div
                         className="d-flex flex-start custom-margin"
@@ -152,23 +246,46 @@ function CommentList({ productId, color }) {
                               </p>
                             </div>
                             <p className="rounded-box small mb-0">
-                              {/* It is a long established fact that a reader will
-                              be distracted by the readable content of a page. */}
                               {comment.commentContent}
                             </p>
                             <div className="bg-white">
                               <div className="d-flex flex-row fs-12">
-                                <div className="like p-2 cursor">
-                                  <i className="fa fa-thumbs-o-up" />
+                                <div
+                                  className="like p-2 cursor"
+                                  style={{ color: "#e7ab3c" }}
+                                >
+                                  <i className="fa fa-thumbs-up" />
+                                  <span className="ml-1">
+                                    {comment.likeQuantity}
+                                  </span>
+                                </div>
+                                <div
+                                  className="like p-2 cursor"
+                                  onClick={() => handleLikeClick(comment.id)}
+                                  style={
+                                    likedComments.includes(comment.id)
+                                      ? {
+                                          color: "#e7ab3c",
+
+                                          fontWeight: "bold",
+                                        }
+                                      : null
+                                  }
+                                >
+                                  <i
+                                    // className={`fa ${
+                                    //   likedComments.includes(comment.id)
+                                    //     ? // ? "fa-thumbs-up"
+                                    //       "fa-thumbs-o-up"
+                                    //     : "fa-thumbs-o-up"
+                                    // }`}
+                                    className="fa fa-thumbs-o-up"
+                                  />
                                   <span className="ml-1">Like</span>
                                 </div>
                                 <div className="like p-2 cursor">
                                   <i className="fa fa-commenting-o" />
                                   <span className="ml-1">Comment</span>
-                                </div>
-                                <div className="like p-2 cursor">
-                                  <i className="fa fa-share" />
-                                  <span className="ml-1">Share</span>
                                 </div>
                               </div>
                             </div>

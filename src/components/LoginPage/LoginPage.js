@@ -4,9 +4,14 @@ import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import "react-toastify/dist/ReactToastify.css";
 import { encodeAndSetCookie } from "~/services";
+import { useLocation, useNavigate } from "react-router-dom";
 function LoginPage() {
   const [userName, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const location = useLocation();
+  const navigate = useNavigate();
+  const redirectParam = new URLSearchParams(location.search).get("redirect");
+
   const handleLogin = async (e) => {
     e.preventDefault();
     const path = "unauthen/systemAuthentication/login";
@@ -23,7 +28,13 @@ function LoginPage() {
           expires: expirationDate,
         });
         encodeAndSetCookie("isLogin", "LoginTrue", expirationDate);
-        window.location.href = "/";
+        if (redirectParam === "true") {
+          // Đã truyền giá trị redirectParam
+          navigate(-1);
+        } else {
+          // Không có hoặc giá trị là false
+          navigate("/");
+        }
       }
     } catch (error) {
       console.log("Login error:", error.response.data);

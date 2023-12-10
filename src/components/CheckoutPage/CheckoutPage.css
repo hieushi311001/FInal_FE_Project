@@ -27,6 +27,13 @@
   flex-direction: row;
   align-items: center; /* Chính giữa theo chiều dọc */
 }
+.payment-check-single {
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* Chính giữa theo chiều dọc */
+  justify-content: center; /* Chính giữa theo chiều ngang */
+  margin-bottom: 30px;
+}
 
 .pc-item {
   margin-right: 10px; /* Khoảng cách giữa các mục, có thể điều chỉnh theo ý muốn */

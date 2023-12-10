@@ -4,7 +4,11 @@ import { makeRequest } from "~/services";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./SearchPage.css";
+import { addToCart } from "~/services";
+import { useNavigate } from "react-router-dom";
+
 function SearchPage() {
+  const navigate = useNavigate();
   const location = useLocation();
   const [data, setData] = useState([]);
   useEffect(() => {
@@ -70,6 +74,13 @@ function SearchPage() {
       </div>
     );
   };
+  const handleAddToCartForProduct = (productId, color, size, quantity) => {
+    console.log(productId, color, size, quantity);
+    if (addToCart(productId, color, size, quantity)) {
+    } else {
+      navigate("/login");
+    }
+  };
   return (
     <div className="product-list-search">
       <div className="row-search">
@@ -118,7 +129,19 @@ function SearchPage() {
                       >
                         Quick View
                       </Link>
-                      <button className="quick-view-search">Add to cart</button>
+                      <button
+                        className="quick-view-search"
+                        onClick={() =>
+                          handleAddToCartForProduct(
+                            item.productId,
+                            item.color,
+                            item.size,
+                            1
+                          )
+                        }
+                      >
+                        Add to cart
+                      </button>
                     </div>
                   </div>
                 </div>

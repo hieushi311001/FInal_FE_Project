@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 function Header() {
   const [cookieData, setCookieData] = useState({});
   const [userDataExists, setUserDataExists] = useState(false);
-
+  const [cartValue, setCartValue] = useState(0);
   const navigate = useNavigate();
   useEffect(() => {
     const userToken = Cookies.get("jwtToken");
@@ -72,6 +72,9 @@ function Header() {
       e.preventDefault();
       handleSearchClick();
     }
+  };
+  const updateCartValue = (newValue) => {
+    setCartValue(newValue);
   };
   return (
     <div>
@@ -165,9 +168,9 @@ function Header() {
                   <li className="cart-icon">
                     <Link to={`/cart`}>
                       <i className="icon_bag_alt"></i>
-                      <span>3</span>
+                      <span>{cartValue}</span>
                     </Link>
-                    <SmallCart />
+                    <SmallCart updateCartValue={updateCartValue} />
                   </li>
                   <li className="cart-price">$150.00</li>
                 </ul>

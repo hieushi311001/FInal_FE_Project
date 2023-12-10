@@ -3189,6 +3189,7 @@ ol {
 }
 
 .checkout-form h4 {
+  width: calc(100% + 100px);
   color: #252525;
   font-weight: 700;
   margin-bottom: 30px;
@@ -3259,6 +3260,7 @@ ol {
 }
 
 .checkout-form .place-order .order-total {
+  width: calc(100% + 100px);
   border: 2px solid #ebebeb;
   padding-left: 40px;
   padding-right: 40px;

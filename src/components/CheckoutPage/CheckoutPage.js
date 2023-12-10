@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { makeRequest } from "~/services";
+import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import images from "~/assets/images";
 import "./CheckoutPage.css";
 
 function CheckoutPage() {
   const location = useLocation();
+  const navigate = useNavigate();
   const initialData = location.state && location.state.data;
 
   const [paymentMethod, setPaymentMethod] = useState("COD");
@@ -22,7 +24,7 @@ function CheckoutPage() {
   const handlePaymentMethodChange = (event) => {
     setPaymentMethod(event.target.value);
   };
-  const handlePayment = (e) => {
+  const handleCheckOut = (e) => {
     e.preventDefault();
     const APIdata = {
       paymentMethod: paymentMethod,
@@ -34,24 +36,27 @@ function CheckoutPage() {
         "Content-Type": "application/json",
       },
     };
-    console.log(APIdata);
-    const message =
-      "New order with ID 110 has been created successfully, please wait for Admin accept your order!";
-    const orderIdMatch = message.match(/\d+/);
-    const orderId = orderIdMatch ? parseInt(orderIdMatch[0], 10) : null;
-    console.log("Order ID:", orderId);
-    // const fetchData = async () => {
-    //   try {
-    //     const path = `authen/invoice/addNewOrder`;
-    //     const method = "POST";
-    //     const result = await makeRequest(method, path, APIdata, axiosInstance);
-    //     console.log(result);
-    //   } catch (error) {
-    //     console.error("Error fetching data:", error.message);
-    //   }
-    // };
 
-    // fetchData();
+    const fetchData = async () => {
+      try {
+        const path = `authen/invoice/addNewOrder`;
+        const method = "POST";
+        const result = await makeRequest(method, path, APIdata, axiosInstance);
+        const orderIdMatch = result.content.match(/\d+/);
+        const orderId = orderIdMatch ? parseInt(orderIdMatch[0], 10) : null;
+        console.log("Order ID:", orderId);
+        navigate("/payment", {
+          state: {
+            data: initialData,
+            invoiceID: orderId,
+            method: paymentMethod,
+          },
+        });
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      }
+    };
+    fetchData();
   };
 
   return (
@@ -140,11 +145,28 @@ function CheckoutPage() {
                       />
                     </label>
                   </div>
+                  <div className="pc-item">
+                    <input
+                      type="radio"
+                      id="pc-bank"
+                      name="paymentMethod"
+                      value="BANK_TRANSFER"
+                      checked={paymentMethod === "BANK_TRANSFER"}
+                      onChange={handlePaymentMethodChange}
+                    />
+                    <label htmlFor="pc-bank">
+                      <img
+                        src={images.bank}
+                        style={{ maxHeight: "100px", maxWidth: "100px" }}
+                        alt="Momo"
+                      />
+                    </label>
+                  </div>
                 </div>
 
                 <div className="order-btn">
                   <button
-                    onClick={handlePayment}
+                    onClick={handleCheckOut}
                     className="site-btn place-btn"
                   >
                     Place Order

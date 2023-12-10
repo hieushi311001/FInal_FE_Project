@@ -4,7 +4,10 @@ import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 import ProductSlider from "~/components/ProductSlider";
 import axios from "axios";
+import { addToCart } from "~/services";
+import { useNavigate } from "react-router-dom";
 function RelativeProduct({ productId, color }) {
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
   useEffect(() => {
     // Define the API endpoint you want to call
@@ -55,7 +58,12 @@ function RelativeProduct({ productId, color }) {
       },
     },
   };
-
+  const handleAddToCartForProduct = (productId, color, size, quantity) => {
+    if (addToCart(productId, color, size, quantity)) {
+    } else {
+      navigate("/login");
+    }
+  };
   return (
     <div className="related-products spad">
       <div className="container">
@@ -109,6 +117,14 @@ function RelativeProduct({ productId, color }) {
                     name={product.name}
                     price={product.sellingPrice}
                     discount={product.discount}
+                    onAddToCart={() =>
+                      handleAddToCartForProduct(
+                        product.product_id,
+                        product.color,
+                        product.size,
+                        1
+                      )
+                    }
                   />
                 ))}
               </OwlCarousel>

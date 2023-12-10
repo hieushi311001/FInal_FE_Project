@@ -18,6 +18,9 @@ function ProductDetailPage() {
   const [selectedSize, setSelectedSize] = useState("none");
 
   useEffect(() => {
+    window.scroll(0, 0);
+  }, [params.product_id]);
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const path = `unauthen/shop/product_id=${params.product_id}`;
