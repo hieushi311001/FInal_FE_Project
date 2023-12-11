@@ -1,17 +1,18 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { makeRequest } from "~/services";
 import { encodeAndSetCookie } from "~/services";
 import "./UserImage.css";
 function UserImage({ accountId, name, avatar }) {
+  const navigate = useNavigate();
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
   };
 
-  const handleLogout = async (e) => {
+  const handleLogout = async () => {
     const userToken = Cookies.get("jwtToken");
     const axiosInstance = {
       headers: {
@@ -31,8 +32,9 @@ function UserImage({ accountId, name, avatar }) {
     };
     fetchData();
     encodeAndSetCookie("isLogin", "LoginFalse");
-    Cookies.remove("userData", { path: "/" });
-    Cookies.remove("jwtToken", { path: "/" });
+    Cookies.remove("userData");
+    Cookies.remove("jwtToken");
+    // navigate("/");
     window.location.href = "/";
   };
   return (

@@ -8,7 +8,7 @@ export const encodeAndSetCookie = (cookieName, value, expires) => {
   const encodedValue = btoa(value);
   const encodedName = btoa(cookieName);
   // Lưu vào cookie với thời gian sống
-  Cookies.set(encodedName, encodedValue, expires);
+  Cookies.set(encodedName, encodedValue, { expires: expires });
 };
 
 // Hàm để đọc giá trị từ cookie và giải mã

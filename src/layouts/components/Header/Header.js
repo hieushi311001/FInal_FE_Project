@@ -36,14 +36,13 @@ function Header() {
 
         fetchData();
         setUserDataExists(false);
-        navigate(`/`);
+        window.location.href = "/login";
       }
     };
     if (Cookies.get("userData")) {
       setUserDataExists(true);
       const storedUserData = JSON.parse(Cookies.get("userData"));
       setCookieData(storedUserData);
-
       const intervalId = setInterval(checkCookie, 1000);
       // Cleanup khi component bị unmounted
       return () => clearInterval(intervalId);
@@ -133,9 +132,9 @@ function Header() {
             <div className="row">
               <div className="col-lg-2 col-md-2">
                 <div className="logo">
-                  <a href="./index.html">
+                  <Link to={`/`}>
                     <img src={images.logo} alt="" />
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="col-lg-7 col-md-7">

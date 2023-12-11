@@ -1,16 +1,28 @@
 import Cookies from "js-cookie";
 import { useParams } from "react-router-dom";
 import React, { useEffect, useState, useRef } from "react";
-import ProfilePage from "../ProfilePage";
-import { makeRequest } from "~/services";
-import axios from "axios";
+import { makeRequest, encodeAndSetCookie } from "~/services";
 import "./EditProfile.css";
+import { useNavigate } from "react-router-dom";
 function EditProfile() {
+  const params = useParams();
   const [cookieData, setCookieData] = useState({});
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [imgSelectedFile, setImgSelectedFile] = useState(null);
   const [fileName, setFileName] = useState("");
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    id: null,
+    email: "",
+    phoneNumber: "",
+    address: "",
+    city: "",
+    country: "",
+    name: "",
+    avatar: "",
+  });
+
   useEffect(() => {
     // Lấy giá trị từ cookie khi component được mount
     // const userDataCookie = Cookies.get("userData");
@@ -20,16 +32,29 @@ function EditProfile() {
     // }
     const userDataCookie = Cookies.get("userData");
     const storedUserData = JSON.parse(userDataCookie);
+    const numberValue = parseInt(params.profile_id, 10);
+    setFormData({
+      id: numberValue,
+      email: cookieData.email,
+      phoneNumber: cookieData.phoneNumber,
+      address: cookieData.address,
+      city: cookieData.city,
+      country: cookieData.country,
+      name: cookieData.name,
+      avatar: cookieData.avatar,
+    });
     setCookieData(storedUserData);
-  }, []);
-  const [formData, setFormData] = useState({
-    email: "",
-    phoneNumber: "",
-    address: "",
-    city: "",
-    country: "",
-    name: "Minh Hieu",
-  });
+  }, [
+    cookieData.email,
+    cookieData.phoneNumber,
+    cookieData.address,
+    cookieData.city,
+    cookieData.country,
+    cookieData.name,
+    params.profile_id,
+    cookieData.avatar,
+  ]);
+  console.log(formData);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -74,8 +99,8 @@ function EditProfile() {
       try {
         const path = "/authen/googleDrive/upLoadCustomerAvatar";
         const method = "POST";
-        const result = await makeRequest(method, path, formData, axiosInstance);
-        console.log(result);
+        // const result = await makeRequest(method, path, formData, axiosInstance);
+        navigate(0);
       } catch (error) {
         console.error("Error fetching data:", error.message);
       }
@@ -88,31 +113,29 @@ function EditProfile() {
     // Gửi dữ liệu formData đến API ở đây (sử dụng fetch hoặc axios).
     // Ví dụ:
     const userToken = Cookies.get("jwtToken");
-    console.log(userToken);
     const options = {
       headers: {
         Authorization: `Bearer ${userToken}`,
-        withCredentials: true,
-        "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
         // Các tiêu đề khác nếu cần
       },
     };
-    console.log(cookieData);
-    for (var key in formData) {
-      if (cookieData.hasOwnProperty(key)) {
-        cookieData[key] = formData[key];
-      }
-    }
-    Cookies.set("userData", JSON.stringify(cookieData));
-    console.log("tesst: ", Cookies.get("userData"));
+
     const fetchData = async () => {
       try {
         const path = "authen/systemAuthentication/updateProfile";
         const method = "POST";
+
         const result = await makeRequest(method, path, formData, options);
-        // window.location.reload();
         console.log(result);
+        const expirationDate = new Date(new Date().getTime() + 60 * 60 * 1000);
+        const jwtTokenCookie = Cookies.get("jwtToken");
+        Cookies.set("jwtToken", jwtTokenCookie, { expires: expirationDate });
+        Cookies.set("userData", JSON.stringify(formData), {
+          expires: expirationDate,
+        });
+        encodeAndSetCookie("isLogin", "LoginTrue", expirationDate);
+        navigate(0);
       } catch (error) {
         console.error("Error fetching data:", error.message);
       }
@@ -152,12 +175,20 @@ function EditProfile() {
                 onClick={handleFileUpload}
                 className="btn btn-primary change"
                 type="button"
+                style={{
+                  backgroundColor: "#e7ab3c",
+                  border: "2px solid #e7ab3c",
+                }}
               >
                 Upload new image
               </button>
               <button
                 className="btn btn-primary change"
-                style={{ marginLeft: "15px" }}
+                style={{
+                  marginLeft: "15px",
+                  backgroundColor: "#e7ab3c",
+                  border: "2px solid #e7ab3c",
+                }}
                 type="submit"
                 onClick={handleChangeImage}
               >
@@ -189,7 +220,8 @@ function EditProfile() {
                     name="name"
                     type="text"
                     placeholder={cookieData.name}
-                    readOnly
+                    value={formData.name}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div className="mb-3">
@@ -264,7 +296,14 @@ function EditProfile() {
                     />
                   </div>
                 </div>
-                <button className="btn btn-primary change" type="submit">
+                <button
+                  className="btn btn-primary change"
+                  type="submit"
+                  style={{
+                    backgroundColor: "#e7ab3c",
+                    border: "2px solid #e7ab3c",
+                  }}
+                >
                   Save
                 </button>
               </form>

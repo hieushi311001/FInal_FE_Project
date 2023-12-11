@@ -33,11 +33,11 @@ function LoginPage() {
           navigate(-1);
         } else {
           // Không có hoặc giá trị là false
-          navigate("/");
+          window.location.href = "/";
         }
       }
     } catch (error) {
-      console.log("Login error:", error.response.data);
+      console.log("Login error:", error.response);
     }
   };
 

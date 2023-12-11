@@ -10,6 +10,9 @@ function CommentList({ productId, color }) {
   const navigate = useNavigate();
   const [comments, setComments] = useState([]);
   const [likedComments, setLikedComments] = useState([]);
+  const [reply, setReply] = useState();
+  const [count, setCount] = useState(5);
+  const [rating, setRating] = useState(5);
   const userToken = Cookies.get("jwtToken");
   useEffect(() => {
     // Define the API endpoint you want to call
@@ -21,7 +24,7 @@ function CommentList({ productId, color }) {
       },
       pagination: {
         page: 1,
-        limit: 5,
+        limit: count,
       },
     };
     const fetchData = async () => {
@@ -71,7 +74,7 @@ function CommentList({ productId, color }) {
     };
 
     fetchData();
-  }, [color, productId, navigate, userToken]);
+  }, [color, productId, navigate, userToken, count, reply]);
   const [showReplies, setShowReplies] = useState(false);
 
   const handleShowReplies = (commentId) => {
@@ -150,70 +153,84 @@ function CommentList({ productId, color }) {
       fetchData();
     }
   };
+  const handleMoreComment = () => {
+    setCount((prevCount) => prevCount + 5);
+  };
+  const handleCommentClick = (commentId) => {
+    console.log(commentId);
+    setReply(commentId);
+  };
+  const handleStarClick = (starNumber) => {
+    // Update the rating state when a star is clicked
+    setRating(starNumber);
+
+    // TODO: Save the rating to your backend or perform any other necessary actions
+    console.log(`Rated ${starNumber} stars`);
+  };
+  const handleRating = () => {
+    const fetchData = async () => {
+      try {
+        if (userToken) {
+          const method = "POST";
+          const apiData = {
+            productId: productId,
+            color: color,
+            overallRating: rating,
+          };
+          const axiosInstance = {
+            headers: {
+              Authorization: `Bearer ${userToken}`,
+              "Content-Type": "application/json",
+            },
+          };
+          const apiPath = "authen/shop/rateProduct";
+          const apiResult = await makeRequest(
+            method,
+            apiPath,
+            apiData,
+            axiosInstance
+          );
+          console.log(apiResult);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  };
   return (
-    // <div className="tab-pane fade" id="tab-3" role="tabpanel">
-    //   <div className="customer-review-option">
-    //     <h4>5 Comments</h4>
-    //     <div className="comment-option">
-    //       {/* <div className="co-item">
-    //         <div className="avatar-pic">
-    //           <img src="img/product-single/avatar-1.png" alt="" />
-    //         </div>
-    //         <div className="avatar-text">
-    //           <div className="at-rating">
-    //             <i className="fa fa-star" />
-    //             <i className="fa fa-star" />
-    //             <i className="fa fa-star" />
-    //             <i className="fa fa-star" />
-    //             <i className="fa fa-star-o" />
-    //           </div>
-    //           <h5>
-    //             Brandon Kelley <span>27 Aug 2019</span>
-    //           </h5>
-    //           <div className="at-reply">Nice !</div>
-    //         </div>
-    //       </div> */}
-    //       {/* {console.log(comments)} */}
-    //       {comments.map((comment) => (
-    //         <div className="co-item">
-    //           <div className="avatar-pic">
-    //             <img
-    //               src={`https://drive.google.com/uc?export=view&id=${comment.avatar}`}
-    //               alt=""
-    //             />
-    //           </div>
-    //           <div className="avatar-text">
-    //             <div className="at-rating">
-    //               <i className="fa fa-star" />
-    //               <i className="fa fa-star" />
-    //               <i className="fa fa-star" />
-    //               <i className="fa fa-star" />
-    //               <i className="fa fa-star-o" />
-    //             </div>
-    //             <h5>
-    //               {comment.name} <span>{comment.commentDate}</span>
-    //             </h5>
-    //             <div className="at-reply">{comment.commentContent}</div>
-    //           </div>
-    //         </div>
-    //       ))}
-    //     </div>
-    //     {/* <div className="personal-rating">
-    //       <h6>Your Ratind</h6>
-    //       <div className="rating">
-    //         <i className="fa fa-star" />
-    //         <i className="fa fa-star" />
-    //         <i className="fa fa-star" />
-    //         <i className="fa fa-star" />
-    //         <i className="fa fa-star-o" />
-    //       </div>
-    //     </div> */}
-    //     <PostComment productId={productId} color={color} />
-    //   </div>
-    // </div>
     <div className="tab-pane fade" id="tab-3" role="tabpanel">
       <div className="customer-review-option">
-        <h4>5 Comments</h4>
+        <div className="personal-rating">
+          <h4>Your Rating</h4>
+          <div className="rating">
+            {[1, 2, 3, 4, 5].map((starNumber) => (
+              <i
+                key={starNumber}
+                className={`fa ${
+                  starNumber <= rating ? "fa-star" : "fa-star-o"
+                }`}
+                style={{ fontSize: " 20px" }}
+                onClick={() => handleStarClick(starNumber)}
+              />
+            ))}
+            <button
+              type="submit"
+              className="site-btn"
+              style={{ backgroundColor: "#e7ab3c", marginLeft: "15px" }}
+              onClick={handleRating}
+            >
+              Rating
+            </button>
+          </div>
+        </div>
+        <PostComment
+          productId={productId}
+          color={color}
+          handleSubmitCheck={handleCommentClick}
+        />
+        <h4 style={{ marginTop: "30px" }}>5 Comments</h4>
         <div className="comment-option ">
           <div className="row justify-content-center h-100 w-100 ">
             <div className="card custom-1">
@@ -272,18 +289,13 @@ function CommentList({ productId, color }) {
                                       : null
                                   }
                                 >
-                                  <i
-                                    // className={`fa ${
-                                    //   likedComments.includes(comment.id)
-                                    //     ? // ? "fa-thumbs-up"
-                                    //       "fa-thumbs-o-up"
-                                    //     : "fa-thumbs-o-up"
-                                    // }`}
-                                    className="fa fa-thumbs-o-up"
-                                  />
+                                  <i className="fa fa-thumbs-o-up" />
                                   <span className="ml-1">Like</span>
                                 </div>
-                                <div className="like p-2 cursor">
+                                <div
+                                  className="like p-2 cursor"
+                                  onClick={() => handleCommentClick(comment.id)}
+                                >
                                   <i className="fa fa-commenting-o" />
                                   <span className="ml-1">Comment</span>
                                 </div>
@@ -291,6 +303,7 @@ function CommentList({ productId, color }) {
                             </div>
                           </div>
                           <div>
+                            {console.log(showReplies)}
                             {showReplies[comment.id] ? (
                               <div>
                                 <CommentChild
@@ -303,7 +316,7 @@ function CommentList({ productId, color }) {
                                   onClick={() => handleHideReplies(comment.id)}
                                 >
                                   <i className="bi bi-arrow-return-right" />
-                                  Ẩn phản hồi
+                                  Close Comment
                                 </span>
                               </div>
                             ) : (
@@ -312,15 +325,26 @@ function CommentList({ productId, color }) {
                                 onClick={() => handleShowReplies(comment.id)}
                               >
                                 <i className="bi bi-arrow-return-right" />
-                                Xem thêm phản hồi
+                                Another Comment
                               </span>
                             )}
+                            {reply === comment.id ? (
+                              <PostComment
+                                commentId={reply}
+                                productId={productId}
+                                color={color}
+                                handleSubmitCheck={handleCommentClick}
+                              />
+                            ) : null}
                           </div>
                         </div>
                       </div>
                     ))}
                   </div>
                 </div>
+                <span className="read-more" onClick={handleMoreComment}>
+                  <i>More Comment...</i>
+                </span>
               </div>
             </div>
           </div>
