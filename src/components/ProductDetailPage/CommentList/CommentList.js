@@ -303,7 +303,14 @@ function CommentList({ productId, color }) {
                             </div>
                           </div>
                           <div>
-                            {console.log(showReplies)}
+                            {reply === comment.id ? (
+                              <PostComment
+                                commentId={reply}
+                                productId={productId}
+                                color={color}
+                                handleSubmitCheck={handleCommentClick}
+                              />
+                            ) : null}
                             {showReplies[comment.id] ? (
                               <div>
                                 <CommentChild
@@ -328,14 +335,6 @@ function CommentList({ productId, color }) {
                                 Another Comment
                               </span>
                             )}
-                            {reply === comment.id ? (
-                              <PostComment
-                                commentId={reply}
-                                productId={productId}
-                                color={color}
-                                handleSubmitCheck={handleCommentClick}
-                              />
-                            ) : null}
                           </div>
                         </div>
                       </div>

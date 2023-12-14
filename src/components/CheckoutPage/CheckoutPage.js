@@ -9,16 +9,65 @@ import "./CheckoutPage.css";
 function CheckoutPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const initialData = location.state && location.state.data;
+  const initialData = location.state.data;
+  const fromWardCode = location.state.fromWardCode;
+  const toWardCode = location.state.toWardCode;
+  const fromDistrictId = location.state.fromDistrictId;
+  const toDistrictId = location.state.toDistrictId;
+  console.log(initialData);
+  console.log(fromWardCode);
+  console.log(toWardCode);
+  console.log(fromDistrictId);
+  console.log(toDistrictId);
 
   const [paymentMethod, setPaymentMethod] = useState("COD");
-  const [price, setPrice] = useState(0);
+  const [data, setData] = useState({});
   useEffect(() => {
-    const total = initialData.reduce((acc, product) => {
-      return acc + (product.price * product.quantity || 0); // Đảm bảo price có giá trị và chuyển đổi về số
-    }, 0);
-    setPrice(total);
-  }, [initialData]);
+    const userToken = Cookies.get("jwtToken");
+    const axiosInstance = {
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+        "Content-Type": "application/json",
+      },
+    };
+    const APIdata_1 = {
+      fromDistrictId: fromDistrictId,
+      toDistrictId: toDistrictId,
+    };
+    const fetchData = async () => {
+      try {
+        const path_1 = "authen/cart/getGnhAvailableServiceList";
+        const method_1 = "POST";
+        const result_1 = await makeRequest(
+          method_1,
+          path_1,
+          APIdata_1,
+          axiosInstance
+        );
+        console.log(result_1.content[0].service_id);
+        const APIdata_2 = {
+          fromDistrictId: fromDistrictId,
+          toDistrictId: toDistrictId,
+          fromWardCode: fromWardCode,
+          toWardCode: toWardCode,
+          serviceId: result_1.content[0].service_id,
+        };
+        const path_2 = "authen/cart/checkout";
+        const method_2 = "POST";
+        const result_2 = await makeRequest(
+          method_2,
+          path_2,
+          APIdata_2,
+          axiosInstance
+        );
+        console.log(result_2);
+        setData(result_2.content);
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      }
+    };
+    fetchData();
+  }, [fromDistrictId, toDistrictId, fromWardCode, toWardCode]);
 
   // Xử lý khi có thay đổi trong radio button
   const handlePaymentMethodChange = (event) => {
@@ -50,6 +99,7 @@ function CheckoutPage() {
             data: initialData,
             invoiceID: orderId,
             method: paymentMethod,
+            total: data.total,
           },
         });
       } catch (error) {
@@ -58,7 +108,6 @@ function CheckoutPage() {
     };
     fetchData();
   };
-
   return (
     <section className="checkout-section spad">
       <div className="container centered-content">
@@ -81,7 +130,12 @@ function CheckoutPage() {
                             Quantity: {data.quantity}
                           </div>
                           <span className="order-price">
-                            ${(data.price * data.quantity).toFixed(2)}
+                            $
+                            {(
+                              (data.price -
+                                data.price * (data.discount / 100)) *
+                              data.quantity
+                            ).toFixed(2)}
                           </span>
                         </div>
                       </li>
@@ -89,7 +143,13 @@ function CheckoutPage() {
 
                   <>
                     <li className="total-price">
-                      Total <span>${price.toFixed(2)}</span>
+                      SubTotal <span>${data.subtotal}</span>
+                    </li>
+                    <li className="total-price">
+                      Shipping Fee <span>${data.shippingFee}</span>
+                    </li>
+                    <li className="total-price">
+                      Total <span>${data.total}</span>
                     </li>
                   </>
                 </ul>

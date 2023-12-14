@@ -13,6 +13,10 @@ const routes = {
   test: "/test",
   check_out: "/check_out",
   payment: "/payment",
+  invoice: "/invoice",
+  invoice_id: "/invoice/:invoice_id",
+  admin: "/admin",
+  location: "/location",
 };
 
 export default routes;

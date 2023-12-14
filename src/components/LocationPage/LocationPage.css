@@ -1,0 +1,62 @@
+.locationContainer {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+}
+
+.searchContainer {
+  display: flex;
+  flex-direction: column; /* Display the search input and button vertically */
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.searchInputContainer {
+  display: flex;
+  margin-bottom: 5px; /* Adjust margin between input and button */
+}
+
+.searchInput {
+  border-radius: 5px;
+  padding: 8px;
+  margin-right: 5px; /* Adjust margin between input and button */
+}
+
+.searchButton {
+  background-color: #252525;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.getLocationButton {
+  background-color: #e7ab3c;
+  color: white;
+  border: none;
+  padding: 10px 26px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-bottom: 10px;
+  margin-right: 5px;
+}
+.getConfirm {
+  background-color: #e7ab3c;
+  color: white;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.locationInfo {
+  color: #333;
+}
+
+.custom-marker {
+  color: #e74c3c;
+}

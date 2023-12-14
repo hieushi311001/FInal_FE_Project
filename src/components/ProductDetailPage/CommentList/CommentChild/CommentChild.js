@@ -52,7 +52,7 @@ function CommentChild({ id, productId, color }) {
     };
 
     fetchData();
-  }, [id, color, productId]);
+  }, [id, color, productId, reply]);
   const handleLikeClick = (commentId) => {
     if (!userToken) {
       navigate("/login?redirect=true");

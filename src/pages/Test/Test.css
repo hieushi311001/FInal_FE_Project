@@ -1,0 +1,23 @@
+.locationContainer {
+  display: flex;
+  flex-direction: column-reverse; /* Chia layout theo chiều dọc, nút ở trên và label ở dưới */
+  align-items: flex-end; /* Canh lề các thành phần theo chiều ngang */
+}
+
+.getLocationButton {
+  background-color: #e7ab3c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.locationInfo {
+  color: #333;
+}
+.custom-marker {
+  color: #e74c3c; /* Điều chỉnh màu sắc của icon nếu cần */
+}

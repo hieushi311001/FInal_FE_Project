@@ -7,12 +7,11 @@ import { makeRequest, updateCart } from "~/services";
 function PaymentPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { data, invoiceID, method } = location.state || {};
-  const [price, setPrice] = useState(0);
+  const { data, invoiceID, method, total } = location.state || {};
   const [resultData, setResultData] = useState({});
   useEffect(() => {
     const APIdata = {
-      id: 14,
+      id: invoiceID,
       paymentMethod: method,
     };
     const userToken = Cookies.get("jwtToken");
@@ -29,6 +28,7 @@ function PaymentPage() {
         const path = `authen/invoice/onlinePayment`;
         const method = "POST";
         const result = await makeRequest(method, path, APIdata, axiosInstance);
+        console.log(result);
         setResultData(result.content);
       } catch (error) {
         console.error("Error fetching data:", error.message);
@@ -36,11 +36,6 @@ function PaymentPage() {
     };
 
     fetchData();
-
-    const total = data.reduce((acc, product) => {
-      return acc + (product.price * product.quantity || 0); // Đảm bảo price có giá trị và chuyển đổi về số
-    }, 0);
-    setPrice(total);
   }, [invoiceID, method, data]);
   const handlePayment = () => {
     navigate("/");
@@ -48,7 +43,7 @@ function PaymentPage() {
   return (
     <section className="checkout-section spad">
       <div className="container centered-content">
-        <form action="#" className="checkout-form">
+        <form className="checkout-form">
           <div className="col-lg-6">
             <div className="place-order">
               <h4>
@@ -69,7 +64,12 @@ function PaymentPage() {
                             Quantity: {data.quantity}
                           </div>
                           <span className="order-price">
-                            ${(data.price * data.quantity).toFixed(2)}
+                            ${" "}
+                            {(
+                              (data.price -
+                                data.price * (data.discount / 100)) *
+                              data.quantity
+                            ).toFixed(2)}
                           </span>
                         </div>
                       </li>
@@ -89,7 +89,9 @@ function PaymentPage() {
                             Receiver {method} Name{" "}
                             <span>{resultData.receiverInfo.receiverName}</span>
                           </li>
-
+                          <li className="total-price">
+                            Payment Content <span>{resultData.content}</span>
+                          </li>
                           <li className="total-price">
                             Additional Information{" "}
                             <span>
@@ -100,9 +102,8 @@ function PaymentPage() {
                       )}
                     </>
                   )}
-
                   <li className="total-price" style={{ marginBottom: "30px" }}>
-                    Total <span>${price}</span>
+                    Total <span>${total}</span>
                   </li>
                   {method === "COD" && (
                     <span className="total-price">

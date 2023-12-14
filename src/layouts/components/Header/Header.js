@@ -171,6 +171,12 @@ function Header() {
                     </Link>
                     <SmallCart updateCartValue={updateCartValue} />
                   </li>
+                  <li className="heart-icon">
+                    <Link to={`/invoice`}>
+                      <i className="icon_documents_alt"></i>
+                      <span>1</span>
+                    </Link>
+                  </li>
                   <li className="cart-price">$150.00</li>
                 </ul>
               </div>

@@ -76,7 +76,9 @@ function CartPage() {
     }
     return activeIndices.reduce((total, index) => {
       const item = data[index];
-      return total + item.totalPrice * item.quantity;
+      const discountedPrice =
+        item.sellingPrice - item.sellingPrice * (item.discount / 100);
+      return total + discountedPrice * item.quantity;
     }, 0);
   };
   const updateCart = () => {
@@ -136,14 +138,15 @@ function CartPage() {
     const objectListActive = activeItems.map((item) => ({
       id: item.id,
       name: item.name,
-      price: item.totalPrice,
+      price: item.sellingPrice,
       color: item.color,
       size: item.size,
       quantity: item.quantity,
+      discount: item.discount,
     }));
     const dataToSend = objectListActive;
 
-    navigate("/check_out", { state: { data: dataToSend } });
+    navigate("/location", { state: { data: dataToSend } });
   };
   const handleRemove = (Id) => {
     removeFromCart(Id);
@@ -235,8 +238,14 @@ function CartPage() {
                           {data.discount}%
                         </td>
                         <td className="total-price first-row">
-                          ${(data.totalPrice * data.quantity).toFixed(2)}
+                          $
+                          {(
+                            (data.sellingPrice -
+                              data.sellingPrice * (data.discount / 100)) *
+                            data.quantity
+                          ).toFixed(2)}
                         </td>
+
                         <td className="close-td first-row">
                           <i
                             onClick={() => handleRemove(data.id)}
