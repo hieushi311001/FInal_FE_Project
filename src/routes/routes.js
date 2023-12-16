@@ -22,6 +22,10 @@ import InvoiceDetail from "~/pages/InvoiceDetail";
 import Location from "~/pages/Location";
 
 import Admin from "~/pages/Admin";
+import AdminLogin from "~/pages/AdminLogin";
+import AdminUser from "~/pages/AdminUser";
+import AdminUserDetail from "~/pages/AdminUserDetail";
+import AdminProduct from "~/pages/AdminProduct";
 // Public routes
 const publicRoutes = [
   { path: config.routes.test, component: Test, layout: null },
@@ -33,6 +37,11 @@ const publicRoutes = [
   { path: config.routes.login, component: Login, layout: HeaderOnly },
   { path: config.routes.register, component: Register, layout: null },
   { path: config.routes.productdetail, component: Productdetail },
+  {
+    path: config.routes.adminLogin,
+    component: AdminLogin,
+    layout: null,
+  },
 ];
 
 const privateRoutes = [
@@ -72,6 +81,21 @@ const adminRoutes = [
   {
     path: config.routes.admin,
     component: Admin,
+    layout: AdminLayout,
+  },
+  {
+    path: config.routes.adminUser,
+    component: AdminUser,
+    layout: AdminLayout,
+  },
+  {
+    path: config.routes.adminUserDetail,
+    component: AdminUserDetail,
+    layout: AdminLayout,
+  },
+  {
+    path: config.routes.adminProduct,
+    component: AdminProduct,
     layout: AdminLayout,
   },
 ];

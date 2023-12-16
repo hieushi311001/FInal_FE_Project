@@ -8,6 +8,7 @@ import {
 import { publicRoutes, privateRoutes, adminRoutes } from "~/routes";
 import DefaultLayout from "~/layouts";
 import { getDecodedCookie } from "~/services";
+import Cookies from "js-cookie";
 function App() {
   const decodedValue = getDecodedCookie("isLogin");
   return (
@@ -69,15 +70,18 @@ function App() {
             } else if (route.layout === null) {
               Layout = Fragment;
             }
-            console.log("Trên: ", decodedValue);
             return (
               <Route
                 key={index}
                 path={route.path}
                 element={
-                  <Layout>
-                    <Page />
-                  </Layout>
+                  Cookies.get("jwtTokenAdmin") ? (
+                    <Layout>
+                      <Page />
+                    </Layout>
+                  ) : (
+                    <Navigate to="/admin/login" />
+                  )
                 }
               />
             );

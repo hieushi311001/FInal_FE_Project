@@ -43,6 +43,8 @@ const images = {
   momo: require("~/assets/images/momo.png"),
   bank: require("~/assets/images/bank.jpg"),
   tpbank: require("~/assets/images/tpbank.png"),
+  webLogo: require("~/assets/images/app_logo.png"),
+  webLogo1: require("~/assets/images/app_logo1.png"),
 };
 
 export default images;

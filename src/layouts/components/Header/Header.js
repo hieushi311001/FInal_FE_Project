@@ -133,11 +133,15 @@ function Header() {
               <div className="col-lg-2 col-md-2">
                 <div className="logo">
                   <Link to={`/`}>
-                    <img src={images.logo} alt="" />
+                    <img
+                      src={images.webLogo}
+                      style={{ width: "75%", height: "75%" }}
+                      alt=""
+                    />
                   </Link>
                 </div>
               </div>
-              <div className="col-lg-7 col-md-7">
+              <div className="col-lg-7 col-md-7" style={{ paddingTop: "45px" }}>
                 <div className="advanced-search">
                   <button type="button" className="category-btn">
                     All Categories
@@ -156,7 +160,10 @@ function Header() {
                   </div>
                 </div>
               </div>
-              <div className="col-lg-3 text-right col-md-3">
+              <div
+                className="col-lg-3 text-right col-md-3"
+                style={{ paddingTop: "45px" }}
+              >
                 <ul className="nav-right">
                   <li className="heart-icon">
                     <a href={{}}>

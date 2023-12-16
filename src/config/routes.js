@@ -15,8 +15,12 @@ const routes = {
   payment: "/payment",
   invoice: "/invoice",
   invoice_id: "/invoice/:invoice_id",
-  admin: "/admin",
   location: "/location",
+  admin: "/admin",
+  adminLogin: "/admin/login",
+  adminUser: "/admin/user",
+  adminUserDetail: "/admin/user/:user_id",
+  adminProduct: "/admin/product",
 };
 
 export default routes;
