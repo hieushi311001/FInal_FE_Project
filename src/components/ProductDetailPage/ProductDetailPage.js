@@ -10,22 +10,41 @@ import { addToCart } from "~/services";
 import { useNavigate } from "react-router-dom";
 function ProductDetailPage() {
   const navigate = useNavigate();
-  const [value, setValue] = useState(1);
+  const [value, setValue] = useState(0);
   const [data, setData] = useState([]);
   const [imageUrl, setImageUrl] = useState(0);
   const params = useParams();
   const [color, setColor] = useState("none");
   const [selectedSize, setSelectedSize] = useState("none");
-
+  const [size, setSize] = useState([]);
+  const [filterData, setFilterData] = useState([]);
+  const [maxNum, setMaxNum] = useState(0);
   useEffect(() => {
     window.scroll(0, 0);
   }, [params.product_id]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const path = `unauthen/shop/product_id=${params.product_id}`;
+        const path = `unauthen/shop/product_id=${params.product_id}?showFull=false`;
+        const path2 = `unauthen/shop/product_id=${params.product_id}?showFull=true`;
         const method = "GET";
         const result = await makeRequest(method, path);
+        console.log(result);
+        const path1 = `unauthen/shop/productSizeList?productId=${params.product_id}&color=${result.content[0].color}`;
+        const result1 = await makeRequest(method, path1);
+        const result2 = await makeRequest(method, path2);
+
+        const extractedData = result2.content.map(
+          ({ color, size, availableQuantity }) => ({
+            color,
+            size,
+            availableQuantity,
+          })
+        );
+        console.log("check: ", extractedData);
+        setMaxNum(result.content[0].availableQuantity);
+        setFilterData(extractedData);
+        setSize(result1);
         setData(result);
         setColor(result.content[0].color);
       } catch (error) {
@@ -34,7 +53,7 @@ function ProductDetailPage() {
     };
 
     fetchData();
-  }, [params.product_id, selectedSize]);
+  }, [params.product_id]);
 
   if (Object.keys(data).length !== 0) {
     var resultObject = {};
@@ -61,7 +80,7 @@ function ProductDetailPage() {
     );
   }
   const increment = () => {
-    if (value < resultObject.availableQuantity[imageUrl]) {
+    if (value < maxNum) {
       setValue(value + 1);
     }
   };
@@ -97,18 +116,41 @@ function ProductDetailPage() {
     );
   };
   function setSelectedColor({ index, color }) {
+    const fetchData = async () => {
+      try {
+        const method = "GET";
+        const path1 = `unauthen/shop/productSizeList?productId=${params.product_id}&color=${color}`;
+        const result1 = await makeRequest(method, path1);
+        setSize(result1);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    const productFound = filterData.find(
+      (product) => product.color === color && product.size === size
+    );
+    if (productFound) {
+      const quantity = productFound.availableQuantity;
+      console.log(quantity);
+      setMaxNum(quantity);
+    }
+    setValue(0);
+    setSelectedSize("none");
+    fetchData();
     setColor(color);
     setImageUrl(index);
   }
   // console.log("Ảnh active:", imageUrl);
   const handleAddToCartForProduct = () => {
-    console.log(params.product_id, color, selectedSize, value);
-    if (addToCart(params.product_id, color, selectedSize, value)) {
-    } else {
-      navigate("/login");
+    const check = addToCart(params.product_id, color, selectedSize, value);
+    if (check === 0) {
+      console.log("Quantity: ", 0);
+    }
+
+    if (check === 2) {
+      navigate("/login?redirect=true");
     }
   };
-
   return (
     <div>
       <section className="product-shop spad page-details-1">
@@ -187,10 +229,9 @@ function ProductDetailPage() {
                             <input type="radio" id="sm-size" />
                             <label htmlFor="sm-size">s</label>
                           </div> */}
-                        {resultObject.size.map((size, index) => {
+                        {size.content.map((size, index) => {
                           if (
-                            (index === 0 ||
-                              size !== resultObject.size[index - 1]) &&
+                            (index === 0 || size !== size[index - 1]) &&
                             size !== "none"
                           ) {
                             return (
@@ -201,7 +242,18 @@ function ProductDetailPage() {
                                   name="size"
                                   checked={selectedSize === size}
                                   onChange={(e) => {
-                                    e.preventDefault(); // This line is not typically needed for radio buttons
+                                    e.preventDefault();
+                                    const productFound = filterData.find(
+                                      (product) =>
+                                        product.color === color &&
+                                        product.size === size
+                                    );
+                                    if (productFound) {
+                                      const quantity =
+                                        productFound.availableQuantity;
+                                      console.log(quantity);
+                                      setMaxNum(quantity);
+                                    }
                                     setSelectedSize(size);
                                   }}
                                 />

@@ -21,6 +21,9 @@ const routes = {
   adminUser: "/admin/user",
   adminUserDetail: "/admin/user/:user_id",
   adminProduct: "/admin/product",
+  adminProductDetail: "/admin/product/:id_color",
+  adminProductEdit: "/admin/product/edit",
+  adminProductAdd: "/admin/product/add",
 };
 
 export default routes;

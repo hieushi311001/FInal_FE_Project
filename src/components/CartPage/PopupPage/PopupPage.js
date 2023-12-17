@@ -13,6 +13,8 @@ function PopupPage({ isOpen, onClose, product }) {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [value, setValue] = useState(product.quantity);
+  const [maxNum, setMaxNum] = useState(0);
+  const [filterData, setFilterData] = useState([]);
   const [selectedImage, setSelectedImage] = useState({
     name: product.name,
     id: product.id,
@@ -25,10 +27,18 @@ function PopupPage({ isOpen, onClose, product }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const path = `unauthen/shop/product_id=${product.productId}`;
+        const path = `unauthen/shop/product_id=${product.productId}?showFull=true`;
         const method = "GET";
         const result = await makeRequest(method, path);
 
+        const extractedData = result.content.map(
+          ({ color, size, availableQuantity }) => ({
+            color,
+            size,
+            availableQuantity,
+          })
+        );
+        setFilterData(extractedData);
         setData(result.content);
       } catch (error) {
         console.error("Error fetching data:", error.message);
@@ -45,6 +55,14 @@ function PopupPage({ isOpen, onClose, product }) {
     imageColor,
     imageSize
   ) => {
+    const productFound = filterData.find(
+      (product) => product.color === imageColor && product.size === imageSize
+    );
+    if (productFound) {
+      const quantity = productFound.availableQuantity;
+      setMaxNum(quantity);
+    }
+    setValue(0);
     setSelectedImage({
       ...selectedImage,
       name: imageName,
@@ -89,7 +107,7 @@ function PopupPage({ isOpen, onClose, product }) {
   };
 
   const increment = () => {
-    if (value < 20) {
+    if (value < maxNum) {
       setValue(value + 1);
     }
   };
@@ -124,7 +142,7 @@ function PopupPage({ isOpen, onClose, product }) {
             </h6>
             <img
               src={selectedImage.src}
-              style={{ width: "70%", height: "70%" }}
+              style={{ width: "50%", height: "40%" }}
               alt="Selected"
             />
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -162,7 +180,7 @@ function PopupPage({ isOpen, onClose, product }) {
                     {product.id && (
                       <img
                         src={product.image1}
-                        style={{ width: "50%" }}
+                        style={{ width: "20%" }}
                         alt={product.id}
                         onClick={() =>
                           handleImageClick(

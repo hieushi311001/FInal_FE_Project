@@ -125,7 +125,7 @@ function AdminUserPage() {
                     <tr>
                       <th className="text-center">ID</th>
                       <th>User Name</th>
-                      <th className="text-center">Email</th>
+                      <th>Email</th>
                       <th className="text-center">Level</th>
                       <th className="text-center">Status</th>
                       <th className="text-center">Actions</th>
@@ -169,11 +169,8 @@ function AdminUserPage() {
                             </div>
                           </td>
 
-                          <td
-                            className="text-center"
-                            style={{ verticalAlign: "middle" }}
-                          >
-                            info@CodeLean.vn
+                          <td style={{ verticalAlign: "middle" }}>
+                            {data.email}
                           </td>
                           <td
                             className="text-center"

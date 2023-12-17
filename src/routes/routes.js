@@ -26,6 +26,9 @@ import AdminLogin from "~/pages/AdminLogin";
 import AdminUser from "~/pages/AdminUser";
 import AdminUserDetail from "~/pages/AdminUserDetail";
 import AdminProduct from "~/pages/AdminProduct";
+import AdminProductDetail from "~/pages/AdminProductDetail";
+import AdminProductEdit from "~/pages/AdminProductEdit";
+import AdminProductAdd from "~/pages/AdminProductAdd";
 // Public routes
 const publicRoutes = [
   { path: config.routes.test, component: Test, layout: null },
@@ -96,6 +99,21 @@ const adminRoutes = [
   {
     path: config.routes.adminProduct,
     component: AdminProduct,
+    layout: AdminLayout,
+  },
+  {
+    path: config.routes.adminProductDetail,
+    component: AdminProductDetail,
+    layout: AdminLayout,
+  },
+  {
+    path: config.routes.adminProductEdit,
+    component: AdminProductEdit,
+    layout: AdminLayout,
+  },
+  {
+    path: config.routes.adminProductAdd,
+    component: AdminProductAdd,
     layout: AdminLayout,
   },
 ];

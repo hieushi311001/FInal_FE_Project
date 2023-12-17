@@ -7,13 +7,7 @@ import Select from "react-select";
 import { PaginationControl } from "react-bootstrap-pagination-control";
 function AdminProductPage() {
   const [data, setData] = useState({});
-  const [typeUser, setTypeUser] = useState("CUSTOMER");
   const [page, setPage] = useState(1);
-  const options = [
-    { value: "CUSTOMER", label: "CUSTOMER" },
-    { value: "ADMIN", label: "ADMIN" },
-  ];
-  const [selectedOption, setSelectedOption] = useState(options[0]);
   useEffect(() => {
     const userToken = Cookies.get("jwtTokenAdmin");
     const axiosInstance = {
@@ -43,10 +37,6 @@ function AdminProductPage() {
   function capitalizeFirstLetter(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
-  const handleOptionChange = (selectedOption) => {
-    setSelectedOption(selectedOption);
-    setPage(1);
-  };
   return (
     <div className="app-main">
       <div className="app-main__inner">
@@ -57,22 +47,22 @@ function AdminProductPage() {
                 <i className="fa fa-user" />
               </div>
               <div>
-                User
+                Product
                 <div className="page-title-subheading">
                   View, create, update, delete and manage.
                 </div>
               </div>
             </div>
             <div className="page-title-actions">
-              <a
-                href="./user-create.html"
+              <Link
+                to={"/admin/product/add"}
                 className="btn-shadow btn-hover-shine mr-3 btn btn-primary"
               >
                 <span className="btn-icon-wrapper pr-2 opacity-7">
                   <i className="fa fa-plus fa-w-20" />
                 </span>
                 Create
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -95,20 +85,6 @@ function AdminProductPage() {
                         &nbsp; Search
                       </button>
                     </span>
-                    <Select
-                      className="sorting"
-                      options={options}
-                      value={selectedOption}
-                      onChange={handleOptionChange}
-                      styles={{
-                        control: (provided, state) => ({
-                          ...provided,
-                          fontWeight: "bold",
-                          width: "200px",
-                          marginLeft: "15px", // Set a fixed width (you can adjust the value)
-                        }),
-                      }}
-                    ></Select>
                   </div>
                 </form>
                 <div className="btn-actions-pane-right">
@@ -123,10 +99,11 @@ function AdminProductPage() {
                   <thead>
                     <tr>
                       <th className="text-center">ID</th>
-                      <th>User Name</th>
-                      <th className="text-center">Email</th>
-                      <th className="text-center">Level</th>
-                      <th className="text-center">Status</th>
+                      <th>Product Name</th>
+                      <th>Brand</th>
+                      <th className="text-center">Price</th>
+                      <th className="text-center">Discount</th>
+                      <th className="text-center">Quantity</th>
                       <th className="text-center">Actions</th>
                     </tr>
                   </thead>
@@ -151,7 +128,7 @@ function AdminProductPage() {
                                       data-toggle="tooltip"
                                       title="Image"
                                       data-placement="bottom"
-                                      src={`https://drive.google.com/uc?export=view&id=${data.avatar}`}
+                                      src={data.image1}
                                       alt=""
                                     />
                                   </div>
@@ -161,45 +138,40 @@ function AdminProductPage() {
                                   style={{ verticalAlign: "middle" }}
                                 >
                                   <div className="widget-heading">
-                                    {/* {capitalizeFirstLetter(data.userName)} */}
+                                    {data.name}
                                   </div>
                                 </div>
                               </div>
                             </div>
                           </td>
 
-                          <td
-                            className="text-center"
-                            style={{ verticalAlign: "middle" }}
-                          >
-                            info@CodeLean.vn
+                          <td style={{ verticalAlign: "middle" }}>
+                            {capitalizeFirstLetter(data.brand)}
                           </td>
                           <td
                             className="text-center"
                             style={{ verticalAlign: "middle" }}
                           >
-                            {typeUser}
+                            ${data.sellingPrice}
                           </td>
                           <td
                             className="text-center"
                             style={{ verticalAlign: "middle" }}
                           >
-                            {data.status === "ALLOWED" ? (
-                              <div className="badge badge-success">
-                                {data.status}
-                              </div>
-                            ) : (
-                              <div className="badge badge-danger">
-                                {data.status}
-                              </div>
-                            )}
+                            {data.discount}%
+                          </td>
+                          <td
+                            className="text-center"
+                            style={{ verticalAlign: "middle" }}
+                          >
+                            {data.availableQuantity}
                           </td>
                           <td
                             className="text-center"
                             style={{ verticalAlign: "middle" }}
                           >
                             <Link
-                              to={`/admin/user/${data.accountId}`}
+                              to={`/admin/product/${data.productId}_${data.color}`}
                               className="btn btn-hover-shine btn-outline-primary border-0 btn-sm"
                             >
                               Details
