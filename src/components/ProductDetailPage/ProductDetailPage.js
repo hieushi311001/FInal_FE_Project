@@ -142,13 +142,11 @@ function ProductDetailPage() {
   }
   // console.log("Ảnh active:", imageUrl);
   const handleAddToCartForProduct = () => {
-    const check = addToCart(params.product_id, color, selectedSize, value);
-    if (check === 0) {
-      console.log("Quantity: ", 0);
-    }
-
-    if (check === 2) {
-      navigate("/login?redirect=true");
+    if (value !== 0) {
+      if (addToCart(params.product_id, color, selectedSize, value)) {
+      } else {
+        navigate("/login");
+      }
     }
   };
   return (
@@ -253,6 +251,7 @@ function ProductDetailPage() {
                                         productFound.availableQuantity;
                                       console.log(quantity);
                                       setMaxNum(quantity);
+                                      setValue(0);
                                     }
                                     setSelectedSize(size);
                                   }}

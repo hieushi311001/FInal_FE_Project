@@ -7,6 +7,7 @@ import images from "~/assets/images";
 import { makeRequest } from "~/services";
 import SmallCart from "./SmallCart";
 import { useNavigate } from "react-router-dom";
+import PopupPage from "./PopupPage";
 function Header() {
   const [cookieData, setCookieData] = useState({});
   const [userDataExists, setUserDataExists] = useState(false);
@@ -75,8 +76,24 @@ function Header() {
   const updateCartValue = (newValue) => {
     setCartValue(newValue);
   };
+  const [selectedProduct, setSelectedProduct] = useState(false);
+  const openModal = () => {
+    setSelectedProduct(true);
+  };
+
+  // Function to close modal
+  const closeModal = () => {
+    setSelectedProduct(null);
+  };
   return (
     <div>
+      {selectedProduct && (
+        <PopupPage
+          isOpen={!!selectedProduct}
+          onClose={closeModal}
+          product={selectedProduct}
+        />
+      )}
       {/* <div id="preloder">
         <div className="loader"></div>
       </div> */}
@@ -110,6 +127,33 @@ function Header() {
                   <i className="fa fa-user"></i>Login
                 </Link>
               )}
+              <>
+                {/* Hello world */}
+                <div
+                  className="lan-selector"
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    margin: "0px 5px",
+                    paddingTop: "15px",
+                  }}
+                  onClick={() => openModal()}
+                >
+                  <div style={{ margin: "0px 5px" }}>
+                    <div className="fa fa-globe"></div>
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: "Muli, sans-serif",
+                      fontSize: "14px",
+                    }}
+                  >
+                    Translation Tool
+                  </div>
+                </div>
+              </>
               <div className="top-social">
                 <a href={{}}>
                   <i className="ti-facebook"></i>

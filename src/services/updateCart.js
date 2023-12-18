@@ -1,44 +1,36 @@
 import Cookies from "js-cookie";
 import { makeRequest } from "~/services";
 export const addToCart = (id, color, size, quantity) => {
-  if (quantity !== 0) {
-    if (Cookies.get("userData")) {
-      const userToken = Cookies.get("jwtToken");
-      const axiosInstance = {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-          "Content-Type": "application/json",
-        },
-      };
-      const APIdata = {
-        productId: id,
-        color: color,
-        size: size,
-        quantity: quantity,
-      };
-      const fetchData = async () => {
-        try {
-          const path = "authen/cart/add";
-          const method = "POST";
-          const result = await makeRequest(
-            method,
-            path,
-            APIdata,
-            axiosInstance
-          );
-          localStorage.setItem("update", id);
-          console.log(result);
-        } catch (error) {
-          console.error("Error fetching data:", error.message);
-        }
-      };
-      fetchData();
-      return 1;
-    } else {
-      return 2;
-    }
+  if (Cookies.get("userData")) {
+    const userToken = Cookies.get("jwtToken");
+    const axiosInstance = {
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+        "Content-Type": "application/json",
+      },
+    };
+    const APIdata = {
+      productId: id,
+      color: color,
+      size: size,
+      quantity: quantity,
+    };
+    console.log(APIdata);
+    const fetchData = async () => {
+      try {
+        const path = "authen/cart/add";
+        const method = "POST";
+        const result = await makeRequest(method, path, APIdata, axiosInstance);
+        localStorage.setItem("update", id);
+        console.log(result);
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      }
+    };
+    fetchData();
+    return true;
   } else {
-    return 0;
+    return false;
   }
 };
 export const removeFromCart = (id) => {

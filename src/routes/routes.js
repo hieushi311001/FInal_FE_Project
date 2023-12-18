@@ -29,6 +29,8 @@ import AdminProduct from "~/pages/AdminProduct";
 import AdminProductDetail from "~/pages/AdminProductDetail";
 import AdminProductEdit from "~/pages/AdminProductEdit";
 import AdminProductAdd from "~/pages/AdminProductAdd";
+import AdminInvoice from "~/pages/AdminInvoice";
+import AdminInvoiceDetail from "~/pages/AdminInvoiceDetail";
 // Public routes
 const publicRoutes = [
   { path: config.routes.test, component: Test, layout: null },
@@ -115,6 +117,16 @@ const adminRoutes = [
     path: config.routes.adminProductAdd,
     component: AdminProductAdd,
     layout: AdminLayout,
+  },
+  {
+    path: config.routes.adminInvoice,
+    component: AdminInvoice,
+    layout: AdminLayout,
+  },
+  {
+    path: config.routes.adminInvoiceDetail,
+    component: AdminInvoiceDetail,
+    layout: null,
   },
 ];
 

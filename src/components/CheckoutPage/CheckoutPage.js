@@ -77,6 +77,11 @@ function CheckoutPage() {
     e.preventDefault();
     const APIdata = {
       paymentMethod: paymentMethod,
+      fromDistrictId: fromDistrictId,
+      toDistrictId: toDistrictId,
+      fromWardCode: fromWardCode,
+      toWardCode: toWardCode,
+      serviceId: 53320,
     };
     const userToken = Cookies.get("jwtToken");
     const axiosInstance = {

@@ -19,7 +19,7 @@ function InvoicePage() {
       },
       pagination: {
         page: 1,
-        limit: 30,
+        limit: 5,
       },
     };
     const fetchData = async () => {

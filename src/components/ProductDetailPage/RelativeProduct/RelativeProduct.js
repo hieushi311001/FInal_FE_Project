@@ -11,8 +11,7 @@ function RelativeProduct({ productId, color }) {
   const [data, setData] = useState([]);
   useEffect(() => {
     // Define the API endpoint you want to call
-    const apiUrl =
-      "http://ec2-54-79-60-134.ap-southeast-2.compute.amazonaws.com:5000/";
+    const apiUrl = "http://14.225.254.87:5000/";
     const APIdata = {
       product: `${productId}-${color}`,
     };

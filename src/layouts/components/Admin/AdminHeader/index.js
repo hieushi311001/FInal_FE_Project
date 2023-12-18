@@ -86,10 +86,10 @@ function Header() {
                   </Link>
                 </li>
                 <li className="has-submenu">
-                  <a href={{}}>
+                  <Link to={`/admin/invoice`}>
                     <i className="fa fa-edit" />
                     Invoice
-                  </a>
+                  </Link>
                 </li>
                 <li className="has-submenu">
                   <a href={{}}>
