@@ -71,6 +71,8 @@ function LoginPage() {
                     <input
                       type="text"
                       placeholder="Username"
+                      id="username"
+                      autoComplete="username"
                       value={userName}
                       onChange={(e) => setUsername(e.target.value)}
                     />
@@ -80,6 +82,7 @@ function LoginPage() {
                     <input
                       type="password"
                       placeholder="Password"
+                      autoComplete="current-password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                     />
@@ -91,9 +94,9 @@ function LoginPage() {
                         <input type="checkbox" id="save-pass" />
                         <span className="checkmark" />
                       </label>
-                      <a href={{}} className="forget-pass">
+                      <Link to={`/reset_password`} className="forget-pass">
                         Forget your Password
-                      </a>
+                      </Link>
                     </div>
                   </div>
                   <button type="submit" className="site-btn login-btn">

@@ -87,7 +87,7 @@ function PopupPage({ isOpen, onClose }) {
         <div className="modal-body">
           <div className="row">
             <div className="col">
-              <label>
+              <strong>
                 Input Text:
                 <input
                   className="form-control"
@@ -95,10 +95,10 @@ function PopupPage({ isOpen, onClose }) {
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                 />
-              </label>
+              </strong>
             </div>
             <div className="col">
-              <label>
+              <strong>
                 Target Language:
                 <Select
                   value={options.find(
@@ -109,14 +109,31 @@ function PopupPage({ isOpen, onClose }) {
                     setTargetLanguage(selectedOption.value)
                   }
                 />
-              </label>
+              </strong>
             </div>
           </div>
           <br />
           <div>
             <strong>Translated Text: {translatedText}</strong>
           </div>
-          <button className="btn btn-primary" onClick={translateText}>
+          <button
+            className="btn btn-primary"
+            onClick={translateText}
+            style={{
+              marginBottom: "10px",
+              width: "165px",
+              fontSize: "14px",
+              color: "rgb(255, 255, 255)",
+              fontWeight: "700",
+              background: "rgb(231, 171, 60)",
+              padding: "7px 20px 5px",
+              borderRadius: "2px",
+              display: "inline-block",
+              textTransform: "uppercase",
+              border: "10px",
+              cursor: "pointer",
+            }}
+          >
             Translate
           </button>
         </div>

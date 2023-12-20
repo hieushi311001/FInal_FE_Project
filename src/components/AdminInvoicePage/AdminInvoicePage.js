@@ -1,4 +1,4 @@
-import images from "~/assets/images";
+import { parseISO } from "date-fns"; // Import parseISO function
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { makeRequest } from "~/services";
@@ -18,6 +18,9 @@ function AdminInvoicePage() {
     { value: "ACCEPTED", label: "Accepted" },
     { value: "WAITING", label: "Waiting" },
     { value: "REFUSED", label: "Refused" },
+    { value: "ACCEPTANCE_WAITING", label: "Acceptance Waiting" },
+    { value: "PAYMENT_WAITING", label: "Payment Waiting" },
+    { value: "CONFIRMED_ONLINE_PAYMENT", label: "Confirmed Online Payment" },
   ];
   const options2 = [
     { value: "", label: "Payment Status" },
@@ -26,23 +29,34 @@ function AdminInvoicePage() {
   ];
   const options3 = [
     { value: "", label: "Delivery Status" },
-    { value: "SHIPPED", label: "Shipped" },
-    { value: "NOT_SHIPPED", label: "Not Shipped" },
-    { value: "SHIPPING", label: "Shipping" },
-    { value: "CANCEL", label: "Cancel" },
     { value: "ACCEPTANCE_WAITING", label: "Acceptance Waiting" },
     { value: "PACKING", label: "Packing" },
+    { value: "FINISH_PACKING", label: "Finish Packing" },
+    { value: "PAYMENT_WAITING", label: "Payment Waiting" },
+    { value: "SHIPPER_CANCEL", label: "Shipper Cancel" },
+    { value: "NOT_SHIPPED", label: "Not Shipped" },
+    { value: "CUSTOMER_CANCEL", label: "Customer Cancel" },
+    { value: "SHIPPING", label: "Shipping" },
+    { value: "FAILED", label: "Failed" },
   ];
   const options4 = [
     { value: "", label: "Payment Method" },
+    { value: "MOMO", label: "MOMO" },
+    { value: "BANK_TRANSFER", label: "BANK_TRANSFER" },
     { value: "COD", label: "COD" },
-    { value: "VNPAY", label: "VNPAY" },
-    { value: "PAYPAL", label: "PAYPAL" },
   ];
-  const [startInvoiceDate, setStartInvoiceDate] = useState(null);
-  const [endInvoiceDate, setEndInvoiceDate] = useState(null);
-  const [selectedDate1, setSelectedDate1] = useState(null);
-  const [selectedDate2, setSelectedDate2] = useState(null);
+  const today = new Date();
+
+  // Lấy giá trị ngày, tháng và năm
+  const year = today.getFullYear();
+  const month = (today.getMonth() + 1).toString().padStart(2, "0"); // Đảm bảo 2 chữ số cho tháng
+  const day = today.getDate().toString().padStart(2, "0"); // Đảm bảo 2 chữ số cho ngày
+  const formattedDate = `${year}-${month}-${day}`;
+  const defaultDate = parseISO("2023-01-01");
+  const [startInvoiceDate, setStartInvoiceDate] = useState("2023-01-01");
+  const [endInvoiceDate, setEndInvoiceDate] = useState(formattedDate);
+  const [selectedDate1, setSelectedDate1] = useState(defaultDate);
+  const [selectedDate2, setSelectedDate2] = useState(new Date());
   const [selectedOption1, setSelectedOption1] = useState(options1[0]);
   const [selectedOption2, setSelectedOption2] = useState(options2[0]);
   const [selectedOption3, setSelectedOption3] = useState(options3[0]);
@@ -60,7 +74,7 @@ function AdminInvoicePage() {
       filter: {
         adminAcceptance: selectedOption1.value,
         paymentStatus: selectedOption2.value,
-        deliveryStatus: selectedOption3.value,
+        orderStatus: selectedOption3.value,
         startInvoiceDate: startInvoiceDate,
         endInvoiceDate: endInvoiceDate,
         paymentMethod: selectedOption4.value,
@@ -80,7 +94,7 @@ function AdminInvoicePage() {
         const filterData = result.content.map((data) => {
           const formattedDate = format(
             new Date(data.invoiceDate),
-            "HH:mm - dd/MMM/YYY"
+            "dd/MMM/YYY"
           );
 
           return {
@@ -119,9 +133,6 @@ function AdminInvoicePage() {
     setEndInvoiceDate(formattedDate);
     setSelectedDate2(date);
   };
-  function capitalizeFirstLetter(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
   const handleOptionChange1 = (selectedOption) => {
     setSelectedOption1(selectedOption);
     setPage(1);
@@ -148,7 +159,7 @@ function AdminInvoicePage() {
           <div className="page-title-wrapper">
             <div className="page-title-heading">
               <div className="page-title-icon">
-                <i className="fa fa-user" />
+                <i className="fa fa-credit-card" />
               </div>
               <div>
                 Product
@@ -199,6 +210,11 @@ function AdminInvoicePage() {
                     dateFormat="yyyy-MM-dd" // Customize date format as needed
                     placeholderText="Start Invoice Date"
                     className="datepicker"
+                    style={{
+                      border: "1px solid #ccc",
+                      borderRadius: "5px",
+                      padding: "5px",
+                    }}
                   />
                 </div>
                 <div style={{ marginLeft: "48px" }}>
@@ -208,6 +224,11 @@ function AdminInvoicePage() {
                     dateFormat="yyyy-MM-dd" // Customize date format as needed
                     placeholderText="End Invoice Date"
                     className="datepicker"
+                    style={{
+                      border: "1px solid #ccc",
+                      borderRadius: "5px",
+                      padding: "5px",
+                    }}
                   />
                 </div>
               </div>
@@ -275,7 +296,9 @@ function AdminInvoicePage() {
                     }),
                   }}
                 ></Select>
-                <button onClick={handleClick}>Return default</button>
+                <button onClick={handleClick} className="btn btn-primary">
+                  Return default
+                </button>
               </div>
               <div className="table-responsive-1">
                 <table className="align-middle mb-0 table table-borderless table-striped table-hover">
@@ -328,7 +351,7 @@ function AdminInvoicePage() {
                             style={{ verticalAlign: "middle" }}
                           >
                             <Link
-                              to={`/admin/invoice/${data.id}`}
+                              to={`/admin/invoice/${data.id}_${data.paymentMethod}`}
                               className="btn btn-hover-shine btn-outline-primary border-0 btn-sm"
                             >
                               Details

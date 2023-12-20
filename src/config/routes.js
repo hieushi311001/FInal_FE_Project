@@ -8,6 +8,8 @@ const routes = {
   search: "/search",
   login: "/login",
   register: "/register",
+  forgetPass: "/reset_password",
+
   productdetail: "/product/:product_id",
   cart: "/cart",
   test: "/test",

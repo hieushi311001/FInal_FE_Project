@@ -11,6 +11,7 @@ import Upload from "~/pages/Upload";
 import Search from "~/pages/Search";
 import Login from "~/pages/Login";
 import Register from "~/pages/Register";
+import ForgetPass from "~/pages/ForgetPass";
 import Productdetail from "~/pages/Productdetail";
 import Shop from "~/pages/Shop";
 import Cart from "~/pages/Cart";
@@ -39,8 +40,9 @@ const publicRoutes = [
   { path: config.routes.following, component: Following },
   { path: config.routes.upload, component: Upload, layout: HeaderOnly },
   { path: config.routes.search, component: Search },
-  { path: config.routes.login, component: Login, layout: HeaderOnly },
+  { path: config.routes.login, component: Login, layout: null },
   { path: config.routes.register, component: Register, layout: null },
+  { path: config.routes.forgetPass, component: ForgetPass, layout: null },
   { path: config.routes.productdetail, component: Productdetail },
   {
     path: config.routes.adminLogin,

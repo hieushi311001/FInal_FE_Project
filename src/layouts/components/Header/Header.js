@@ -12,7 +12,21 @@ function Header() {
   const [cookieData, setCookieData] = useState({});
   const [userDataExists, setUserDataExists] = useState(false);
   const [cartValue, setCartValue] = useState(0);
+  const [category, setCategory] = useState({});
   const navigate = useNavigate();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const path = "unauthen/category/allCategories";
+        const method = "GET";
+        const result = await makeRequest(method, path, null);
+        setCategory(result.content);
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      }
+    };
+    fetchData();
+  }, []);
   useEffect(() => {
     const userToken = Cookies.get("jwtToken");
     const axiosInstance = {
@@ -21,7 +35,6 @@ function Header() {
         "Content-Type": "application/json",
       },
     };
-
     const checkCookie = () => {
       if (!Cookies.get("userData")) {
         const fetchData = async () => {
@@ -209,12 +222,6 @@ function Header() {
                 style={{ paddingTop: "45px" }}
               >
                 <ul className="nav-right">
-                  <li className="heart-icon">
-                    <a href={{}}>
-                      <i className="icon_heart_alt"></i>
-                      <span>1</span>
-                    </a>
-                  </li>
                   <li className="cart-icon">
                     <Link to={`/cart`}>
                       <i className="icon_bag_alt"></i>
@@ -228,7 +235,9 @@ function Header() {
                       <span>1</span>
                     </Link>
                   </li>
-                  <li className="cart-price">$150.00</li>
+                  <li className="cart-price" style={{ visibility: "hidden" }}>
+                    $150.00
+                  </li>
                 </ul>
               </div>
             </div>
@@ -239,32 +248,17 @@ function Header() {
             <div className="nav-depart">
               <div className="depart-btn">
                 <i className="ti-menu"></i>
-                <span>All departments</span>
+                <span>All Categories</span>
                 <ul className="depart-hover">
-                  <li className="active">
-                    <a href={{}}>Women’s Clothing</a>
-                  </li>
-                  <li>
-                    <a href={{}}>Men’s Clothing</a>
-                  </li>
-                  <li>
-                    <a href={{}}>Underwear</a>
-                  </li>
-                  <li>
-                    <a href={{}}>Kid's Clothing</a>
-                  </li>
-                  <li>
-                    <a href={{}}>Brand Fashion</a>
-                  </li>
-                  <li>
-                    <a href={{}}>Accessories/Shoes</a>
-                  </li>
-                  <li>
-                    <a href={{}}>Luxury Brands</a>
-                  </li>
-                  <li>
-                    <a href={{}}>Brand Outdoor Apparel</a>
-                  </li>
+                  {Object.keys(category).length !== 0 && (
+                    <ul>
+                      {category.map((categoryItem, index) => (
+                        <li key={index}>
+                          <a href={{}}>{categoryItem.name}</a>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </ul>
               </div>
             </div>

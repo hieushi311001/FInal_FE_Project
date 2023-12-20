@@ -16,6 +16,8 @@ function Header() {
         };
         const path = `authen/systemAuthentication/logout`;
         const method = "GET";
+        Cookies.remove("jwtTokenAdmin");
+        Cookies.remove("userDataAdmin");
         await makeRequest(method, path, null, axiosInstance);
         window.location.href = "/admin/login";
       } catch (error) {
@@ -52,12 +54,12 @@ function Header() {
               </li>
             </ul>
             <div className="logo-box-1">
-              <a href="index.html" className="logo-1 text-center logo-light">
+              <Link to={"/admin"} className="logo-1 text-center logo-light">
                 <span className="logo-lg">
                   <img src={images.webLogo1} alt="" height={70} />
                   {/* <span class="logo-lg-text-light">Codefox</span> */}
                 </span>
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -69,38 +71,38 @@ function Header() {
               <ul className="navigation-menu">
                 <li className="has-submenu">
                   <Link to={`/admin`}>
-                    <i className="fa fa-edit" />
+                    <i className="fa fa-home " />
                     Home
                   </Link>
                 </li>
                 <li className="has-submenu">
                   <Link to={`/admin/user`}>
-                    <i className="fa fa-edit" />
+                    <i className="fa fa-user-circle-o " />
                     User
                   </Link>
                 </li>
                 <li className="has-submenu">
                   <Link to={`/admin/product`}>
-                    <i className="fa fa-edit" />
+                    <i className="fa fa-shopping-bag " />
                     Product
                   </Link>
                 </li>
                 <li className="has-submenu">
                   <Link to={`/admin/invoice`}>
-                    <i className="fa fa-edit" />
+                    <i className="fa fa-credit-card" />
                     Invoice
                   </Link>
                 </li>
                 <li className="has-submenu">
                   <a href={{}}>
                     {" "}
-                    <i className="fa fa-edit" />
+                    <i className="fa fa-history" />
                     Refund History
                   </a>
                 </li>
                 <li className="has-submenu">
                   <button onClick={handleLogout}>
-                    <i className="fa fa-edit" />
+                    <i className="fa fa-sign-out" />
                     Logout
                   </button>
                 </li>

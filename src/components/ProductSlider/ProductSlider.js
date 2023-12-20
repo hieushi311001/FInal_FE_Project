@@ -22,7 +22,7 @@ const ProductSlider = ({
   return (
     <div className="product-item" key={key}>
       <div className="pi-pic-1">
-        <img src={image} alt="" />
+        <img src={image} alt="" style={{ width: "284px", height: "284px" }} />
         {discount !== 0 && <div className="sale">{discount}%</div>}
         <div className="icon">
           <i className="icon_heart_alt" />

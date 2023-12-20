@@ -44,7 +44,7 @@ function AdminProductPage() {
           <div className="page-title-wrapper">
             <div className="page-title-heading">
               <div className="page-title-icon">
-                <i className="fa fa-user" />
+                <i className="fa fa-shopping-bag" />
               </div>
               <div>
                 Product

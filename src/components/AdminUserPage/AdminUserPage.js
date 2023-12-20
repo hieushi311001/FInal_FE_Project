@@ -55,7 +55,7 @@ function AdminUserPage() {
           <div className="page-title-wrapper">
             <div className="page-title-heading">
               <div className="page-title-icon">
-                <i className="fa fa-user" />
+                <i className="fa fa-user-circle-o" />
               </div>
               <div>
                 User

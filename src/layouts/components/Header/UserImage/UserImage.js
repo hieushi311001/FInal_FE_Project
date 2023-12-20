@@ -61,10 +61,6 @@ function UserImage({ accountId, name, avatar }) {
             {/* <Link to={`/login`} className="login-panel">
               <i className="fa fa-user"></i>Login
             </Link> */}
-            <a className="dropdown-item" href={{}}>
-              <i className="fa fa-cog"></i>
-              Settings
-            </a>
             <div className="dropdown-divider"></div>
             <button className="dropdown-item" onClick={handleLogout}>
               <i className="fa fa-sign-out"></i>

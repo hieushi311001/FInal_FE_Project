@@ -5,22 +5,27 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 function AdminInvoiceDetailPage() {
   const params = useParams();
+  console.log(params);
+  const match = params.invoice_id.match(/^(\d+)_([A-Za-z]+)$/);
+  const id = match[1]; // Giá trị số
+  const method = match[2]; // Chuỗi
   const [data, setData] = useState({});
   const navigate = useNavigate();
   const [price, setPrice] = useState(0);
   const [adminAction, setAdminAction] = useState("");
   const userToken = Cookies.get("jwtTokenAdmin");
   const [yourTextBoxValue, setYourTextBoxValue] = useState("");
-  const axiosInstance = {
-    headers: {
-      Authorization: `Bearer ${userToken}`,
-      "Content-Type": "application/json",
-    },
-  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const path = `authen/invoice/invoice_id=${params.invoice_id}`;
+        const axiosInstance = {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+            "Content-Type": "application/json",
+          },
+        };
+        const path = `authen/invoice/invoice_id=${id}`;
         const method = "GET";
         const result = await makeRequest(method, path, null, axiosInstance);
         const total = result.content.reduce((acc, product) => {
@@ -35,7 +40,7 @@ function AdminInvoiceDetailPage() {
     };
 
     fetchData();
-  }, [params.invoice_id, userToken]);
+  }, [id, userToken]);
   const handleTextBoxChange = (event) => {
     setYourTextBoxValue(event.target.value);
   };
@@ -47,14 +52,23 @@ function AdminInvoiceDetailPage() {
     setAdminAction(event.target.value);
     setYourTextBoxValue("");
   };
-  const handleReturn = () => {};
+  const handleReturn = () => {
+    navigate("/admin/invoice");
+  };
   const handleConfirm = (e) => {
     const fetchData = async () => {
+      const axiosInstance = {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+          "Content-Type": "application/json",
+        },
+      };
       const APIdata = {
-        id: params.invoice_id,
+        id: id,
         // reason: yourTextBoxValue,
         adminAction: adminAction,
       };
+      console.log(APIdata);
       try {
         const path = `authen/invoice/processOrder`;
         const method = "POST";
@@ -114,47 +128,79 @@ function AdminInvoiceDetailPage() {
                       alignItems: "baseline",
                     }}
                   >
-                    <input
-                      type="radio"
-                      id="pc-momo1"
-                      name="paymentMethod"
-                      value="ACCEPTED"
-                      checked={adminAction === "ACCEPTED"}
-                      onChange={handleUserStatus}
-                    />
-                    <label style={{ marginLeft: "5px" }}>Accepted</label>
+                    {method === "COD" ? (
+                      <>
+                        <input
+                          type="radio"
+                          id="pc-momo1"
+                          name="paymentMethod"
+                          value="ACCEPTED"
+                          checked={adminAction === "ACCEPTED"}
+                          onChange={handleUserStatus}
+                        />
+                        <label style={{ marginLeft: "5px" }}>Accepted</label>
 
-                    <input
-                      type="radio"
-                      id="pc-momo2"
-                      name="paymentMethod"
-                      value="REFUSED"
-                      checked={adminAction === "REFUSED"}
-                      onChange={handleUserStatus}
-                    />
-                    <label style={{ marginLeft: "5px" }}>Refused</label>
+                        <input
+                          type="radio"
+                          id="pc-momo2"
+                          name="paymentMethod"
+                          value="REFUSED"
+                          checked={adminAction === "REFUSED"}
+                          onChange={handleUserStatus}
+                        />
+                        <label style={{ marginLeft: "5px" }}>Refused</label>
 
-                    <input
-                      type="radio"
-                      id="pc-momo3"
-                      name="paymentMethod"
-                      value="CONFIRMED_ONLINE_PAYMENT"
-                      checked={adminAction === "CONFIRMED_ONLINE_PAYMENT"}
-                      onChange={handleUserStatus}
-                    />
-                    <label style={{ marginLeft: "5px" }}>
-                      Confirm Online Payment
-                    </label>
+                        <input
+                          type="radio"
+                          id="pc-momo3"
+                          name="paymentMethod"
+                          value="CONFIRMED_ONLINE_PAYMENT"
+                          checked={adminAction === "CONFIRMED_ONLINE_PAYMENT"}
+                          onChange={handleUserStatus}
+                        />
+                        <label style={{ marginLeft: "5px" }}>
+                          Confirm Online Payment
+                        </label>
 
-                    <input
-                      type="radio"
-                      id="pc-momo4"
-                      name="paymentMethod"
-                      value="FINISH_PACKING"
-                      checked={adminAction === "FINISH_PACKING"}
-                      onChange={handleUserStatus}
-                    />
-                    <label style={{ marginLeft: "5px" }}>Finish Packing</label>
+                        <input
+                          type="radio"
+                          id="pc-momo4"
+                          name="paymentMethod"
+                          value="FINISH_PACKING"
+                          checked={adminAction === "FINISH_PACKING"}
+                          onChange={handleUserStatus}
+                        />
+                        <label style={{ marginLeft: "5px" }}>
+                          Finish Packing
+                        </label>
+                      </>
+                    ) : (
+                      <>
+                        <input
+                          type="radio"
+                          id="pc-momo3"
+                          name="paymentMethod"
+                          value="CONFIRMED_ONLINE_PAYMENT"
+                          checked={adminAction === "CONFIRMED_ONLINE_PAYMENT"}
+                          onChange={handleUserStatus}
+                        />
+                        <label style={{ marginLeft: "5px" }}>
+                          Confirm Online Payment
+                        </label>
+
+                        <input
+                          type="radio"
+                          id="pc-momo4"
+                          name="paymentMethod"
+                          value="FINISH_PACKING"
+                          checked={adminAction === "FINISH_PACKING"}
+                          onChange={handleUserStatus}
+                        />
+                        <label style={{ marginLeft: "5px" }}>
+                          Finish Packing
+                        </label>
+                      </>
+                    )}
                   </div>
                 </div>
               </ul>
