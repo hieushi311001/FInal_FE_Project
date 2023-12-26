@@ -12,7 +12,7 @@ function RelativeProduct({ productId, color }) {
   useEffect(() => {
     // Define the API endpoint you want to call
     // const apiUrl = "http://127.0.0.1:5000/recommendResults";
-    const apiUrl = "http://14.225.254.87:5000/recommendResults";
+    const apiUrl = "https://d47a-14-225-254-87.ngrok-free.app/recommendResults";
     const APIdata = {
       product: `${productId}-${color}`,
     };
