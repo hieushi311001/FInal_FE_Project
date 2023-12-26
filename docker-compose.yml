@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  # Development Environment
+  chatbot-fe:
+    image: node:16-alpine
+    container_name: fe-container
+    working_dir: /app
+    volumes:
+      - ./:/app
+    ports:
+      - "3000:3000"
+    command: sh -c "npm install -f && npm start"
