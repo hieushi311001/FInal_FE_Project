@@ -11,7 +11,8 @@ function RelativeProduct({ productId, color }) {
   const [data, setData] = useState([]);
   useEffect(() => {
     // Define the API endpoint you want to call
-    const apiUrl = "http://127.0.0.1:5000/recommendResults";
+    // const apiUrl = "http://127.0.0.1:5000/recommendResults";
+    const apiUrl = "http://14.225.254.87:5000/recommendResults";
     const APIdata = {
       product: `${productId}-${color}`,
     };
