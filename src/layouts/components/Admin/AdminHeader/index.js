@@ -83,8 +83,14 @@ function Header() {
                 </li>
                 <li className="has-submenu">
                   <Link to={`/admin/product`}>
-                    <i className="fa fa-shopping-bag " />
+                    <i className="fa fa-shopping-bag" />
                     Product
+                  </Link>
+                </li>
+                <li className="has-submenu">
+                  <Link to={`/admin/category`}>
+                    <i className="fa fa-suitcase" />
+                    Category
                   </Link>
                 </li>
                 <li className="has-submenu">
@@ -94,11 +100,10 @@ function Header() {
                   </Link>
                 </li>
                 <li className="has-submenu">
-                  <a href={{}}>
-                    {" "}
+                  <Link to={`/admin/refund`}>
                     <i className="fa fa-history" />
                     Refund History
-                  </a>
+                  </Link>
                 </li>
                 <li className="has-submenu">
                   <button onClick={handleLogout}>

@@ -48,7 +48,7 @@ function PopupPage({ isOpen, onClose }) {
     label: (
       <div key={lang.id}>
         <img
-          src={lang.flagImage}
+          src={`/${lang.flagImage}`}
           alt={lang.name}
           style={{ width: "10%", height: "10%" }}
           className="select-icon"

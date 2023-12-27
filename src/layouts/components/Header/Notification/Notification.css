@@ -1,0 +1,3 @@
+.notification-list span {
+  font-size: 12px; /* Kích thước chữ nhỏ hơn cho notificationDate */
+}

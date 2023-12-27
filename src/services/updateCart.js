@@ -1,5 +1,6 @@
 import Cookies from "js-cookie";
 import { makeRequest } from "~/services";
+import { showSuccessNotification, showErrorNotification } from "~/services";
 export const addToCart = (id, color, size, quantity) => {
   if (Cookies.get("userData")) {
     const userToken = Cookies.get("jwtToken");
@@ -22,6 +23,10 @@ export const addToCart = (id, color, size, quantity) => {
         const method = "POST";
         const result = await makeRequest(method, path, APIdata, axiosInstance);
         localStorage.setItem("update", id);
+        showSuccessNotification(
+          "Success!",
+          "The product has been added to cart"
+        );
         console.log(result);
       } catch (error) {
         console.error("Error fetching data:", error.message);

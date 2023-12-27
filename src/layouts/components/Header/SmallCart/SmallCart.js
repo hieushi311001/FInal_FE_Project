@@ -59,7 +59,7 @@ function SmallCart({ updateCartValue }) {
 
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
-  }, [prevLocalStorageState]);
+  }, [prevLocalStorageState, updateCartValue]);
   localStorage.setItem("update", 0);
   return (
     <div className="cart-hover">
