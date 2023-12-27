@@ -6,6 +6,7 @@ const images = {
   selectproduct2: require("~/assets/images/select-product-2.jpg"),
   hero1: require("~/assets/images/hero-1.jpg"),
   hero2: require("~/assets/images/hero-2.jpg"),
+  homeImage: require("~/assets/images/home.jpg"),
   banner1: require("~/assets/images/banner-1.jpg"),
   banner2: require("~/assets/images/banner-2.jpg"),
   banner3: require("~/assets/images/banner-3.jpg"),

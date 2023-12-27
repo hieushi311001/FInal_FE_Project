@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { makeRequest } from "~/services";
-import { encodeAndSetCookie } from "~/services";
+import { encodeAndSetCookie, initializeMessaging } from "~/services";
 import "./UserImage.css";
 function UserImage({ accountId, name, avatar }) {
   const navigate = useNavigate();
@@ -24,18 +24,18 @@ function UserImage({ accountId, name, avatar }) {
       try {
         const path = "/authen/systemAuthentication/logout";
         const method = "GET";
-        const result = await makeRequest(method, path, null, axiosInstance);
-        console.log(result);
+        await makeRequest(method, path, null, axiosInstance);
+        const userDataCookie = Cookies.get("userData");
+        const storedUserData = JSON.parse(userDataCookie);
+        initializeMessaging(storedUserData.userName);
+        encodeAndSetCookie("isLogin", "LoginFalse");
+        Cookies.remove("userData");
+        Cookies.remove("jwtToken");
       } catch (error) {
         console.error("Error fetching data:", error.message);
       }
     };
     fetchData();
-    encodeAndSetCookie("isLogin", "LoginFalse");
-    Cookies.remove("userData");
-    Cookies.remove("jwtToken");
-    // navigate("/");
-    window.location.href = "/";
   };
   return (
     <div>

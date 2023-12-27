@@ -7,11 +7,13 @@ import images from "~/assets/images";
 import { makeRequest } from "~/services";
 import SmallCart from "./SmallCart";
 import { useNavigate } from "react-router-dom";
+import Notification from "./Notification";
 import PopupPage from "./PopupPage";
 function Header() {
   const [cookieData, setCookieData] = useState({});
   const [userDataExists, setUserDataExists] = useState(false);
   const [cartValue, setCartValue] = useState(0);
+  const [notifiValue, setNotifiValue] = useState(0);
   const [category, setCategory] = useState({});
   const navigate = useNavigate();
   useEffect(() => {
@@ -89,6 +91,9 @@ function Header() {
   const updateCartValue = (newValue) => {
     setCartValue(newValue);
   };
+  const updateNotifiValue = (newValue) => {
+    setNotifiValue(newValue);
+  };
   const [selectedProduct, setSelectedProduct] = useState(false);
   const openModal = () => {
     setSelectedProduct(true);
@@ -116,11 +121,11 @@ function Header() {
             <div className="ht-left">
               <div className="mail-service">
                 <i className=" fa fa-envelope"></i>
-                hello.colorlib@gmail.com
+                foolishfashionstoreofficial@gmail.com
               </div>
               <div className="phone-service">
                 <i className=" fa fa-phone"></i>
-                +65 11.188.888
+                +84 977.815.809
               </div>
             </div>
             <div className="ht-right">
@@ -223,6 +228,14 @@ function Header() {
               >
                 <ul className="nav-right">
                   <li className="cart-icon">
+                    <Link to={`/invoice`}>
+                      <i className="fa fa-bell-o"></i>
+                      <span>{notifiValue}</span>
+                    </Link>
+                    <Notification updateNotifiValue={updateNotifiValue} />
+                  </li>
+
+                  <li className="cart-icon">
                     <Link to={`/cart`}>
                       <i className="icon_bag_alt"></i>
                       <span>{cartValue}</span>
@@ -232,7 +245,6 @@ function Header() {
                   <li className="heart-icon">
                     <Link to={`/invoice`}>
                       <i className="icon_documents_alt"></i>
-                      <span>1</span>
                     </Link>
                   </li>
                   <li className="cart-price" style={{ visibility: "hidden" }}>

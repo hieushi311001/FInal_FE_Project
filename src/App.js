@@ -9,6 +9,8 @@ import { publicRoutes, privateRoutes, adminRoutes } from "~/routes";
 import DefaultLayout from "~/layouts";
 import { getDecodedCookie } from "~/services";
 import Cookies from "js-cookie";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function App() {
   const decodedValue = getDecodedCookie("isLogin");
   return (
@@ -87,6 +89,7 @@ function App() {
             );
           })}
         </Routes>
+        <ToastContainer position="top-right" />
       </div>
     </Router>
   );

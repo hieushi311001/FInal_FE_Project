@@ -18,29 +18,30 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const messaging = getMessaging(firebaseApp);
 
-export const getToken = (setTokenFound) => {
-  return getMessagingToken(messaging, {
-    vapidKey:
-      "BFrIMEXZoFPcJI4YFlc6w66mH-pXAkll6w5kBjRqVE1-QodRpRwztazNfDCcK5rDnEAHnZldVqTBrKEt1wX8Odg",
-  })
-    .then((currentToken) => {
-      if (currentToken) {
-        console.log("current token for client: ", currentToken);
-        setTokenFound(true);
-        // Track the token -> client mapping, by sending to backend server
-        // show on the UI that permission is secured
-      } else {
-        console.log(
-          "No registration token available. Request permission to generate one."
-        );
-        setTokenFound(false);
-        // shows on the UI that permission is required
-      }
+export const getToken = () => {
+  return new Promise((resolve, reject) => {
+    getMessagingToken(messaging, {
+      vapidKey:
+        "BFrIMEXZoFPcJI4YFlc6w66mH-pXAkll6w5kBjRqVE1-QodRpRwztazNfDCcK5rDnEAHnZldVqTBrKEt1wX8Odg",
     })
-    .catch((err) => {
-      console.log("An error occurred while retrieving token. ", err);
-      // catch error while creating client token
-    });
+      .then((currentToken) => {
+        if (currentToken) {
+          console.log("Current token for client:", currentToken);
+          resolve(currentToken);
+        } else {
+          console.log(
+            "No registration token available. Request permission to generate one."
+          );
+          reject(new Error("No registration token available."));
+          // Show on the UI that permission is required
+        }
+      })
+      .catch((err) => {
+        console.log("An error occurred while retrieving the token. ", err);
+        reject(err);
+        // Catch errors while creating the client token
+      });
+  });
 };
 
 export const onMessage = (callback) => {

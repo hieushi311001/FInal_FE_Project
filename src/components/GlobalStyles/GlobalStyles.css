@@ -4625,3 +4625,43 @@ ol {
     padding-right: 15px;
   }
 }
+/* YourToastStyles.css */
+
+.Toastify__toast {
+  font-family: "Poppins", sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+  position: relative;
+  padding: 10px;
+  color: #fff;
+  margin-bottom: 10px;
+  width: 300px;
+  display: grid;
+  grid-template-columns: 275px 1fr 70px;
+  border-radius: 5px;
+  color: #00ff37;
+  background-image: linear-gradient(to right, #0abf3055, #22242f 30%);
+}
+
+.Toastify__toast--error {
+  color: #ff0000;
+  background-image: linear-gradient(to right, #f24d4c55, #22242f 30%);
+}
+.Toastify__toast--warning {
+  color: #ffcc00;
+  background-image: linear-gradient(to right, #e9bd0c55, #22242f 30%);
+}
+.Toastify__toast--info {
+  color: #0099ff;
+  background-image: linear-gradient(to right, #3498db55, #22242f 30%);
+}
+/* ToastStyles.css */
+
+.Toastify__close-button {
+  color: #ffffff;
+  font-size: 14px;
+  padding: 6px 10px;
+  position: absolute;
+  top: 8px; /* điều chỉnh vị trí từ trên xuống */
+  right: 8px; /* điều chỉnh vị trí từ phải sang trái */
+}
