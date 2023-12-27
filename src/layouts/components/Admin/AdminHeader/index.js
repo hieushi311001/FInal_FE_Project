@@ -1,7 +1,7 @@
 import images from "~/assets/images";
 import "./AdminHeader.css";
 import Cookies from "js-cookie";
-import { makeRequest } from "~/services";
+import { makeRequest, initializeMessaging } from "~/services";
 import { Link } from "react-router-dom";
 function Header() {
   const handleLogout = () => {
@@ -16,9 +16,12 @@ function Header() {
         };
         const path = `authen/systemAuthentication/logout`;
         const method = "GET";
+        const userDataCookie = Cookies.get("userDataAdmin");
+        const storedUserData = JSON.parse(userDataCookie);
+        await makeRequest(method, path, null, axiosInstance);
+        initializeMessaging(storedUserData.userName);
         Cookies.remove("jwtTokenAdmin");
         Cookies.remove("userDataAdmin");
-        await makeRequest(method, path, null, axiosInstance);
         window.location.href = "/admin/login";
       } catch (error) {
         console.error("Error fetching data:", error.message);

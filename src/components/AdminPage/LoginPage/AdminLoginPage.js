@@ -1,6 +1,6 @@
 import "./AdminLoginPage.css";
 import images from "~/assets/images";
-import { makeRequest } from "~/services";
+import { makeRequest, initializeMessaging } from "~/services";
 import { useState } from "react";
 import Cookies from "js-cookie";
 function AdminLoginPage() {
@@ -15,9 +15,10 @@ function AdminLoginPage() {
       const result = await makeRequest(method, path, params);
       console.log(result);
       if (result.result === "success" && result.content.userName === "admin") {
+        const topic = result.content.userName;
+        initializeMessaging(topic, "subscribe");
         Cookies.set("jwtTokenAdmin", result.message); // Set an expiration date
         Cookies.set("userDataAdmin", JSON.stringify(result.content));
-        window.location.reload();
         window.location.href = "/admin";
       }
     } catch (error) {
