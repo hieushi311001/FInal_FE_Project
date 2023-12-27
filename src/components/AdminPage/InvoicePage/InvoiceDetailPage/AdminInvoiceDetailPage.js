@@ -52,7 +52,7 @@ function AdminInvoiceDetailPage() {
   const handleReturn = () => {
     navigate("/admin/invoice");
   };
-  const handleConfirm = (e) => {
+  const handleConfirm = () => {
     const fetchData = async () => {
       const axiosInstance = {
         headers: {
@@ -199,6 +199,15 @@ function AdminInvoiceDetailPage() {
                         <label style={{ marginLeft: "5px" }}>
                           Finish Packing
                         </label>
+                        <input
+                          type="radio"
+                          id="pc-momo4"
+                          name="paymentMethod"
+                          value="PACKING"
+                          checked={adminAction === "PACKING"}
+                          onChange={handleUserStatus}
+                        />
+                        <label style={{ marginLeft: "5px" }}>Packing</label>
                       </>
                     )}
                   </div>
