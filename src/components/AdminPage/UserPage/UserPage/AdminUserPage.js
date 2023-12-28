@@ -134,7 +134,7 @@ function AdminUserPage() {
                   <tbody>
                     {Object.keys(data).length !== 0 &&
                       data.map((data, index) => (
-                        <tr>
+                        <tr key={index}>
                           <td
                             className="text-center text-muted"
                             style={{ verticalAlign: "middle" }}

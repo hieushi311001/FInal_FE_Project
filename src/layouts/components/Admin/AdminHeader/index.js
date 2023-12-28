@@ -3,7 +3,15 @@ import "./AdminHeader.css";
 import Cookies from "js-cookie";
 import { makeRequest, initializeMessaging } from "~/services";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 function Header() {
+  useEffect(() => {
+    const userDataCookie = Cookies.get("userDataAdmin");
+    if (userDataCookie) {
+      const storedUserData = JSON.parse(userDataCookie);
+      initializeMessaging(storedUserData.userName, "subscribe");
+    }
+  }, []);
   const handleLogout = () => {
     const fetchData = async () => {
       try {
@@ -98,7 +106,7 @@ function Header() {
                 </li>
                 <li className="has-submenu">
                   <Link to={`/admin/invoice`}>
-                    <i className="fa fa-credit-card" />
+                    <i className="fa fa-credit-card-alt" />
                     Invoice
                   </Link>
                 </li>
@@ -107,6 +115,12 @@ function Header() {
                     <i className="fa fa-history" />
                     Refund History
                   </Link>
+                </li>
+                <li className="has-submenu">
+                  <a href="https://sso.ghn.dev/v2/ssoLogin?app=import&returnUrl=http://5sao.ghn.dev/sso-login?token=">
+                    <i className="fa fa-truck" />
+                    GHN Shipping Order
+                  </a>
                 </li>
                 <li className="has-submenu">
                   <button onClick={handleLogout}>

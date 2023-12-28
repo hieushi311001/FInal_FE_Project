@@ -2,10 +2,51 @@ import "./ProfilePage.css";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import EditProfile from "./EditProfile";
+import { makeRequest } from "~/services";
+import { useNavigate } from "react-router-dom";
 function ProfilePage() {
+  const navigate = useNavigate();
   const [cookieData, setCookieData] = useState({});
   const [isChecked, setIsChecked] = useState(true);
-
+  const [changePass, setChangePass] = useState(false);
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const handleOldPassChange = (event) => {
+    // Update the password state with the new input value
+    setOldPassword(event.target.value);
+  };
+  const handleNewPassChange = (event) => {
+    // Update the password state with the new input value
+    setNewPassword(event.target.value);
+  };
+  const handleSave = (e) => {
+    e.preventDefault();
+    // Gửi dữ liệu formData đến API ở đây (sử dụng fetch hoặc axios).
+    // Ví dụ:
+    const userToken = Cookies.get("jwtToken");
+    const options = {
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+        "Content-Type": "application/json",
+        // Các tiêu đề khác nếu cần
+      },
+    };
+    const fetchData = async () => {
+      try {
+        const path = `authen/systemAuthentication/changePassword?oldPassword=${oldPassword}&newPassword=${newPassword}`;
+        const method = "GET";
+        const result = await makeRequest(method, path, null, options);
+        console.log(result);
+        navigate(0);
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      }
+    };
+    fetchData();
+  };
+  const handleChangePasword = () => {
+    setChangePass(!changePass); // Khi nút được bấm, đảo ngược giá trị của biến isChecked.
+  };
   const handleButtonClick = () => {
     setIsChecked(!isChecked); // Khi nút được bấm, đảo ngược giá trị của biến isChecked.
   };
@@ -16,7 +57,6 @@ function ProfilePage() {
   }, []);
   return (
     <div className="container-xl px-4 mt-4">
-      <hr className="mt-0 mb-4" />
       {isChecked ? (
         <div className="row">
           <div className="col-xl-4">
@@ -117,6 +157,37 @@ function ProfilePage() {
                       />
                     </div>
                   </div>
+
+                  {changePass && (
+                    <>
+                      <div className="mb-3">
+                        <label className="small mb-1" htmlFor="inputPhone">
+                          Old Password
+                        </label>
+                        <input
+                          className="form-control"
+                          id="inputPhone"
+                          type="tel"
+                          placeholder="Enter your old password"
+                          value={oldPassword}
+                          onChange={handleOldPassChange}
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <label className="small mb-1" htmlFor="inputPhone">
+                          New Password
+                        </label>
+                        <input
+                          className="form-control"
+                          id="inputPhone"
+                          type="tel"
+                          placeholder="Enter your new password"
+                          value={newPassword}
+                          onChange={handleNewPassChange}
+                        />
+                      </div>
+                    </>
+                  )}
                   <button
                     onClick={handleButtonClick}
                     className="btn btn-primary"
@@ -128,6 +199,32 @@ function ProfilePage() {
                   >
                     Edit
                   </button>
+                  <button
+                    onClick={handleChangePasword}
+                    className="btn btn-primary"
+                    type="button"
+                    style={{
+                      backgroundColor: "#252525",
+                      border: "2px solid #252525",
+                      marginLeft: "10px",
+                    }}
+                  >
+                    Change Password
+                  </button>
+                  {changePass && (
+                    <button
+                      onClick={handleSave}
+                      className="btn btn-primary"
+                      type="button"
+                      style={{
+                        backgroundColor: "#252525",
+                        border: "2px solid #252525",
+                        marginLeft: "10px",
+                      }}
+                    >
+                      Save Password
+                    </button>
+                  )}
                 </form>
               </div>
             </div>

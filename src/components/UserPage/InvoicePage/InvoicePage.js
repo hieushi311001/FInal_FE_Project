@@ -259,7 +259,7 @@ function InvoicePage() {
                   </td>
                   <td className="text-center">
                     <Link
-                      to={`/invoice/${data.id}-${data.paymentMethod}`}
+                      to={`/invoice/${data.id}-${data.paymentMethod}-${data.paymentStatus}`}
                       className="btn btn-hover-shine btn-outline-primary border-0 btn-sm "
                     >
                       Details

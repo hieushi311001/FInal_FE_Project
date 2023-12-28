@@ -5,13 +5,15 @@ import { makeRequest } from "~/services";
 import Cookies from "js-cookie";
 function InvoiceDetailPage() {
   const params = useParams();
-  const match = params.invoice_id.match(/^(\d+)-([A-Za-z_]+)$/);
-  const id = match[1]; // Giá trị số
-  const method = match[2]; // Chuỗi
+  const values = params.invoice_id.split("-");
+  const id = values[0]; // Giá trị số
+  const method = values[1]; // Chuỗi
+  const status = values[2]; // Chuỗi
   const [data, setData] = useState({});
   const navigate = useNavigate();
   const [price, setPrice] = useState(0);
   const [transInfor, setTransInfor] = useState({});
+  console.log(status);
   useEffect(() => {
     const userToken = Cookies.get("jwtToken");
     const axiosInstance = {
@@ -29,16 +31,22 @@ function InvoiceDetailPage() {
         const path1 = `authen/invoice/invoice_id=${id}`;
         const method1 = "GET";
         const result1 = await makeRequest(method1, path1, null, axiosInstance);
-        const path2 = `authen/invoice/onlinePayment`;
-        const method2 = "POST";
-        const result2 = await makeRequest(
-          method2,
-          path2,
-          APIdata2,
-          axiosInstance
-        );
+        if (method !== "COD" && status === "UNPAID") {
+          const path2 = `authen/invoice/onlinePayment`;
+          const method2 = "POST";
+          const result2 = await makeRequest(
+            method2,
+            path2,
+            APIdata2,
+            axiosInstance
+          );
+
+          console.log(result2);
+          setTransInfor(result2.content);
+        }
+
         console.log(result1);
-        console.log(result2);
+
         const updatedProducts = result1.content.map((product) => {
           // Check if discount is not equal to 0
           if (product.discount !== 0) {
@@ -55,7 +63,7 @@ function InvoiceDetailPage() {
           return acc + (product.sellingPrice * product.quantity || 0); // Đảm bảo price có giá trị và chuyển đổi về số
         }, 0);
         setPrice(total);
-        setTransInfor(result2.content);
+
         setData(updatedProducts);
       } catch (error) {
         console.error("Error fetching data:", error.data);
@@ -63,7 +71,7 @@ function InvoiceDetailPage() {
     };
 
     fetchData();
-  }, [id, method]);
+  }, [id, method, status]);
   const handleReturn = () => {
     navigate("/invoice");
   };
