@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { makeRequest } from "~/services";
@@ -8,6 +8,13 @@ function UserImage({ accountId, name, avatar }) {
   const navigate = useNavigate();
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
+  useEffect(() => {
+    const userDataCookie = Cookies.get("userData");
+    if (userDataCookie) {
+      const storedUserData = JSON.parse(userDataCookie);
+      initializeMessaging(storedUserData.userName, "subscribe");
+    }
+  }, []);
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
   };

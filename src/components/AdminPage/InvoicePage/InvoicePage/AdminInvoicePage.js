@@ -318,7 +318,7 @@ function AdminInvoicePage() {
                   <tbody>
                     {Object.keys(data).length !== 0 &&
                       data.map((data, index) => (
-                        <tr>
+                        <tr key={index}>
                           <td
                             className="text-center text-muted"
                             style={{ verticalAlign: "middle" }}
@@ -359,7 +359,7 @@ function AdminInvoicePage() {
                             style={{ verticalAlign: "middle" }}
                           >
                             <Link
-                              to={`/admin/invoice/${data.id}-${data.paymentMethod}`}
+                              to={`/admin/invoice/${data.id}-${data.paymentMethod}-${data.orderStatus}`}
                               className="btn btn-hover-shine btn-outline-primary border-0 btn-sm"
                             >
                               Details

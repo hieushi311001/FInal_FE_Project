@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 const ProductSlider = ({
-  key,
   productid,
   image,
   brand,
@@ -20,7 +20,7 @@ const ProductSlider = ({
   };
 
   return (
-    <div className="product-item" key={key}>
+    <div className="product-item">
       <div className="pi-pic-1">
         <img src={image} alt="" style={{ width: "284px", height: "284px" }} />
         {discount !== 0 && <div className="sale">{discount}%</div>}
@@ -29,7 +29,9 @@ const ProductSlider = ({
         </div>
         <ul>
           <li className="w-icon active">
-            <button onClick={() => handleAddToCart(productid, color, size, 1)}>
+            <button
+              onClick={() => handleAddToCart(productid, color, size, quantity)}
+            >
               <i className="icon_bag_alt" />
             </button>
           </li>

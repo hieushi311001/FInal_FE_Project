@@ -3,18 +3,10 @@ import { makeRequest } from "~/services";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import "react-toastify/dist/ReactToastify.css";
-import {
-  encodeAndSetCookie,
-  initializeMessaging,
-  showErrorNotification,
-} from "~/services";
-import { useLocation, useNavigate } from "react-router-dom";
+import { encodeAndSetCookie, showErrorNotification } from "~/services";
 function LoginPage() {
   const [userName, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const location = useLocation();
-  const navigate = useNavigate();
-  const redirectParam = new URLSearchParams(location.search).get("redirect");
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -23,23 +15,16 @@ function LoginPage() {
     const method = "POST";
     try {
       const result = await makeRequest(method, path, params);
+
       if (result.result === "success") {
-        const topic = result.content.userName;
         const expirationDate = new Date(new Date().getTime() + 60 * 60 * 1000);
-        initializeMessaging(topic, "subscribe");
+
         Cookies.set("jwtToken", result.message, { expires: expirationDate }); // Set an expiration date
         Cookies.set("userData", JSON.stringify(result.content), {
           expires: expirationDate,
         });
         encodeAndSetCookie("isLogin", "LoginTrue", expirationDate);
-
-        if (redirectParam === "true") {
-          // Đã truyền giá trị redirectParam
-          navigate(-1);
-        } else {
-          // Không có hoặc giá trị là false
-          window.location.href = "/";
-        }
+        window.location.href = "/";
       }
     } catch (error) {
       showErrorNotification("Login fails", "Please check the information!");
@@ -96,11 +81,6 @@ function LoginPage() {
                   </div>
                   <div className="group-input gi-check">
                     <div className="gi-more">
-                      {/* <label htmlFor="save-pass">
-                        Save Password
-                        <input type="checkbox" id="save-pass" />
-                        <span className="checkmark" />
-                      </label> */}
                       <Link to={`/reset_password`} className="forget-pass">
                         Forget your Password
                       </Link>
