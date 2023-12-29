@@ -3,7 +3,7 @@ import "./AdminHeader.css";
 import Cookies from "js-cookie";
 import { makeRequest, initializeMessaging } from "~/services";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 function Header() {
   useEffect(() => {
     const userDataCookie = Cookies.get("userDataAdmin");
@@ -38,6 +38,24 @@ function Header() {
 
     fetchData();
   };
+  const [isNotificationOpen, setNotificationOpen] = useState(false);
+
+  const handleBellClick = () => {
+    setNotificationOpen(!isNotificationOpen);
+  };
+  const notificationsData = [
+    {
+      id: 1,
+      title: "Thông báo 1",
+      content: "Mô tả hoặc nội dung chi tiết của thông báo 1.",
+    },
+    {
+      id: 2,
+      title: "Thông báo 2",
+      content: "Mô tả hoặc nội dung chi tiết của thông báo 2.",
+    },
+    // Thêm các đối tượng thông báo khác nếu cần
+  ];
   return (
     <div id="wrapper">
       <header id="topnav">
@@ -46,7 +64,7 @@ function Header() {
           <div className="container-fluid">
             <ul className="list-unstyled topnav-menu float-right mb-0">
               <li className="d-none d-sm-block">
-                <form className="app-search">
+                <div className="app-search">
                   <div className="app-search-box">
                     <div className="input-group">
                       <input
@@ -61,7 +79,7 @@ function Header() {
                       </div>
                     </div>
                   </div>
-                </form>
+                </div>
               </li>
             </ul>
             <div className="logo-box-1">
@@ -82,8 +100,8 @@ function Header() {
               <ul className="navigation-menu">
                 <li className="has-submenu">
                   <Link to={`/admin`}>
-                    <i className="fa fa-home " />
-                    Home
+                    <i className="fa fa-bell" />
+                    Notification
                   </Link>
                 </li>
                 <li className="has-submenu">
@@ -128,6 +146,53 @@ function Header() {
                     Logout
                   </button>
                 </li>
+                {/* <li
+                  className="has-submenu"
+                  style={{ position: "relative", listStyle: "none" }}
+                >
+                  <button
+                    onClick={handleBellClick}
+                    style={{
+                      border: "none",
+                      background: "none",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <i className="fa fa-bell" />
+                    Notification
+                  </button>
+                  {isNotificationOpen && (
+                    <div
+                      className="notifications"
+                      id="box"
+                      style={{ display: "block" }}
+                    >
+                      <h2>
+                        Notifications - <span>2</span>
+                      </h2>
+                      <div className="notifications-item">
+                        {" "}
+                        <img src="https://i.imgur.com/uIgDDDd.jpg" alt="img" />
+                        <div className="text">
+                          <h4>Samso aliao</h4>
+                          <p>Samso Nagaro Like your home work</p>
+                        </div>
+                      </div>
+                      <div className="notifications-item">
+                        {" "}
+                        <img
+                          src="https://img.icons8.com/flat_round/64/000000/vote-badge.png"
+                          alt="img"
+                        />
+                        <div className="text">
+                          <h4>John Silvester</h4>
+                          <p>+20 vista badge earned</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </li> */}
+                {/* Các phần tử khác nếu có */}
               </ul>
               <div className="clearfix" />
             </div>
