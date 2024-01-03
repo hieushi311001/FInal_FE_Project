@@ -13,6 +13,7 @@ function InvoiceDetailPage() {
   const navigate = useNavigate();
   const [price, setPrice] = useState(0);
   const [transInfor, setTransInfor] = useState({});
+  const [invoiceDetail, setInvoiceDetail] = useState({});
   console.log(status);
   useEffect(() => {
     const userToken = Cookies.get("jwtToken");
@@ -47,24 +48,13 @@ function InvoiceDetailPage() {
 
         console.log(result1);
 
-        const updatedProducts = result1.content.map((product) => {
-          // Check if discount is not equal to 0
-          if (product.discount !== 0) {
-            // Calculate discounted price
-            const discountedPrice =
-              product.sellingPrice -
-              (product.sellingPrice * product.discount) / 100;
-            // Update sellingPrice in the product object
-            return { ...product, sellingPrice: discountedPrice };
-          }
-          return product; // No discount, return unchanged product
-        });
-        const total = updatedProducts.reduce((acc, product) => {
+        const total = result1.content.invoiceProducts.reduce((acc, product) => {
           return acc + (product.sellingPrice * product.quantity || 0); // Đảm bảo price có giá trị và chuyển đổi về số
         }, 0);
+        console.log(result1);
         setPrice(total);
-
-        setData(updatedProducts);
+        setData(result1);
+        setInvoiceDetail(result1.content.invoice);
       } catch (error) {
         console.error("Error fetching data:", error.data);
       }
@@ -97,6 +87,21 @@ function InvoiceDetailPage() {
 
     fetchData();
   };
+  function formatDateString(inputDateString) {
+    const originalDate = new Date(inputDateString);
+
+    if (isNaN(originalDate.getTime())) {
+      console.error("Invalid date string");
+      return null;
+    }
+
+    const day = originalDate.getDate();
+    const month = originalDate.getMonth() + 1;
+    const year = originalDate.getFullYear();
+
+    const formattedString = `00:00 ${day}-${month}-${year}`;
+    return formattedString;
+  }
   return (
     <div className="centered-content">
       <div className="checkout-form">
@@ -111,11 +116,21 @@ function InvoiceDetailPage() {
                   Product <span>Total</span>
                 </li>
                 {Object.keys(data).length !== 0 &&
-                  data.map((data, index) => (
+                  data.content.invoiceProducts.map((data, index) => (
                     <li className="fw-normal" key={index}>
                       <div className="order-item">
+                        <img
+                          src={data.image1}
+                          alt="Product"
+                          style={{
+                            width: "100px",
+                            height: "100px",
+                            objectFit: "cover",
+                            marginRight: "10px",
+                          }}
+                        />
                         <div>
-                          {data.name}, <br />
+                          {data.name} <br />
                           Size: {data.size} <br />
                           Quantity: {data.quantity}
                         </div>
@@ -125,6 +140,55 @@ function InvoiceDetailPage() {
                       </div>
                     </li>
                   ))}
+                {Object.keys(invoiceDetail).length !== 0 &&
+                invoiceDetail.delivery !== null ? (
+                  <li className="total-price">
+                    <div className="order-item">
+                      <div style={{ fontSize: "12px" }}>
+                        Invoice Date: <br />
+                        Address: <br />
+                        Expected Delivery Time:
+                      </div>
+                      <div style={{ textAlign: "right", fontSize: "12px" }}>
+                        {formatDateString(invoiceDetail.invoiceDate)} <br />
+                        {invoiceDetail.address} <br />
+                        {formatDateString(
+                          invoiceDetail.delivery.expectedDeliveryTime
+                        )}
+                      </div>
+                    </div>
+                  </li>
+                ) : (
+                  <li className="total-price">
+                    <div className="order-item">
+                      <div style={{ fontSize: "12px" }}>
+                        Invoice Date: <br />
+                        Address: <br />
+                      </div>
+                      <div style={{ textAlign: "right", fontSize: "12px" }}>
+                        {formatDateString(invoiceDetail.invoiceDate)} <br />
+                        {invoiceDetail.address} <br />
+                      </div>
+                    </div>
+                  </li>
+                )}
+                <li className="total-price">
+                  <div className="order-item">
+                    <div style={{ fontSize: "12px" }}>
+                      Admin Acceptance: <br />
+                      Order Status: <br />
+                      Payment Method: <br />
+                      Reason: <br />
+                    </div>
+                    <div style={{ textAlign: "right", fontSize: "12px" }}>
+                      {invoiceDetail.adminAcceptance} <br />
+                      {invoiceDetail.orderStatus}
+                      <br />
+                      {invoiceDetail.paymentMethod} <br />
+                      {invoiceDetail.reason} <br />
+                    </div>
+                  </div>
+                </li>
                 {Object.keys(transInfor).length !== 0 && (
                   <>
                     {method !== "COD" && (
@@ -152,6 +216,7 @@ function InvoiceDetailPage() {
                 <li className="total-price">
                   Total <span>${(price + 1).toFixed(2)}</span>
                 </li>
+
                 {method === "COD" && (
                   <span className="total-price">
                     You will receive your order soon in the future. Thank you

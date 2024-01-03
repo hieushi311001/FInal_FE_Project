@@ -1,7 +1,7 @@
 .locationContainer {
   display: flex;
   flex-direction: column-reverse; /* Chia layout theo chiều dọc, nút ở trên và label ở dưới */
-  align-items: flex-end; /* Canh lề các thành phần theo chiều ngang */
+  /* align-items: flex-end; Canh lề các thành phần theo chiều ngang */
 }
 
 .getLocationButton {

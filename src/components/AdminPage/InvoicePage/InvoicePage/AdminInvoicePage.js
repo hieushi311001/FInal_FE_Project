@@ -156,33 +156,6 @@ function AdminInvoicePage() {
   return (
     <div className="app-main">
       <div className="app-main__inner">
-        <div className="app-page-title">
-          <div className="page-title-wrapper">
-            <div className="page-title-heading">
-              <div className="page-title-icon">
-                <i className="fa fa-credit-card" />
-              </div>
-              <div>
-                Invoice
-                <div className="page-title-subheading">
-                  View, create, update, delete and manage.
-                </div>
-              </div>
-            </div>
-            <div className="page-title-actions">
-              <Link
-                // to={"/admin/product/add"}
-                className="btn-shadow btn-hover-shine mr-3 btn btn-primary"
-              >
-                <span className="btn-icon-wrapper pr-2 opacity-7">
-                  <i className="fa fa-plus fa-w-20" />
-                </span>
-                Create
-              </Link>
-            </div>
-          </div>
-        </div>
-
         <div className="row-1">
           <div className="col-md-12">
             <div className="main-card mb-3 card">

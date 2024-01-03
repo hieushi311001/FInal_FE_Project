@@ -14,7 +14,7 @@ function AdminLoginPage() {
     try {
       const result = await makeRequest(method, path, params);
       console.log(result);
-      if (result.result === "success" && result.content.userName === "admin") {
+      if (result.result === "success" && result.content.position === "ADMIN") {
         const topic = result.content.userName;
         initializeMessaging(topic, "subscribe");
         Cookies.set("jwtTokenAdmin", result.message); // Set an expiration date
