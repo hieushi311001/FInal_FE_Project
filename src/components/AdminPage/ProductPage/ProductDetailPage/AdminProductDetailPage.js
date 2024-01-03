@@ -191,7 +191,7 @@ function AdminProductDetailPage() {
                             htmlFor="company_name"
                             className="col-md-3 text-md-right col-form-label"
                           >
-                            Color
+                            Size
                           </label>
                           <div className="col-md-9 col-xl-8">
                             <div className="row">

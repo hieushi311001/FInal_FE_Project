@@ -1,37 +1,29 @@
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { makeRequest } from "~/services";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Select from "react-select";
 function AdminProductAddPage() {
   const navigate = useNavigate();
   const userToken = Cookies.get("jwtTokenAdmin");
-  const initialImages = ["imageUrl1", "imageUrl2", "imageUrl3", "imageUrl4"];
+  const initialImages = ["", "", "", ""];
   const [images, setImages] = useState(initialImages);
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("");
   const [orgPrice, setOrgPrice] = useState("");
   const [sellPrice, setSellPrice] = useState("");
-  const [discount, setDiscount] = useState("");
+  const [discount, setDiscount] = useState("0");
   const [length, setLength] = useState("");
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [width, setWidth] = useState("");
   const [des, setDes] = useState("");
-  const [proColor, setProColor] = useState();
-  const [sizes, setSizes] = useState([]);
+  const [proColor, setProColor] = useState("none");
+  const [sizes, setSizes] = useState(["none"]);
   const [numbers, setNumbers] = useState([]);
   const [options, setOptions] = useState([]);
   const [selected, setSelected] = useState([]);
-  const handleChange = (selectedOptions) => {
-    // Do something with the selected options
-    const newSelectedIds = selectedOptions
-      .map((option) => option.value)
-      .filter((value) => !selected.includes(value));
 
-    // Do something with the new selected IDs
-    setSelected([...selected, ...newSelectedIds]);
-  };
   console.log(selected);
   useEffect(() => {
     const fetchData = async () => {
@@ -53,8 +45,7 @@ function AdminProductAddPage() {
 
     fetchData();
   }, []);
-  const handleSave = (e) => {
-    e.preventDefault();
+  const handleSave = () => {
     const fetchData = async () => {
       try {
         const APIdata = {
@@ -144,6 +135,26 @@ function AdminProductAddPage() {
       .map((number) => parseInt(number.trim(), 10));
     setNumbers(numberArray);
   };
+  const handleChange = (selectedOptions) => {
+    const selectedIds = selected.map((option) => option.value);
+
+    // Lọc ra các ID đã chọn mới
+    const newSelectedIds = selectedOptions
+      .map((option) => option.value)
+      .filter((id) => !selectedIds.includes(id));
+
+    // Lọc ra các ID đã chọn bị xóa
+    const removedIds = selectedIds.filter((id) => !newSelectedIds.includes(id));
+
+    // Xóa các ID đã chọn bị xóa khỏi danh sách
+    const updatedSelected = selected.filter(
+      (option) => !removedIds.includes(option.value)
+    );
+
+    // Thêm vào danh sách các ID đã chọn mới
+    setSelected([...updatedSelected, ...newSelectedIds]);
+  };
+  console.log(selected);
   return (
     <div className="container app-main">
       <div className="app-main__inner">
@@ -331,6 +342,9 @@ function AdminProductAddPage() {
                       <Select
                         isMulti
                         options={options}
+                        value={options.filter((option) =>
+                          selected.includes(option.value)
+                        )}
                         onChange={handleChange}
                         placeholder="Select Category..."
                       />
@@ -420,15 +434,15 @@ function AdminProductAddPage() {
                 </div>
                 <div className="position-relative row form-group mb-1">
                   <div className="col-md-9 col-xl-8 offset-md-2">
-                    <a
-                      href={{}}
+                    <Link
+                      to={"/admin/product"}
                       className="border-0 btn btn-outline-danger mr-1"
                     >
                       <span className="btn-icon-wrapper pr-1 opacity-8">
                         <i className="fa fa-times fa-w-20" />
                       </span>
                       <span>Cancel</span>
-                    </a>
+                    </Link>
                     <button className="btn-shadow btn-hover-shine btn btn-primary">
                       <span className="btn-icon-wrapper pr-2 opacity-8">
                         <i className="fa fa-download fa-w-20" />
