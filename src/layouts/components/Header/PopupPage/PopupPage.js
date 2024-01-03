@@ -70,7 +70,8 @@ function PopupPage({ isOpen, onClose }) {
         const method = "POST";
         const result = await makeRequest(method, path, APIdata);
         setTranslatedText(result.content);
-        // console.log(result);
+        onClose();
+        navigate(`/search?query=${result.content}`);
       } catch (error) {
         console.error("Error fetching data:", error.message);
       }

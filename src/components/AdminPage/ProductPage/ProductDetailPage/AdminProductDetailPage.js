@@ -34,11 +34,11 @@ function AdminProductDetailPage() {
           size: product.size,
           quantity: product.availableQuantity,
         }));
-        console.log(filteredSizesAndQuantities);
+        console.log(result);
         setData(product[0]);
         setDataFilter(filteredSizesAndQuantities);
       } catch (error) {
-        console.error("Error fetching data:", error.message);
+        console.error("Error fetching data:", error);
       }
     };
 

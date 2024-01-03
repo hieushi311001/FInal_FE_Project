@@ -22,26 +22,33 @@ function SmallCart({ updateCartValue }) {
     };
     const fetchData = async () => {
       try {
-        const path = "authen/cart/showFullCart";
-        const method = "POST";
-        const result = await makeRequest(method, path, APIdata, axiosInstance);
-        const itemCount = result.content.length;
-        const filteredData = result.content.map((item) => ({
-          name: item.name,
-          sellingPrice: item.sellingPrice,
-          discount: item.discount,
-          image1: item.image1,
-          quantity: item.quantity,
-          totalPrice: item.totalPrice,
-        }));
+        if (userToken) {
+          const path = "authen/cart/showFullCart";
+          const method = "POST";
+          const result = await makeRequest(
+            method,
+            path,
+            APIdata,
+            axiosInstance
+          );
+          const itemCount = result.content.length;
+          const filteredData = result.content.map((item) => ({
+            name: item.name,
+            sellingPrice: item.sellingPrice,
+            discount: item.discount,
+            image1: item.image1,
+            quantity: item.quantity,
+            totalPrice: item.totalPrice,
+          }));
 
-        const totalPriceSum = filteredData.reduce(
-          (acc, item) => acc + item.totalPrice * item.quantity,
-          0
-        );
-        updateCartValue(itemCount);
-        setData(filteredData);
-        setPrice(totalPriceSum);
+          const totalPriceSum = filteredData.reduce(
+            (acc, item) => acc + item.totalPrice * item.quantity,
+            0
+          );
+          updateCartValue(itemCount);
+          setData(filteredData);
+          setPrice(totalPriceSum);
+        }
       } catch (error) {
         console.error("Error fetching data:", error.message);
       }

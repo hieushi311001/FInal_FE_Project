@@ -35,37 +35,44 @@ function Notification({ updateNotifiValue }) {
     };
     const fetchData = async () => {
       try {
-        const path = "authen/notification/filterNotifications";
-        const method = "POST";
-        const result = await makeRequest(method, path, APIdata, axiosInstance);
-        console.log(result);
-        const itemCount = result.content.length;
-        const formatData = result.content.map((data) => {
-          const formattedDate = format(
-            new Date(data.notificationDate),
-            "HH:mm - dd/MMM/YYY"
+        if (userToken) {
+          const path = "authen/notification/filterNotifications";
+          const method = "POST";
+          const result = await makeRequest(
+            method,
+            path,
+            APIdata,
+            axiosInstance
           );
+          console.log(result);
+          const itemCount = result.content.length;
+          const formatData = result.content.map((data) => {
+            const formattedDate = format(
+              new Date(data.notificationDate),
+              "HH:mm - dd/MMM/YYY"
+            );
 
-          return {
-            ...data,
-            notificationDate: formattedDate,
-          };
-        });
+            return {
+              ...data,
+              notificationDate: formattedDate,
+            };
+          });
 
-        const updatedNotifications = formatData.map((notification) => {
-          const resultObject = convertStringToObject(
-            notification.additionalData
-          );
+          const updatedNotifications = formatData.map((notification) => {
+            const resultObject = convertStringToObject(
+              notification.additionalData
+            );
 
-          if (resultObject) {
-            notification.additionalData = resultObject;
-          }
-          return notification;
-        });
+            if (resultObject) {
+              notification.additionalData = resultObject;
+            }
+            return notification;
+          });
 
-        console.log(updatedNotifications);
-        setNotifications(formatData);
-        updateNotifiValue(itemCount);
+          console.log(updatedNotifications);
+          setNotifications(formatData);
+          updateNotifiValue(itemCount);
+        }
       } catch (error) {
         console.error("Error fetching data:", error.message);
       }
