@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { makeRequest } from "~/services";
 import { useNavigate } from "react-router-dom";
+import Select from "react-select";
 function AdminProductAddPage() {
-  const [userStatus, setUserStatus] = useState("");
   const navigate = useNavigate();
   const userToken = Cookies.get("jwtTokenAdmin");
   const initialImages = ["imageUrl1", "imageUrl2", "imageUrl3", "imageUrl4"];
@@ -21,20 +21,49 @@ function AdminProductAddPage() {
   const [proColor, setProColor] = useState();
   const [sizes, setSizes] = useState([]);
   const [numbers, setNumbers] = useState([]);
-  const handleSave = (e) => {
+  const [options, setOptions] = useState([]);
+  const [selected, setSelected] = useState([]);
+  const handleChange = (selectedOptions) => {
+    // Do something with the selected options
+    const newSelectedIds = selectedOptions
+      .map((option) => option.value)
+      .filter((value) => !selected.includes(value));
+
+    // Do something with the new selected IDs
+    setSelected([...selected, ...newSelectedIds]);
+  };
+  console.log(selected);
+  useEffect(() => {
     const fetchData = async () => {
       try {
-        const date = new Date();
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, "0");
-        const day = String(date.getDate()).padStart(2, "0");
-        const formattedDate = `${year}-${month}-${day}`;
+        const path = `unauthen/category/allCategories`;
+        const method = "GET";
+        const result = await makeRequest(method, path, null);
+
+        console.log(result);
+        const formattedOptions = result.content.map((item) => ({
+          value: item.id,
+          label: item.name,
+        }));
+        setOptions(formattedOptions);
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      }
+    };
+
+    fetchData();
+  }, []);
+  const handleSave = (e) => {
+    e.preventDefault();
+    const fetchData = async () => {
+      try {
         const APIdata = {
           name: name,
           sellingPrice: sellPrice,
           originalPrice: orgPrice,
           discount: discount,
           brand: brand,
+          categoryIds: selected,
           attributes: [
             {
               color: proColor,
@@ -44,7 +73,6 @@ function AdminProductAddPage() {
             },
           ],
           description: des,
-          importDate: formattedDate,
         };
         console.log(APIdata);
         const axiosInstance = {
@@ -65,9 +93,6 @@ function AdminProductAddPage() {
 
     fetchData();
   };
-  function capitalizeFirstLetter(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
   const handleNameChange = (event) => {
     setName(event.target.value);
   };
@@ -294,6 +319,22 @@ function AdminProductAddPage() {
                       className="col-md-9 col-xl-8 offset-md-3"
                       style={{ borderColor: "black" }}
                     />
+                  </div>
+                  <div className="position-relative row form-group">
+                    <label
+                      htmlFor="company_name"
+                      className="col-md-3 text-md-right col-form-label"
+                    >
+                      Category
+                    </label>
+                    <div className="col-md-9 col-xl-8">
+                      <Select
+                        isMulti
+                        options={options}
+                        onChange={handleChange}
+                        placeholder="Select Category..."
+                      />
+                    </div>
                   </div>
                   <div className="position-relative row form-group">
                     <label

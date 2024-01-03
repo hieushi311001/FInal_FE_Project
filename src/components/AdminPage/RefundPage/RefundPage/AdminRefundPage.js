@@ -116,10 +116,10 @@ function AdminRefundPage() {
                   <thead>
                     <tr>
                       <th className="text-center">Refund ID</th>
-                      <th>Invoice ID</th>
-                      <th>Refund Money</th>
+                      <th className="text-center">Invoice ID</th>
+                      <th className="text-center">Refund Money</th>
                       <th className="text-center">Status</th>
-
+                      <th className="text-center">Evident Image</th>
                       <th className="text-center">Actions</th>
                     </tr>
                   </thead>
@@ -133,22 +133,17 @@ function AdminRefundPage() {
                           >
                             #{data.id}
                           </td>
-                          <td>
-                            <div className="widget-content p-0">
-                              <div className="widget-content-wrapper">
-                                <div
-                                  className="widget-content-left flex2"
-                                  style={{ verticalAlign: "middle" }}
-                                >
-                                  <div className="widget-heading">
-                                    #{data.invoice.id}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
+                          <td
+                            className="text-center text-muted"
+                            style={{ verticalAlign: "middle" }}
+                          >
+                            #{data.invoiceId}
                           </td>
 
-                          <td style={{ verticalAlign: "middle" }}>
+                          <td
+                            style={{ verticalAlign: "middle" }}
+                            className="text-center"
+                          >
                             ${data.refundMoney}
                           </td>
                           <td
@@ -157,13 +152,64 @@ function AdminRefundPage() {
                           >
                             {data.status}
                           </td>
-
+                          {data.evidentImage !== null ? (
+                            <td>
+                              <div
+                                className="widget-content-left"
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                }}
+                              >
+                                <div className="widget-content-left">
+                                  <img
+                                    width={40}
+                                    className="rounded-circle"
+                                    data-toggle="tooltip"
+                                    title="Image"
+                                    data-placement="bottom"
+                                    src={data.evidentImage}
+                                    alt=""
+                                  />
+                                </div>
+                              </div>
+                            </td>
+                          ) : (
+                            // Thực hiện hành động khi data.evidentImage === null
+                            <td
+                              className="text-center"
+                              style={{ verticalAlign: "middle" }}
+                            >
+                              Null
+                            </td>
+                          )}
+                          {/* <div
+                            className="widget-content-left mr-3"
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <div className="widget-content-left">
+                              <img
+                                width={40}
+                                className="rounded-circle"
+                                data-toggle="tooltip"
+                                title="Image"
+                                data-placement="bottom"
+                                src={data.evidentImage}
+                                alt=""
+                              />
+                            </div>
+                          </div> */}
                           <td
                             className="text-center"
                             style={{ verticalAlign: "middle" }}
                           >
                             <div
-                              onClick={() => openModal(data.invoice.id)}
+                              onClick={() => openModal(data.invoiceId)}
                               className="btn btn-hover-shine btn-outline-primary border-0 btn-sm"
                             >
                               Details

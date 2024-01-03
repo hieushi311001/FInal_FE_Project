@@ -7,6 +7,7 @@ import "./Notification.css";
 function Notification({ updateNotifiValue }) {
   const navigate = useNavigate();
   const [notifications, setNotifications] = useState([]);
+  const [getId, setGetId] = useState([]);
   useEffect(() => {
     const userToken = Cookies.get("jwtToken");
     const axiosInstance = {
@@ -52,16 +53,18 @@ function Notification({ updateNotifiValue }) {
         });
 
         const updatedNotifications = formatData.map((notification) => {
-          const match = notification.additionalData.match(/\d+/);
-          if (match) {
-            notification.additionalData = parseInt(match[0], 10);
+          const resultObject = convertStringToObject(
+            notification.additionalData
+          );
+
+          if (resultObject) {
+            notification.additionalData = resultObject;
           }
           return notification;
         });
-        // if (match) {
-        //   formatData.additionalData = parseInt(match[0], 10);
-        // }
-        setNotifications(updatedNotifications);
+
+        console.log(updatedNotifications);
+        setNotifications(formatData);
         updateNotifiValue(itemCount);
       } catch (error) {
         console.error("Error fetching data:", error.message);
@@ -69,7 +72,24 @@ function Notification({ updateNotifiValue }) {
     };
     fetchData();
   }, [updateNotifiValue]);
-  const handleClick = (id) => {
+  function convertStringToObject(inputString) {
+    // Loại bỏ dấu ngoặc nhọn và dấu cách ở hai đầu chuỗi
+    const cleanedString = inputString.slice(1, -1).trim();
+
+    // Chia chuỗi thành mảng các cặp key-value
+    const keyValuePairs = cleanedString.split(", ");
+
+    // Tạo đối tượng từ các cặp key-value
+    const resultObject = {};
+    keyValuePairs.forEach((pair) => {
+      const [key, value] = pair.split("=");
+      resultObject[key] = value;
+    });
+
+    return resultObject;
+  }
+  const handleClick = (id, invoice) => {
+    console.log(invoice.invoiceId);
     const fetchData = async () => {
       const userToken = Cookies.get("jwtToken");
       const axiosInstance = {
@@ -79,10 +99,13 @@ function Notification({ updateNotifiValue }) {
         },
       };
       try {
-        const path = `authen/notification/seen_notification_id=${id.id}`;
+        const path = `authen/notification/seen_notification_id=${id}`;
         const method = "GET";
-        await makeRequest(method, path, null, axiosInstance);
-        navigate("/invoice");
+        const result = await makeRequest(method, path, null, axiosInstance);
+        console.log(result);
+        navigate(
+          `/invoice/${invoice.invoiceId}-${invoice.paymentMethod}-${invoice.paymentStatus}`
+        );
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -97,7 +120,7 @@ function Notification({ updateNotifiValue }) {
             {Object.keys(notifications).length !== 0 &&
               notifications.map((data, index) => (
                 <React.Fragment key={index}>
-                  <tr onClick={() => handleClick(data)}>
+                  <tr onClick={() => handleClick(data.id, data.additionalData)}>
                     <td className="si-text">
                       <div className="product-selected">
                         <h5
@@ -108,7 +131,7 @@ function Notification({ updateNotifiValue }) {
                           {data.title}
                         </h5>
                         <span style={{ fontSize: "14px" }}>
-                          Invoice ID: {data.additionalData} |
+                          Invoice ID: {data.additionalData.invoiceId} |
                         </span>
                         <span style={{ fontSize: "14px" }}>
                           {" "}

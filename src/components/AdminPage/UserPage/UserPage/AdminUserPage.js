@@ -35,7 +35,7 @@ function AdminUserPage() {
         console.log(result);
         setData(result.content);
       } catch (error) {
-        console.error("Error fetching data:", error.message);
+        console.error("Error fetching data:", error);
       }
     };
 

@@ -115,7 +115,7 @@ function CheckoutPage() {
           },
         });
       } catch (error) {
-        console.error("Error fetching data:", error.message);
+        console.error("Error fetching data:", error);
       }
     };
     fetchData();
@@ -180,23 +180,6 @@ function CheckoutPage() {
                         src={images.cod}
                         style={{ maxHeight: "100px", maxWidth: "100px" }}
                         alt="COD"
-                      />
-                    </label>
-                  </div>
-                  <div className="pc-item">
-                    <input
-                      type="radio"
-                      id="pc-paypal"
-                      name="paymentMethod"
-                      value="PAYPAL"
-                      checked={paymentMethod === "PAYPAL"}
-                      onChange={handlePaymentMethodChange}
-                    />
-                    <label htmlFor="pc-paypal">
-                      <img
-                        src={images.paypal}
-                        style={{ maxHeight: "100px", maxWidth: "100px" }}
-                        alt="Paypal"
                       />
                     </label>
                   </div>

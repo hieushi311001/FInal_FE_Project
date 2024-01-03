@@ -67,17 +67,9 @@ function AdminProductEditPage() {
 
     fetchData();
   }, [id, color, userToken]);
-  const handleUserStatus = (event) => {
-    setUserStatus(event.target.value);
-  };
   const handleSave = (e) => {
     const fetchData = async () => {
       try {
-        const date = new Date();
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, "0");
-        const day = String(date.getDate()).padStart(2, "0");
-        const formattedDate = `${year}-${month}-${day}`;
         const APIdata = {
           id: id,
           name: name,
@@ -94,7 +86,6 @@ function AdminProductEditPage() {
             },
           ],
           description: des,
-          importDate: formattedDate,
         };
         console.log(APIdata);
         const axiosInstance = {

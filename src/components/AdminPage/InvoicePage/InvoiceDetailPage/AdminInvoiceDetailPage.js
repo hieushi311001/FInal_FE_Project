@@ -16,7 +16,7 @@ function AdminInvoiceDetailPage() {
   const [adminAction, setAdminAction] = useState("");
   const userToken = Cookies.get("jwtTokenAdmin");
   const [yourTextBoxValue, setYourTextBoxValue] = useState("");
-
+  const [invoiceDetail, setInvoiceDetail] = useState({});
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -29,14 +29,16 @@ function AdminInvoiceDetailPage() {
         const path = `authen/invoice/invoice_id=${id}`;
         const method = "GET";
         const result = await makeRequest(method, path, null, axiosInstance);
-        const total = result.content.reduce((acc, product) => {
+        const total = result.content.invoiceProducts.reduce((acc, product) => {
           return acc + (product.sellingPrice * product.quantity || 0); // Đảm bảo price có giá trị và chuyển đổi về số
         }, 0);
         console.log(result);
         setPrice(total);
         setData(result);
+        setInvoiceDetail(result.content.invoice);
       } catch (error) {
-        console.error("Error fetching data:", error.message);
+        console.log(userToken);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -88,6 +90,21 @@ function AdminInvoiceDetailPage() {
 
     fetchData();
   };
+  function formatDateString(inputDateString) {
+    const originalDate = new Date(inputDateString);
+
+    if (isNaN(originalDate.getTime())) {
+      console.error("Invalid date string");
+      return null;
+    }
+
+    const day = originalDate.getDate();
+    const month = originalDate.getMonth() + 1;
+    const year = originalDate.getFullYear();
+
+    const formattedString = `00:00 ${day}-${month}-${year}`;
+    return formattedString;
+  }
   return (
     <div className="centered-content">
       <div className="checkout-form">
@@ -102,11 +119,21 @@ function AdminInvoiceDetailPage() {
                   Product <span>Total</span>
                 </li>
                 {Object.keys(data).length !== 0 &&
-                  data.content.map((data, index) => (
+                  data.content.invoiceProducts.map((data, index) => (
                     <li className="fw-normal" key={index}>
                       <div className="order-item">
+                        <img
+                          src={data.image1}
+                          alt="Product"
+                          style={{
+                            width: "100px",
+                            height: "100px",
+                            objectFit: "cover",
+                            marginRight: "10px",
+                          }}
+                        />
                         <div>
-                          {data.name}, <br />
+                          {data.name} <br />
                           Size: {data.size} <br />
                           Quantity: {data.quantity}
                         </div>
@@ -119,6 +146,55 @@ function AdminInvoiceDetailPage() {
                 <li className="total-price">
                   Total <span>${price.toFixed(2)}</span>
                 </li>
+                {Object.keys(invoiceDetail).length !== 0 &&
+                invoiceDetail.delivery !== null ? (
+                  <li className="total-price">
+                    <div className="order-item">
+                      <div style={{ fontSize: "12px" }}>
+                        Invoice Date: <br />
+                        Address: <br />
+                        Expected Delivery Time:
+                      </div>
+                      <div style={{ textAlign: "right", fontSize: "12px" }}>
+                        {formatDateString(invoiceDetail.invoiceDate)} <br />
+                        {invoiceDetail.address} <br />
+                        {formatDateString(
+                          invoiceDetail.delivery.expectedDeliveryTime
+                        )}
+                      </div>
+                    </div>
+                  </li>
+                ) : (
+                  <li className="total-price">
+                    <div className="order-item">
+                      <div style={{ fontSize: "12px" }}>
+                        Invoice Date: <br />
+                        Address: <br />
+                      </div>
+                      <div style={{ textAlign: "right", fontSize: "12px" }}>
+                        {formatDateString(invoiceDetail.invoiceDate)} <br />
+                        {invoiceDetail.address} <br />
+                      </div>
+                    </div>
+                  </li>
+                )}
+                <li className="total-price">
+                  <div className="order-item">
+                    <div style={{ fontSize: "12px" }}>
+                      Admin Acceptance: <br />
+                      Order Status: <br />
+                      Payment Method: <br />
+                      Reason: <br />
+                    </div>
+                    <div style={{ textAlign: "right", fontSize: "12px" }}>
+                      {invoiceDetail.adminAcceptance} <br />
+                      {invoiceDetail.orderStatus}
+                      <br />
+                      {invoiceDetail.paymentMethod} <br />
+                      {invoiceDetail.reason} <br />
+                    </div>
+                  </div>
+                </li>
                 {adminAction === "REFUSED" || adminAction === "FAILED" ? (
                   <input
                     type="text"
@@ -128,166 +204,7 @@ function AdminInvoiceDetailPage() {
                     style={{ marginTop: "10px", width: "100%" }}
                   />
                 ) : null}
-                {/* <div style={{ display: "flex" }}>
-                  <div
-                    style={{
-                      padding: "10px 0px",
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "baseline",
-                    }}
-                  >
-                    {method === "COD" ? (
-                      <>
-                        <input
-                          type="radio"
-                          id="pc-momo1"
-                          name="paymentMethod"
-                          value="ACCEPTED"
-                          checked={adminAction === "ACCEPTED"}
-                          onChange={handleUserStatus}
-                        />
-                        <label style={{ marginLeft: "5px" }}>Accepted</label>
 
-                        <input
-                          type="radio"
-                          id="pc-momo2"
-                          name="paymentMethod"
-                          value="REFUSED"
-                          checked={adminAction === "REFUSED"}
-                          onChange={handleUserStatus}
-                        />
-                        <label style={{ marginLeft: "5px" }}>Refused</label>
-
-                        <input
-                          type="radio"
-                          id="pc-momo3"
-                          name="paymentMethod"
-                          value="CONFIRMED_ONLINE_PAYMENT"
-                          checked={adminAction === "CONFIRMED_ONLINE_PAYMENT"}
-                          onChange={handleUserStatus}
-                        />
-                        <label style={{ marginLeft: "5px" }}>
-                          Confirm Online Payment
-                        </label>
-
-                        <input
-                          type="radio"
-                          id="pc-momo4"
-                          name="paymentMethod"
-                          value="FINISH_PACKING"
-                          checked={adminAction === "FINISH_PACKING"}
-                          onChange={handleUserStatus}
-                        />
-                        <label style={{ marginLeft: "5px" }}>
-                          Finish Packing
-                        </label>
-                      </>
-                    ) : (
-                      <>
-                        <input
-                          type="radio"
-                          id="pc-momo3"
-                          name="paymentMethod"
-                          value="CONFIRMED_ONLINE_PAYMENT"
-                          checked={adminAction === "CONFIRMED_ONLINE_PAYMENT"}
-                          onChange={handleUserStatus}
-                        />
-                        <label style={{ marginLeft: "5px" }}>
-                          Confirm Online Payment
-                        </label>
-
-                        <input
-                          type="radio"
-                          id="pc-momo4"
-                          name="paymentMethod"
-                          value="FINISH_PACKING"
-                          checked={adminAction === "FINISH_PACKING"}
-                          onChange={handleUserStatus}
-                        />
-                        <label style={{ marginLeft: "5px" }}>
-                          Finish Packing
-                        </label>
-                        <input
-                          type="radio"
-                          id="pc-momo4"
-                          name="paymentMethod"
-                          value="PACKING"
-                          checked={adminAction === "PACKING"}
-                          onChange={handleUserStatus}
-                        />
-                        <label style={{ marginLeft: "5px" }}>Packing</label>
-                      </>
-                    )}
-                  </div>
-                </div> */}
-                {/* <div style={{ display: "flex" }}>
-                  <div>
-                    <div
-                      style={{
-                        padding: "10px 10px",
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "baseline",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <>
-                        <input
-                          type="radio"
-                          id="pc-momo3"
-                          name="paymentMethod"
-                          value="CONFIRMED_ONLINE_PAYMENT"
-                          checked={adminAction === "CONFIRMED_ONLINE_PAYMENT"}
-                          onChange={handleUserStatus}
-                          style={{ margin: "10px" }}
-                        />
-                        <label style={{ marginLeft: "5px" }}>
-                          Confirm Online Payment
-                        </label>
-
-                        <input
-                          type="radio"
-                          id="pc-momo4"
-                          name="paymentMethod"
-                          value="SUCCESS"
-                          checked={adminAction === "SUCCESS"}
-                          onChange={handleUserStatus}
-                        />
-                        <label style={{ marginLeft: "5px" }}>Success</label>
-                        <input
-                          type="radio"
-                          id="pc-momo4"
-                          name="paymentMethod"
-                          value="PACKING"
-                          checked={adminAction === "PACKING"}
-                          onChange={handleUserStatus}
-                        />
-                        <label style={{ marginLeft: "5px" }}>Packing</label>
-                        <input
-                          type="radio"
-                          id="pc-momo4"
-                          name="paymentMethod"
-                          value="FINISH_PACKING"
-                          checked={adminAction === "FINISH_PACKING"}
-                          onChange={handleUserStatus}
-                        />
-                        <label style={{ marginLeft: "5px" }}>
-                          Finish Packing
-                        </label>
-                        <input
-                          type="radio"
-                          id="pc-momo4"
-                          name="paymentMethod"
-                          value="FAILED"
-                          checked={adminAction === "FAILED"}
-                          onChange={handleUserStatus}
-                        />
-                        <label style={{ marginLeft: "5px" }}>Failed</label>
-                      </>
-                    </div>
-                  </div>
-                </div> */}
                 {method === "COD" && status === "ACCEPTANCE_WAITING" ? (
                   <div style={{ display: "flex", justifyContent: "center" }}>
                     <div>

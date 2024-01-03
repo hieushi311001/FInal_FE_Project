@@ -177,26 +177,6 @@ function PaymentPage() {
                           </div>
                         );
 
-                      case "PAYPAL":
-                        return (
-                          <div
-                            className="pc-item"
-                            style={{ textAlign: "center" }}
-                          >
-                            <img
-                              src={images.paypal}
-                              style={{
-                                maxHeight: "150px",
-                                maxWidth: "150px",
-                                display: "inline-block",
-                                verticalAlign: "middle",
-                                borderRadius: "10px",
-                              }}
-                              alt="Palpal"
-                            />
-                          </div>
-                        );
-
                       default:
                         return null; // hoặc nội dung mặc định khi method không phải là momo, cod hoặc paypal
                     }
