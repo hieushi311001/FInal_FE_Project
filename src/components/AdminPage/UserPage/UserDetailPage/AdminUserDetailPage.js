@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { makeRequest } from "~/services";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 function AdminUserDetailPage() {
   const params = useParams();
   const [data, setData] = useState({});
@@ -215,20 +215,23 @@ function AdminUserDetailPage() {
 
                       <div className="position-relative row form-group mb-1">
                         <div className="col-md-9 col-xl-8 offset-md-2">
-                          <a
-                            href={{}}
+                          <Link
+                            to={"/admin/user"}
                             className="border-0 btn btn-outline-danger mr-1"
                           >
                             <span className="btn-icon-wrapper pr-1 opacity-8">
                               <i className="fa fa-times fa-w-20" />
                             </span>
                             <span>Cancel</span>
-                          </a>
-                          <button className="btn-shadow btn-hover-shine btn btn-primary">
+                          </Link>
+                          <button
+                            className="btn-shadow btn-hover-shine btn btn-primary"
+                            onClick={handleSave}
+                          >
                             <span className="btn-icon-wrapper pr-2 opacity-8">
                               <i className="fa fa-download fa-w-20" />
                             </span>
-                            <span onClick={handleSave}>Save</span>
+                            <span>Save</span>
                           </button>
                         </div>
                       </div>

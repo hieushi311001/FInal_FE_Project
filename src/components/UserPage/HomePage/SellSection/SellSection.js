@@ -75,14 +75,7 @@ function SellSection() {
             </div>
           </div>
           <div className="col-lg-8 offset-lg-1">
-            <div className="filter-control">
-              <ul>
-                <li className="active">Clothings</li>
-                <li>HandBag</li>
-                <li>Shoes</li>
-                <li>Accessories</li>
-              </ul>
-            </div>
+            <div className="filter-control"></div>
             {Object.keys(data).length !== 0 && (
               <OwlCarousel className="product-slider owl-carousel" {...options}>
                 {data.content.map((product) => (

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { makeRequest } from "~/services";
 import { useNavigate, useParams } from "react-router-dom";
-import { Navigate } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 import AddColor from "./AddColor";
 function AdminProductDetailPage() {
   const params = useParams();
@@ -271,29 +271,33 @@ function AdminProductDetailPage() {
                     </div>
                     <div className="position-relative row form-group mb-1">
                       <div className="col-md-9 col-xl-8 offset-md-2">
-                        <a
-                          href={{}}
+                        <Link
+                          to={"/admin/product"}
                           className="border-0 btn btn-outline-danger mr-1"
                         >
                           <span className="btn-icon-wrapper pr-1 opacity-8">
                             <i className="fa fa-times fa-w-20" />
                           </span>
                           <span>Cancel</span>
-                        </a>
-                        <button className="btn-shadow btn-hover-shine btn btn-primary">
-                          <span className="btn-icon-wrapper pr-2 opacity-8">
-                            <i className="fa fa-download fa-w-20" />
-                          </span>
-                          <span onClick={handleEdit}>Edit</span>
-                        </button>
+                        </Link>
                         <button
                           className="btn-shadow btn-hover-shine btn btn-primary"
-                          style={{ marginLeft: "10px" }}
+                          onClick={handleEdit}
                         >
                           <span className="btn-icon-wrapper pr-2 opacity-8">
                             <i className="fa fa-download fa-w-20" />
                           </span>
-                          <span onClick={handleAddColor}>Add Color</span>
+                          <span>Edit</span>
+                        </button>
+                        <button
+                          className="btn-shadow btn-hover-shine btn btn-primary"
+                          style={{ marginLeft: "10px" }}
+                          onClick={handleAddColor}
+                        >
+                          <span className="btn-icon-wrapper pr-2 opacity-8">
+                            <i className="fa fa-download fa-w-20" />
+                          </span>
+                          <span>Add Color</span>
                         </button>
                       </div>
                     </div>

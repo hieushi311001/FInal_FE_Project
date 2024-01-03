@@ -81,59 +81,34 @@ function RelativeProduct({ productId, color }) {
             className="col-lg-12 col-sm-9 mx-auto"
             style={{ minHeight: "466.06px", maxWidth: "1000px" }}
           >
-            {/* <div className="product-item">
-              <div className="pi-pic">
-                <img src={images.woman2} alt="" />
-                <div className="icon">
-                  <i className="icon_heart_alt" />
-                </div>
-                <ul>
-                  <li className="w-icon active">
-                    <a href={{}}>
-                      <i className="icon_bag_alt" />
-                    </a>
-                  </li>
-                  <li className="quick-view">
-                    <a href={{}}>+ Quick View</a>
-                  </li>
-                  <li className="w-icon">
-                    <a href={{}}>
-                      <i className="fa fa-random" />
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div className="pi-text">
-                <div className="catagory-name">Shoes</div>
-                <a href={{}}>
-                  <h5>Guangzhou sweater</h5>
-                </a>
-                <div className="product-price">$13.00</div>
-              </div>
-            </div> */}
-            {Object.keys(data).length !== 0 && (
-              <OwlCarousel className="product-slider owl-carousel" {...options}>
-                {data.content.map((product) => (
-                  <ProductSlider
-                    key={product.id}
-                    productid={product.product_id}
-                    image={product.image1}
-                    brand={product.brand}
-                    name={product.name}
-                    price={product.sellingPrice}
-                    discount={product.discount}
-                    onAddToCart={() =>
-                      handleAddToCartForProduct(
-                        product.product_id,
-                        product.color,
-                        product.size,
-                        1
-                      )
-                    }
-                  />
-                ))}
-              </OwlCarousel>
-            )}
+            {data.content === undefined
+              ? null
+              : Object.keys(data.content).length !== 0 && (
+                  <OwlCarousel
+                    className="product-slider owl-carousel"
+                    {...options}
+                  >
+                    {data.content.map((product) => (
+                      <ProductSlider
+                        key={product.id}
+                        productid={product.product_id}
+                        image={product.image1}
+                        brand={product.brand}
+                        name={product.name}
+                        price={product.sellingPrice}
+                        discount={product.discount}
+                        onAddToCart={() =>
+                          handleAddToCartForProduct(
+                            product.product_id,
+                            product.color,
+                            product.size,
+                            1
+                          )
+                        }
+                      />
+                    ))}
+                  </OwlCarousel>
+                )}
           </div>
         </div>
       </div>

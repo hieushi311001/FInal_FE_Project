@@ -1360,6 +1360,8 @@ ol {
   -o-transition: all 0.3s;
   transition: all 0.3s;
   opacity: 0;
+  margin-right: 0px;
+  line-height: 0px;
 }
 
 .product-item .pi-pic-1 ul {

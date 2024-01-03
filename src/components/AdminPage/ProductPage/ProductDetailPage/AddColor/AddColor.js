@@ -7,11 +7,11 @@ function AddColor() {
   const location = useLocation();
   const params = useParams();
   const userToken = Cookies.get("jwtTokenAdmin");
-  const initialImages = ["imageUrl1", "imageUrl2", "imageUrl3", "imageUrl4"];
+  const initialImages = ["", "", "", ""];
   const [images, setImages] = useState(initialImages);
   const [sizes, setSizes] = useState([]);
   const [numbers, setNumbers] = useState([]);
-  const [proColor, setProColor] = useState("");
+  const [proColor, setProColor] = useState("none");
   const values = params.id_color.split("_");
   const id = values[0];
   const color = values[1];
@@ -178,11 +178,14 @@ function AddColor() {
 
       <div className="position-relative row form-group">
         <label className="col-md-9 col-xl-8 offset-md-3">
-          <button className="btn-shadow btn-hover-shine btn btn-primary">
+          <button
+            className="btn-shadow btn-hover-shine btn btn-primary"
+            onClick={handleSave}
+          >
             <span className="btn-icon-wrapper pr-2 opacity-8">
               <i className="fa fa-download fa-w-20" />
             </span>
-            <span onClick={handleSave}>Save</span>
+            <span>Save</span>
           </button>
         </label>
       </div>

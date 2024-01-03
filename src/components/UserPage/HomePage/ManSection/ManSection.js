@@ -66,14 +66,7 @@ function ManSection() {
       <div className="container-fluid">
         <div className="row">
           <div className="col-lg-8">
-            <div className="filter-control">
-              <ul>
-                <li className="active">Clothings</li>
-                <li>HandBag</li>
-                <li>Shoes</li>
-                <li>Accessories</li>
-              </ul>
-            </div>
+            <div className="filter-control"></div>
             {Object.keys(data).length !== 0 && (
               <OwlCarousel className="product-slider owl-carousel" {...options}>
                 {data.content.map((product) => (

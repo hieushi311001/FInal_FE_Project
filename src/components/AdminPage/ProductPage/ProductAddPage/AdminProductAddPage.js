@@ -443,11 +443,14 @@ function AdminProductAddPage() {
                       </span>
                       <span>Cancel</span>
                     </Link>
-                    <button className="btn-shadow btn-hover-shine btn btn-primary">
+                    <button
+                      className="btn-shadow btn-hover-shine btn btn-primary"
+                      onClick={handleSave}
+                    >
                       <span className="btn-icon-wrapper pr-2 opacity-8">
                         <i className="fa fa-download fa-w-20" />
                       </span>
-                      <span onClick={handleSave}>Save</span>
+                      <span>Save</span>
                     </button>
                   </div>
                 </div>

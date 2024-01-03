@@ -1,6 +1,6 @@
 import { makeRequest } from "~/services";
 import Cookies from "js-cookie";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 function AdminCateogryUpdatePage() {
   const params = useParams();
@@ -42,10 +42,6 @@ function AdminCateogryUpdatePage() {
   const handleImageUrlChange = (value) => {
     console.log(value);
     setImages(value);
-  };
-  const handleCancel = (e) => {
-    e.preventDefault();
-    navigate("/admin/category");
   };
   return (
     <div className="container app-main">
@@ -98,20 +94,23 @@ function AdminCateogryUpdatePage() {
                 </div>
                 <div className="position-relative row form-group mb-1">
                   <div className="col-md-9 col-xl-8 offset-md-2">
-                    <a
-                      href={{}}
+                    <Link
+                      to={"/admin/category"}
                       className="border-0 btn btn-outline-danger mr-1"
                     >
                       <span className="btn-icon-wrapper pr-1 opacity-8">
                         <i className="fa fa-times fa-w-20" />
                       </span>
-                      <span onClick={handleCancel}>Cancel</span>
-                    </a>
-                    <button className="btn-shadow btn-hover-shine btn btn-primary">
+                      <span>Cancel</span>
+                    </Link>
+                    <button
+                      className="btn-shadow btn-hover-shine btn btn-primary"
+                      onClick={handleSave}
+                    >
                       <span className="btn-icon-wrapper pr-2 opacity-8">
                         <i className="fa fa-download fa-w-20" />
                       </span>
-                      <span onClick={handleSave}>Save</span>
+                      <span>Save</span>
                     </button>
                   </div>
                 </div>

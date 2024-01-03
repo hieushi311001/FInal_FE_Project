@@ -214,7 +214,7 @@ function AdminPage() {
                     className="box-body p-0"
                     onClick={() => handleDirect(data.additionalData)}
                   >
-                    <div className="p-3 d-flex align-items-center border-bottom osahan-post-header">
+                    <div className="p-3 d-flex align-items-center bg-light border-bottom osahan-post-header">
                       <div className="dropdown-list-image mr-3">
                         <img
                           className="rounded-circle"
@@ -223,39 +223,18 @@ function AdminPage() {
                         />
                       </div>
                       <div className="font-weight-bold mr-3">
-                        <div className="text-truncate">
-                          DAILY RUNDOWN: MONDAY
-                        </div>
+                        <div className="text-truncate">{data.title}</div>
+                        <div className="small">{data.content}</div>
                         <div className="small">
-                          Nunc purus metus, aliquam vitae venenatis sit amet,
-                          porta non est.
+                          Invoice ID: {data.additionalData.invoiceId}
                         </div>
                       </div>
+
                       <span className="ml-auto mb-auto">
-                        <div className="btn-group">
-                          <button
-                            type="button"
-                            className="btn btn-light btn-sm rounded"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                          >
-                            <i className="mdi mdi-dots-vertical" />
-                          </button>
-                          <div
-                            className="dropdown-menu dropdown-menu-right"
-                            style={{}}
-                          >
-                            <button className="dropdown-item" type="button">
-                              <i className="mdi mdi-delete" /> Delete
-                            </button>
-                            <button className="dropdown-item" type="button">
-                              <i className="mdi mdi-close" /> Turn Off
-                            </button>
-                          </div>
-                        </div>
                         <br />
-                        <div className="text-right text-muted pt-1">3d</div>
+                        <div className="text-right text-muted pt-1">
+                          {data.notificationDate}
+                        </div>
                       </span>
                     </div>
                   </div>
