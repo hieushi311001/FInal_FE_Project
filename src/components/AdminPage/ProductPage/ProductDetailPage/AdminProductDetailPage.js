@@ -8,13 +8,13 @@ function AdminProductDetailPage() {
   const params = useParams();
   const [data, setData] = useState({});
   const navigate = useNavigate();
-  const [userStatus, setUserStatus] = useState("");
   const userToken = Cookies.get("jwtTokenAdmin");
   const [isChecked, setIsChecked] = useState(true);
   const [dataFilter, setDataFilter] = useState({});
   const values = params.id_color.split("_");
   const id = values[0];
   const color = values[1];
+  const [cate, setCate] = useState("");
   useEffect(() => {
     const axiosInstance = {
       headers: {
@@ -34,7 +34,11 @@ function AdminProductDetailPage() {
           size: product.size,
           quantity: product.availableQuantity,
         }));
+        // Mảng chứa toàn bộ name
+        const nameArray = result.content[0].categories.map((item) => item.name);
+        const resultString = nameArray.join(", ");
         console.log(result);
+        setCate(resultString);
         setData(product[0]);
         setDataFilter(filteredSizesAndQuantities);
       } catch (error) {
@@ -44,33 +48,7 @@ function AdminProductDetailPage() {
 
     fetchData();
   }, [color, id, userToken]);
-  const handleSave = (e) => {
-    e.preventDefault();
-    const fetchData = async () => {
-      try {
-        const APIdata = {
-          id: id,
-          status: userStatus,
-        };
-        console.log(APIdata);
-        const axiosInstance = {
-          headers: {
-            Authorization: `Bearer ${userToken}`,
-            "Content-Type": "application/json",
-          },
-        };
-        const path = `authen/account/actionOnAccount`;
-        const method = "POST";
-        const result = await makeRequest(method, path, APIdata, axiosInstance);
-        console.log(result);
-        window.location.href = "/admin/user";
-      } catch (error) {
-        console.error("Error fetching data:", error.message);
-      }
-    };
 
-    fetchData();
-  };
   function capitalizeFirstLetter(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
@@ -178,10 +156,26 @@ function AdminProductDetailPage() {
                           <input
                             readOnly
                             className="form-control"
+                            value={cate}
+                          />
+                        </div>
+                      </div>
+                      <div className="position-relative row form-group">
+                        <label
+                          htmlFor="email"
+                          className="col-md-3 text-md-right col-form-label"
+                        >
+                          Category
+                        </label>
+                        <div className="col-md-9 col-xl-8">
+                          <input
+                            readOnly
+                            className="form-control"
                             value={capitalizeFirstLetter(data.brand)}
                           />
                         </div>
                       </div>
+
                       {dataFilter.map((data, index) => (
                         <div
                           className="position-relative row form-group"

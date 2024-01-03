@@ -15,6 +15,7 @@ function AddColor() {
   const values = params.id_color.split("_");
   const id = values[0];
   const color = values[1];
+  const [cate, setCate] = useState("");
   useEffect(() => {
     const axiosInstance = {
       headers: {
@@ -24,16 +25,18 @@ function AddColor() {
     };
     const fetchData = async () => {
       try {
-        const path = `authen/product/product_id=${id}?showFull=false`;
+        const path = `unauthen/shop/product_id=${id}?showFull=true`;
         const method = "GET";
         const result = await makeRequest(method, path, null, axiosInstance);
         console.log(result);
         const product = result.content.filter(
           (product) => product.color === color
         );
+        let idArray = result.content[0].categories.map((item) => item.id);
+        setCate(idArray);
         setData(product[0]);
       } catch (error) {
-        console.error("Error fetching data:", error.message);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -69,6 +72,7 @@ function AddColor() {
           originalPrice: data.originalPrice,
           discount: data.discount,
           brand: data.brand,
+          categoryIds: cate,
           attributes: [
             {
               color: proColor,
@@ -92,7 +96,7 @@ function AddColor() {
         console.log(result);
         window.location.href = "/admin/product";
       } catch (error) {
-        console.error("Error fetching data:", error.message);
+        console.error("Error fetching data:", error);
       }
     };
 

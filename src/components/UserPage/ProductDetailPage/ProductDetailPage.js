@@ -20,6 +20,7 @@ function ProductDetailPage() {
   const [size, setSize] = useState([]);
   const [filterData, setFilterData] = useState([]);
   const [maxNum, setMaxNum] = useState(0);
+  const [cate, setCate] = useState("");
   useEffect(() => {
     window.scroll(0, 0);
   }, [params.product_id]);
@@ -42,9 +43,13 @@ function ProductDetailPage() {
             availableQuantity,
           })
         );
+        const nameArray = result.content[0].categories.map((item) => item.name);
+        const resultString = nameArray.join(", ");
+        setCate(resultString);
         console.log("check: ", extractedData);
         setMaxNum(result.content[0].availableQuantity);
         setFilterData(extractedData);
+        console.log(result1);
         setSize(result1);
         setData(result);
         setColor(result.content[0].color);
@@ -170,7 +175,9 @@ function ProductDetailPage() {
                   <div className="col-lg-6">
                     <div className="product-details">
                       <div className="pd-title">
-                        <span>{resultObject.brand[imageUrl]}</span>
+                        <span>
+                          {resultObject.brand[imageUrl]} | {cate}
+                        </span>
                         <h3>{resultObject.name[imageUrl]}</h3>
                         <a href={{}} className="heart-icon">
                           <i className="icon_heart_alt" />

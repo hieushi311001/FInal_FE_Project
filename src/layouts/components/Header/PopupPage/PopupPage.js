@@ -69,7 +69,6 @@ function PopupPage({ isOpen, onClose }) {
         const path = `unauthen/translator/translate`;
         const method = "POST";
         const result = await makeRequest(method, path, APIdata);
-        setTranslatedText(result.content);
         onClose();
         navigate(`/search?query=${result.content}`);
       } catch (error) {
@@ -114,9 +113,6 @@ function PopupPage({ isOpen, onClose }) {
             </div>
           </div>
           <br />
-          <div>
-            <strong>Translated Text: {translatedText}</strong>
-          </div>
           <button
             className="btn btn-primary"
             onClick={translateText}

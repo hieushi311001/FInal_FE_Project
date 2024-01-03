@@ -24,6 +24,7 @@ function PopupPage({ isOpen, onClose, product }) {
     size: product.size,
     quantity: product.quantity,
   });
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -38,6 +39,8 @@ function PopupPage({ isOpen, onClose, product }) {
             availableQuantity,
           })
         );
+        console.log(extractedData);
+        setMaxNum(extractedData[0].availableQuantity);
         setFilterData(extractedData);
         setData(result.content);
       } catch (error) {

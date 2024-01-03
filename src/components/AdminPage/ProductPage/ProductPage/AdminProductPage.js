@@ -28,7 +28,7 @@ function AdminProductPage() {
         console.log(result);
         setData(result.content);
       } catch (error) {
-        console.error("Error fetching data:", error.message);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -188,7 +188,7 @@ function AdminProductPage() {
                   <PaginationControl
                     page={page}
                     between={1}
-                    total={5}
+                    total={6}
                     limit={1}
                     changePage={(page) => {
                       setPage(page);
