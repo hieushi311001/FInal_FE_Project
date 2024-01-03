@@ -24,7 +24,7 @@ function AdminProductDetailPage() {
     };
     const fetchData = async () => {
       try {
-        const path = `authen/product/product_id=${id}?showFull=true`;
+        const path = `unauthen/shop/product_id=${id}?showFull=true`;
         const method = "GET";
         const result = await makeRequest(method, path, null, axiosInstance);
         const product = result.content.filter(
