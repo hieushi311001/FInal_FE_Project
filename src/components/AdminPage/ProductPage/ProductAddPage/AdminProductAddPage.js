@@ -76,11 +76,11 @@ function AdminProductAddPage() {
             "Content-Type": "application/json",
           },
         };
-        // const path = `authen/product/add`;
-        // const method = "POST";
-        // const result = await makeRequest(method, path, APIdata, axiosInstance);
-        // console.log(result);
-        // navigate("/admin/product");
+        const path = `authen/product/add`;
+        const method = "POST";
+        const result = await makeRequest(method, path, APIdata, axiosInstance);
+        console.log(result);
+        navigate("/admin/product");
       } catch (error) {
         console.error("Error fetching data:", error.message);
       }

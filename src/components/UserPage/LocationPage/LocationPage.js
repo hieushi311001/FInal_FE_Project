@@ -208,6 +208,7 @@ const LocationPage = () => {
                 "Content-Type": "application/json",
               },
             };
+            console.log(requestData);
             const path = "authen/cart/getGhnAddressCode";
             const result = await makeRequest(
               method,

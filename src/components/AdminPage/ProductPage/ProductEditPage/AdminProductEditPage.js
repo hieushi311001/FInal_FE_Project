@@ -99,7 +99,7 @@ function AdminProductEditPage() {
         console.log(result);
         window.location.href = "/admin/product";
       } catch (error) {
-        console.error("Error fetching data:", error.message);
+        console.error("Error fetching data:", error);
       }
     };
 
