@@ -2,7 +2,7 @@
   "name": "finalfe",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://14.225.254.87:8080/",
+  "proxy": "https://103.200.20.153:8080/",
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
